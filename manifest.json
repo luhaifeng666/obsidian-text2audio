@@ -1,0 +1,11 @@
+{
+  "id": "text2audio",
+  "name": "Text2Audio",
+  "version": "1.0.0",
+  "minAppVersion": "0.15.0",
+  "description": "Convert text to speech",
+  "author": "luhaifeng666",
+  "authorUrl": "https://github.com/luhaifeng666",
+  "fundingUrl": "https://buymeacoffee.com/luhaifeng",
+  "isDesktopOnly": false
+}
