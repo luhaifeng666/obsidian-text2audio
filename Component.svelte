@@ -11,6 +11,7 @@
 	let voice: string = getVoiceName(voices[0]);
 	let convertedText: string = text;
 	let filename: string = "";
+	let loading: boolean = false;
 
 	// generateVoice(text, key, region, directory)
 	function getVoiceName(voice: string) {
@@ -29,32 +30,21 @@
 		voice = getVoiceName(data.target.value);
 	};
 
-	const handleSave = () => {
-		generateNotice().setMessage(
-			generateNoticeText(
-				`${JSON.stringify({
-					text,
-					key,
-					filename,
-					region: regionCode,
-					filePath: directory,
-					voice: `${region}-${voice}`,
-				})}`,
-				"success",
-			),
-		);
-		generateVoice({
-			text,
+	const handleSave = async () => {
+		loading = true;
+		await generateVoice({
+			text: convertedText,
 			key,
 			filename,
 			region: regionCode,
 			filePath: directory,
 			voice: `${region}-${voice}`,
 		});
+		loading = false;
 	};
 </script>
 
-<h2 class="ob-t2v-title">Text2Video - 文本转语音</h2>
+<h2 class="ob-t2v-title">文本转语音</h2>
 
 <textarea
 	class="ob-t2v-text"
@@ -94,8 +84,13 @@
 </div> -->
 
 <div class="ob-t2v-footer">
-	<button>播放</button>
-	<button on:click={handleSave}>保存</button>
+	{#if !loading}
+		<span>转换中...</span>
+	{/if}
+	<div>
+		<button>播放</button>
+		<button on:click={handleSave}>保存</button>
+	</div>
 </div>
 
 <style>
@@ -118,18 +113,24 @@
 		width: 250px;
 	}
 	.ob-t2v-footer {
-		text-align: right;
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
 		padding-top: 10px;
 		border-top: 1px solid #aaa;
 		margin-top: 20px;
 	}
-	.ob-t2v-footer > button {
+	.ob-t2v-footer > div {
+		text-align: right;
+		flex: 1;
+	}
+	.ob-t2v-footer button {
 		color: #fff;
 		cursor: pointer;
 		width: 80px;
 		font-size: 14px;
 	}
-	.ob-t2v-footer > button::before {
+	.ob-t2v-footer button::before {
 		content: "";
 		display: block;
 		width: 14px;
@@ -139,17 +140,17 @@
 		background-size: cover;
 		margin-right: 3px;
 	}
-	.ob-t2v-footer > button:first-child {
+	.ob-t2v-footer button:first-child {
 		background-color: #52c41a;
 	}
-	.ob-t2v-footer > button:last-child {
+	.ob-t2v-footer button:last-child {
 		background-color: #1677ff;
 		margin-left: 8px;
 	}
-	.ob-t2v-footer > button:first-child::before {
+	.ob-t2v-footer button:first-child::before {
 		background-image: url(https://github.com/luhaifeng666/pics/assets/9375823/7208eed1-9280-459c-94f0-b9c21bddb073);
 	}
-	.ob-t2v-footer > button:last-child::before {
+	.ob-t2v-footer button:last-child::before {
 		background-image: url(https://github.com/luhaifeng666/pics/assets/9375823/035fd534-362b-4c6e-b895-b5e5aff617ba);
 	}
 </style>
