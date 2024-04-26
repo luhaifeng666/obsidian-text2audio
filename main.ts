@@ -1,89 +1,104 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
-
-// Remember to rename these classes and interfaces!
-
-interface MyPluginSettings {
-	mySetting: string;
+import { App, Editor, MarkdownView, Plugin, PluginSettingTab } from "obsidian";
+import { generateNotice, generateNoticeText, generateSettings } from "./utils";
+import { Popup } from "./Popup";
+import type { ConfigurationType } from "./type";
+interface Text2AudioSettings {
+	key: string;
+	region: string;
+	directory: string;
 }
 
-const DEFAULT_SETTINGS: MyPluginSettings = {
-	mySetting: 'default'
-}
+const DEFAULT_SETTINGS: Record<ConfigurationType, string> = {
+	key: "",
+	region: "",
+	directory: "",
+};
 
-export default class MyPlugin extends Plugin {
-	settings: MyPluginSettings;
+const SETTINGS = [
+	{
+		name: "Speech Key",
+		key: "key",
+		desc: "Your Azure AI services API's secret key.",
+		inputConfig: {
+			placeholder: "Enter your secret key",
+		},
+	},
+	{
+		name: "Speech Region",
+		key: "region",
+		desc: "Your Azure AI services API's region.",
+		inputConfig: {
+			placeholder: "Enter your region",
+		},
+	},
+	{
+		name: "Directory",
+		key: "directory",
+		desc: "Save the audio file to this directory.",
+		inputConfig: {
+			placeholder: "Full path",
+		},
+	},
+];
+
+export default class Text2Audio extends Plugin {
+	settings: Text2AudioSettings = DEFAULT_SETTINGS;
+	notice = generateNotice();
 
 	async onload() {
 		await this.loadSettings();
 
-		// This creates an icon in the left ribbon.
-		const ribbonIconEl = this.addRibbonIcon('dice', 'Sample Plugin', (evt: MouseEvent) => {
-			// Called when the user clicks the icon.
-			new Notice('This is a notice!');
-		});
-		// Perform additional things with the ribbon
-		ribbonIconEl.addClass('my-plugin-ribbon-class');
+		// 点击左侧icon，弹出modal，用于输入自定义内容进行转换
+		const ribbonIconEl = this.addRibbonIcon(
+			"dice",
+			"Sample Plugin",
+			(evt: MouseEvent) => {
+				// Called when the user clicks the icon.
+				new Popup(this.app, this).open();
+			}
+		);
 
-		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
+		// TODO: 在底部状态栏添加转换中的提示
 		const statusBarItemEl = this.addStatusBarItem();
-		statusBarItemEl.setText('Status Bar Text');
+		statusBarItemEl.setText("Status Bar Text");
 
-		// This adds a simple command that can be triggered anywhere
+		// 通过命令打开弹窗
 		this.addCommand({
-			id: 'open-sample-modal-simple',
-			name: 'Open sample modal (simple)',
+			id: "open-t2a-modal",
+			name: "Open t2a modal",
 			callback: () => {
-				new SampleModal(this.app).open();
-			}
+				new Popup(this.app, this).open();
+			},
 		});
-		// This adds an editor command that can perform some operation on the current editor instance
+		// 将选中的内容填入弹窗中，进行转换
 		this.addCommand({
-			id: 'sample-editor-command',
-			name: 'Sample editor command',
+			id: "sample-editor-command",
+			name: "Sample editor command",
 			editorCallback: (editor: Editor, view: MarkdownView) => {
-				console.log(editor.getSelection());
-				editor.replaceSelection('Sample Editor Command');
-			}
-		});
-		// This adds a complex command that can check whether the current state of the app allows execution of the command
-		this.addCommand({
-			id: 'open-sample-modal-complex',
-			name: 'Open sample modal (complex)',
-			checkCallback: (checking: boolean) => {
-				// Conditions to check
-				const markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
-				if (markdownView) {
-					// If checking is true, we're simply "checking" if the command can be run.
-					// If checking is false, then we want to actually perform the operation.
-					if (!checking) {
-						new SampleModal(this.app).open();
-					}
-
-					// This command will only show up in Command Palette when the check function returns true
-					return true;
-				}
-			}
+				// 获取选中文本
+				const selectedText = editor.getSelection();
+				// 打开弹窗
+				new Popup(this.app, this).open();
+			},
 		});
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new SampleSettingTab(this.app, this));
 
-		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
-		// Using this function will automatically remove the event listener when this plugin is disabled.
-		this.registerDomEvent(document, 'click', (evt: MouseEvent) => {
-			console.log('click', evt);
-		});
-
 		// When registering intervals, this function will automatically clear the interval when the plugin is disabled.
-		this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
+		this.registerInterval(
+			window.setInterval(() => console.log("setInterval"), 5 * 60 * 1000)
+		);
 	}
 
-	onunload() {
-
-	}
+	onunload() {}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		this.settings = Object.assign(
+			{},
+			DEFAULT_SETTINGS,
+			await this.loadData()
+		);
 	}
 
 	async saveSettings() {
@@ -91,44 +106,22 @@ export default class MyPlugin extends Plugin {
 	}
 }
 
-class SampleModal extends Modal {
-	constructor(app: App) {
-		super(app);
-	}
-
-	onOpen() {
-		const {contentEl} = this;
-		contentEl.setText('Woah!');
-	}
-
-	onClose() {
-		const {contentEl} = this;
-		contentEl.empty();
-	}
-}
-
+// 添加设置面板
 class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
+	plugin: Text2Audio;
 
-	constructor(app: App, plugin: MyPlugin) {
+	constructor(app: App, plugin: Text2Audio) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
 
 	display(): void {
-		const {containerEl} = this;
+		const { containerEl } = this;
 
 		containerEl.empty();
 
-		new Setting(containerEl)
-			.setName('Setting #1')
-			.setDesc('It\'s a secret')
-			.addText(text => text
-				.setPlaceholder('Enter your secret')
-				.setValue(this.plugin.settings.mySetting)
-				.onChange(async (value) => {
-					this.plugin.settings.mySetting = value;
-					await this.plugin.saveSettings();
-				}));
+		SETTINGS.forEach((setting) => {
+			generateSettings(containerEl, this.plugin, setting);
+		});
 	}
 }
