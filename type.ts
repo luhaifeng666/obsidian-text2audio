@@ -1,4 +1,4 @@
-export type ConfigKeys = "text" | "filename" | "key" | "region" | "filePath";
+export type ConfigKeys = "text" | "filename" | "key" | "region" | "filePath" | "voice";
 export type MessageType = "success" | "error" | "warning";
 export type SettingType = "name" | "desc" | "key";
 export type ConfigurationType = "key" | "region" | "directory";

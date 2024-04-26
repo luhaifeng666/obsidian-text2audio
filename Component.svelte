@@ -1,18 +1,56 @@
 <script lang="ts" module>
-	import { generateVoice } from "./utils";
+	import { generateVoice, generateNotice, generateNoticeText } from "./utils";
 	import { LANGUAGES } from "./constants";
+
+	export let directory: string;
 	export let text: string; // 需要转换的文本
 	export let key: string;
-	export let region: string;
-	export let directory: string;
-	export let voices: string[] = LANGUAGES[0].voices;
+	export let regionCode: string;
+	let region: string = LANGUAGES[0].region;
+	let voices: string[] = LANGUAGES[0].voices;
+	let voice: string = getVoiceName(voices[0]);
+	let convertedText: string = text;
+	let filename: string = "";
 
 	// generateVoice(text, key, region, directory)
+	function getVoiceName(voice: string) {
+		return voice.replace(/\(.*\)/g, "");
+	}
 
 	const handleLangChange = (data) => {
+		region = data.target.value;
 		voices =
 			LANGUAGES.find((lang) => lang.region === data.target.value)
 				?.voices || [];
+		voice = getVoiceName(voices[0]);
+	};
+
+	const handleVoiceChange = (data) => {
+		voice = getVoiceName(data.target.value);
+	};
+
+	const handleSave = () => {
+		generateNotice().setMessage(
+			generateNoticeText(
+				`${JSON.stringify({
+					text,
+					key,
+					filename,
+					region: regionCode,
+					filePath: directory,
+					voice: `${region}-${voice}`,
+				})}`,
+				"success",
+			),
+		);
+		generateVoice({
+			text,
+			key,
+			filename,
+			region: regionCode,
+			filePath: directory,
+			voice: `${region}-${voice}`,
+		});
 	};
 </script>
 
@@ -20,7 +58,7 @@
 
 <textarea
 	class="ob-t2v-text"
-	value={text}
+	bind:value={convertedText}
 	name="t2v-text"
 	rows="10"
 	placeholder="请输入需要转换的文本"
@@ -37,11 +75,16 @@
 
 <div class="ob-t2v-box">
 	语音
-	<select name="ob-t2v-voices">
+	<select on:change={handleVoiceChange} name="ob-t2v-voices">
 		{#each voices as voice}
 			<option value={voice}>{voice}</option>
 		{/each}
 	</select>
+</div>
+
+<div class="ob-t2v-box">
+	文件名称
+	<input type="text" placeholder="音频文件名称" bind:value={filename} />
 </div>
 
 <!-- TODO 添加转换格式 -->
@@ -52,7 +95,7 @@
 
 <div class="ob-t2v-footer">
 	<button>播放</button>
-	<button>保存</button>
+	<button on:click={handleSave}>保存</button>
 </div>
 
 <style>
@@ -69,6 +112,10 @@
 		align-items: center;
 		justify-content: space-between;
 		margin: 10px 0;
+	}
+	.ob-t2v-box > input,
+	.ob-t2v-box > select {
+		width: 250px;
 	}
 	.ob-t2v-footer {
 		text-align: right;

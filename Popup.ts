@@ -5,9 +5,11 @@ import type Text2Audio from "./main";
 export class Popup extends Modal {
 	component: Component;
 	plugin: Text2Audio;
-	constructor(app: App, plugin: Text2Audio) {
+	text: string;
+	constructor(app: App, plugin: Text2Audio, selectedText = '') {
 		super(app);
 		this.plugin = plugin;
+		this.text = selectedText
 	}
 
 	onOpen() {
@@ -15,9 +17,9 @@ export class Popup extends Modal {
 		this.component = new Component({
 			target: this.contentEl,
 			props: {
-				text: "",
+				text: this.text,
 				key,
-				region,
+				regionCode: region,
 				directory,
 			},
 		});

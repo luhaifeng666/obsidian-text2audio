@@ -1,4 +1,5 @@
 import sdk from "microsoft-cognitiveservices-speech-sdk";
+import path from "path"
 import { Notice, Setting } from "obsidian";
 import type {
 	ConfigKeys,
@@ -9,16 +10,14 @@ import type {
 
 export const generateVoice = (config: Record<ConfigKeys, string>) => {
 	try {
-		const notice = generateNotice();
-		const { filename, text, key, region, filePath } = config;
+		const { filename, text, key, region, filePath, voice } = config;
 		return new Promise((resolve, reject) => {
-			const audioFile = `${filePath}${filename}.wav`;
-			// This example requires environment variables named "SPEECH_KEY" and "SPEECH_REGION"
+			const audioFile = path.resolve(filePath, `${filename}.wav`);
 			const speechConfig = sdk.SpeechConfig.fromSubscription(key, region);
 			const audioConfig = sdk.AudioConfig.fromAudioFileOutput(audioFile);
 
 			// The language of the voice that speaks.
-			speechConfig.speechSynthesisVoiceName = "ja-JP-ShioriNeural";
+			speechConfig.speechSynthesisVoiceName = voice;
 
 			// Create the speech synthesizer.
 			let synthesizer: sdk.SpeechSynthesizer | null =
@@ -33,14 +32,14 @@ export const generateVoice = (config: Record<ConfigKeys, string>) => {
 						result.reason ===
 						sdk.ResultReason.SynthesizingAudioCompleted
 					) {
-						notice.setMessage(
+						generateNotice().setMessage(
 							generateNoticeText(
 								"synthesis finished. File path is " + audioFile,
 								"success"
 							)
 						);
 					} else {
-						notice.setMessage(
+						generateNotice().setMessage(
 							generateNoticeText(
 								`Speech synthesis canceled, ${result.errorDetails}Did you set the speech resource key and region values?`,
 								"error"
@@ -53,7 +52,7 @@ export const generateVoice = (config: Record<ConfigKeys, string>) => {
 					success ? resolve(success) : reject(success);
 				},
 				function (err) {
-					notice.setMessage(generateNoticeText(err, "error"));
+					generateNotice().setMessage(generateNoticeText(err, "error"));
 					synthesizer?.close();
 					synthesizer = null;
 					reject(false);
@@ -96,7 +95,7 @@ export const generateNoticeText = (
 	return fragment;
 };
 
-export const generateSettings = (
+export const generateSettings = async (
 	container: HTMLElement,
 	plugin: any,
 	config: Record<SettingType, string> & {
@@ -114,7 +113,7 @@ export const generateSettings = (
 				.setValue(plugin.settings[key])
 				.onChange(async (value) => {
 					callback && callback(value);
-					plugin.settings.key = value;
+					plugin.settings[key] = value;
 					await plugin.saveSettings();
 				})
 		);

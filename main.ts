@@ -43,10 +43,11 @@ const SETTINGS = [
 
 export default class Text2Audio extends Plugin {
 	settings: Text2AudioSettings = DEFAULT_SETTINGS;
-	notice = generateNotice();
 
 	async onload() {
 		await this.loadSettings();
+
+		generateNotice().setMessage(JSON.stringify(this.settings))
 
 		// 点击左侧icon，弹出modal，用于输入自定义内容进行转换
 		const ribbonIconEl = this.addRibbonIcon(
@@ -72,13 +73,13 @@ export default class Text2Audio extends Plugin {
 		});
 		// 将选中的内容填入弹窗中，进行转换
 		this.addCommand({
-			id: "sample-editor-command",
-			name: "Sample editor command",
+			id: "convert-t2a",
+			name: "Convert text to audio",
 			editorCallback: (editor: Editor, view: MarkdownView) => {
 				// 获取选中文本
 				const selectedText = editor.getSelection();
 				// 打开弹窗
-				new Popup(this.app, this).open();
+				new Popup(this.app, this, selectedText).open();
 			},
 		});
 
@@ -91,7 +92,7 @@ export default class Text2Audio extends Plugin {
 		);
 	}
 
-	onunload() {}
+	onunload() { }
 
 	async loadSettings() {
 		this.settings = Object.assign(
