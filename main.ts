@@ -1,6 +1,7 @@
 import { App, Editor, MarkdownView, Plugin, PluginSettingTab } from "obsidian";
-import { generateNotice, generateNoticeText, generateSettings } from "./utils";
+import { generateSettings } from "./utils";
 import { Popup } from "./Popup";
+import { SETTINGS } from "./constants";
 import type { ConfigurationType } from "./type";
 interface Text2AudioSettings {
 	key: string;
@@ -14,40 +15,11 @@ const DEFAULT_SETTINGS: Record<ConfigurationType, string> = {
 	directory: "",
 };
 
-const SETTINGS = [
-	{
-		name: "Speech Key",
-		key: "key",
-		desc: "Your Azure AI services API's secret key.",
-		inputConfig: {
-			placeholder: "Enter your secret key",
-		},
-	},
-	{
-		name: "Speech Region",
-		key: "region",
-		desc: "Your Azure AI services API's region.",
-		inputConfig: {
-			placeholder: "Enter your region",
-		},
-	},
-	{
-		name: "Directory",
-		key: "directory",
-		desc: "Save the audio file to this directory.",
-		inputConfig: {
-			placeholder: "Full path",
-		},
-	},
-];
-
 export default class Text2Audio extends Plugin {
 	settings: Text2AudioSettings = DEFAULT_SETTINGS;
 
 	async onload() {
 		await this.loadSettings();
-
-		generateNotice().setMessage(JSON.stringify(this.settings))
 
 		// 点击左侧icon，弹出modal，用于输入自定义内容进行转换
 		const ribbonIconEl = this.addRibbonIcon(
@@ -85,11 +57,6 @@ export default class Text2Audio extends Plugin {
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new SampleSettingTab(this.app, this));
-
-		// When registering intervals, this function will automatically clear the interval when the plugin is disabled.
-		this.registerInterval(
-			window.setInterval(() => console.log("setInterval"), 5 * 60 * 1000)
-		);
 	}
 
 	onunload() { }
