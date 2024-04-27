@@ -12,7 +12,7 @@
 	let convertedText: string = text;
 	let filename: string = "";
 	let loading: boolean = false;
-
+	$: isBtnDisabled = loading || !filename || !convertedText;
 	// generateVoice(text, key, region, directory)
 	function getVoiceName(voice: string) {
 		return voice.replace(/\(.*\)/g, "");
@@ -98,12 +98,9 @@
 </div> -->
 
 <div class="ob-t2v-footer">
-	{#if !loading}
-		<span>转换中...</span>
-	{/if}
 	<div>
-		<button disabled={loading}>播放</button>
-		<button disabled={loading} on:click={handleSave}>保存</button>
+		<button disabled={isBtnDisabled}>播放</button>
+		<button disabled={isBtnDisabled} on:click={handleSave}>保存</button>
 	</div>
 </div>
 
