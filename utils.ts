@@ -36,7 +36,7 @@ export const generateVoice = (config: Record<ConfigKeys, string> & {
 					) {
 						generateNotice().setMessage(
 							generateNoticeText(
-								`synthesis finished. ${type === "save" ? "File path is " + audioFile : ""}`,
+								`Synthesis finished. ${type === "save" ? "File path is " + audioFile : ""}`,
 								"success"
 							)
 						);

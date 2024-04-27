@@ -981,3 +981,30 @@ export const LANGUAGES = [
 		voices: ["ThandoNeural(女)", "ThembaNeural(男)"],
 	},
 ];
+
+export const SETTINGS = [
+	{
+		name: "Speech Key",
+		key: "key",
+		desc: "Your Azure AI services API's secret key.",
+		inputConfig: {
+			placeholder: "Enter your secret key",
+		},
+	},
+	{
+		name: "Speech Region",
+		key: "region",
+		desc: "Your Azure AI services API's region.",
+		inputConfig: {
+			placeholder: "Enter your region",
+		},
+	},
+	{
+		name: "Directory",
+		key: "directory",
+		desc: "Save the audio file to this directory.",
+		inputConfig: {
+			placeholder: "Full path",
+		},
+	},
+];
