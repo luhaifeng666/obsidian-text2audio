@@ -12,7 +12,8 @@
 	let convertedText: string = text;
 	let filename: string = "";
 	let loading: boolean = false;
-	$: isBtnDisabled = loading || !filename || !convertedText;
+	$: playBtnDisabled = loading || !convertedText;
+	$: saveBtnDisabled = playBtnDisabled || !filename;
 	// generateVoice(text, key, region, directory)
 	function getVoiceName(voice: string) {
 		return voice.replace(/\(.*\)/g, "");
@@ -56,7 +57,7 @@
 ></textarea>
 
 <div class="ob-t2v-box">
-	语言
+	当前语言类别
 	<select
 		disabled={loading}
 		on:change={handleLangChange}
@@ -69,7 +70,7 @@
 </div>
 
 <div class="ob-t2v-box">
-	语音
+	输出语音类型
 	<select
 		disabled={loading}
 		on:change={handleVoiceChange}
@@ -82,7 +83,7 @@
 </div>
 
 <div class="ob-t2v-box">
-	文件名称
+	文件名称 (必填)
 	<input
 		type="text"
 		placeholder="音频文件名称"
@@ -98,9 +99,14 @@
 </div> -->
 
 <div class="ob-t2v-footer">
-	<div>
-		<button disabled={isBtnDisabled}>播放</button>
-		<button disabled={isBtnDisabled} on:click={handleSave}>保存</button>
+	{#if loading}
+		<div class="ob-t2v-loading">
+			<span></span><span></span><span></span><span></span><span></span>
+		</div>
+	{/if}
+	<div class="ob-t2v-operation">
+		<!-- <button disabled={playBtnDisabled}>播放</button> -->
+		<button disabled={saveBtnDisabled} on:click={handleSave}>保存</button>
 	</div>
 </div>
 
@@ -112,6 +118,11 @@
 		width: 100%;
 		resize: none;
 		margin-top: 10px;
+		font-size: 14px;
+	}
+	.ob-t2v-text:focus {
+		outline: solid rgba(82, 196, 26, 0.5);
+		border-color: transparent;
 	}
 	.ob-t2v-box {
 		display: flex;
@@ -126,12 +137,12 @@
 	.ob-t2v-footer {
 		display: flex;
 		justify-content: space-between;
-		align-items: flex-end;
+		align-items: center;
 		padding-top: 10px;
 		border-top: 1px solid #aaa;
 		margin-top: 20px;
 	}
-	.ob-t2v-footer > div {
+	.ob-t2v-operation {
 		text-align: right;
 		flex: 1;
 	}
@@ -163,5 +174,41 @@
 	}
 	.ob-t2v-footer button:last-child::before {
 		background-image: url(https://github.com/luhaifeng666/pics/assets/9375823/035fd534-362b-4c6e-b895-b5e5aff617ba);
+	}
+	.ob-t2v-loading {
+		height: 14px;
+	}
+	.ob-t2v-loading span {
+		display: inline-block;
+		width: 4px;
+		height: 100%;
+		border-radius: 2px;
+		background: #52c41a;
+		animation: load 1s ease infinite;
+		margin: 0 1px;
+	}
+	@keyframes load {
+		0%,
+		100% {
+			height: 10px;
+			background: #52c41a;
+		}
+		50% {
+			height: 20px;
+			margin: -5px 1px;
+			background: #1677ff;
+		}
+	}
+	.ob-t2v-loading span:nth-child(2) {
+		animation-delay: 0.2s;
+	}
+	.ob-t2v-loading span:nth-child(3) {
+		animation-delay: 0.4s;
+	}
+	.ob-t2v-loading span:nth-child(4) {
+		animation-delay: 0.6s;
+	}
+	.ob-t2v-loading span:nth-child(5) {
+		animation-delay: 0.8s;
 	}
 </style>
