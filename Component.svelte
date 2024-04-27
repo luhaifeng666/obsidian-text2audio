@@ -56,7 +56,7 @@
 	};
 </script>
 
-<h2 class="ob-t2v-title">文本转语音</h2>
+<h2 class="ob-t2v-title">Text2Audio</h2>
 
 <textarea
 	class="ob-t2v-text"
