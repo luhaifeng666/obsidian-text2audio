@@ -12,9 +12,9 @@
 	let convertedText: string = text;
 	let filename: string = "";
 	let loading: boolean = false;
-	$: playBtnDisabled = loading || !convertedText;
+	$: playBtnDisabled = loading || !convertedText.replace(/\s/g, "");
 	$: saveBtnDisabled = playBtnDisabled || !filename;
-	// generateVoice(text, key, region, directory)
+
 	function getVoiceName(voice: string) {
 		return voice.replace(/\(.*\)/g, "");
 	}
@@ -31,7 +31,7 @@
 		voice = getVoiceName(data.target.value);
 	};
 
-	const handleSave = async () => {
+	const handleVoiceGeneration = async (type: "save" | "play") => {
 		loading = true;
 		await generateVoice({
 			text: convertedText,
@@ -40,8 +40,19 @@
 			region: regionCode,
 			filePath: directory,
 			voice: `${region}-${voice}`,
+			type,
+			callback() {
+				loading = false;
+			},
 		});
-		loading = false;
+	};
+
+	const handlePlay = () => {
+		handleVoiceGeneration("play");
+	};
+
+	const handleSave = () => {
+		handleVoiceGeneration("save");
 	};
 </script>
 
@@ -57,7 +68,7 @@
 ></textarea>
 
 <div class="ob-t2v-box">
-	当前语言类别
+	语言种类
 	<select
 		disabled={loading}
 		on:change={handleLangChange}
@@ -70,7 +81,7 @@
 </div>
 
 <div class="ob-t2v-box">
-	输出语音类型
+	语音类型
 	<select
 		disabled={loading}
 		on:change={handleVoiceChange}
@@ -83,10 +94,10 @@
 </div>
 
 <div class="ob-t2v-box">
-	文件名称 (必填)
+	文件名称
 	<input
 		type="text"
-		placeholder="音频文件名称"
+		placeholder="音频文件名称，保存时必填"
 		bind:value={filename}
 		readonly={loading}
 	/>
@@ -105,7 +116,7 @@
 		</div>
 	{/if}
 	<div class="ob-t2v-operation">
-		<!-- <button disabled={playBtnDisabled}>播放</button> -->
+		<button disabled={playBtnDisabled} on:click={handlePlay}>播放</button>
 		<button disabled={saveBtnDisabled} on:click={handleSave}>保存</button>
 	</div>
 </div>

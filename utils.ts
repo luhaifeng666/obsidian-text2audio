@@ -8,36 +8,40 @@ import type {
 	SettingInputConfig,
 } from "./type";
 
-export const generateVoice = (config: Record<ConfigKeys, string>) => {
+export const generateVoice = (config: Record<ConfigKeys, string> & {
+	callback?: () => void
+}) => {
 	try {
-		const { filename, text, key, region, filePath, voice } = config;
+		const { filename, text, key, region, filePath, voice, type, callback } = config;
 		return new Promise((resolve, reject) => {
 			const audioFile = path.resolve(filePath, `${filename}.wav`);
 			const speechConfig = sdk.SpeechConfig.fromSubscription(key, region);
-			const audioConfig = sdk.AudioConfig.fromAudioFileOutput(audioFile);
+			let audioConfig;
+			if (type === "save") sdk.AudioConfig.fromAudioFileOutput(audioFile);
 
 			// The language of the voice that speaks.
 			speechConfig.speechSynthesisVoiceName = voice;
 
 			// Create the speech synthesizer.
 			let synthesizer: sdk.SpeechSynthesizer | null =
-				new sdk.SpeechSynthesizer(speechConfig, audioConfig);
+				new sdk.SpeechSynthesizer(speechConfig, ...(type === "save" ? [audioConfig] : []));
 
 			// Start the synthesizer and wait for a result.
 			synthesizer.speakTextAsync(
 				text,
 				function (result) {
-					let success = true;
 					if (
 						result.reason ===
 						sdk.ResultReason.SynthesizingAudioCompleted
 					) {
 						generateNotice().setMessage(
 							generateNoticeText(
-								"synthesis finished. File path is " + audioFile,
+								`synthesis finished. ${type === "save" ? "File path is " + audioFile : ""}`,
 								"success"
 							)
 						);
+						callback && callback()
+						resolve(type === "save" ? true : result.audioData)
 					} else {
 						generateNotice().setMessage(
 							generateNoticeText(
@@ -45,11 +49,10 @@ export const generateVoice = (config: Record<ConfigKeys, string>) => {
 								"error"
 							)
 						);
-						success = false;
+						reject(false)
 					}
 					synthesizer?.close();
 					synthesizer = null;
-					success ? resolve(success) : reject(success);
 				},
 				function (err) {
 					generateNotice().setMessage(generateNoticeText(err, "error"));
