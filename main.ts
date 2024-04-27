@@ -51,8 +51,8 @@ export default class Text2Audio extends Plugin {
 
 		// 点击左侧icon，弹出modal，用于输入自定义内容进行转换
 		const ribbonIconEl = this.addRibbonIcon(
-			"dice",
-			"Sample Plugin",
+			"file-audio",
+			"Text to Audio",
 			(evt: MouseEvent) => {
 				// Called when the user clicks the icon.
 				new Popup(this.app, this).open();

@@ -49,6 +49,7 @@
 <textarea
 	class="ob-t2v-text"
 	bind:value={convertedText}
+	readonly={loading}
 	name="t2v-text"
 	rows="10"
 	placeholder="请输入需要转换的文本"
@@ -56,7 +57,11 @@
 
 <div class="ob-t2v-box">
 	语言
-	<select on:change={handleLangChange} name="ob-t2v-languages">
+	<select
+		disabled={loading}
+		on:change={handleLangChange}
+		name="ob-t2v-languages"
+	>
 		{#each LANGUAGES as lang}
 			<option value={lang.region}>{lang.name}</option>
 		{/each}
@@ -65,7 +70,11 @@
 
 <div class="ob-t2v-box">
 	语音
-	<select on:change={handleVoiceChange} name="ob-t2v-voices">
+	<select
+		disabled={loading}
+		on:change={handleVoiceChange}
+		name="ob-t2v-voices"
+	>
 		{#each voices as voice}
 			<option value={voice}>{voice}</option>
 		{/each}
@@ -74,7 +83,12 @@
 
 <div class="ob-t2v-box">
 	文件名称
-	<input type="text" placeholder="音频文件名称" bind:value={filename} />
+	<input
+		type="text"
+		placeholder="音频文件名称"
+		bind:value={filename}
+		readonly={loading}
+	/>
 </div>
 
 <!-- TODO 添加转换格式 -->
@@ -88,8 +102,8 @@
 		<span>转换中...</span>
 	{/if}
 	<div>
-		<button>播放</button>
-		<button on:click={handleSave}>保存</button>
+		<button disabled={loading}>播放</button>
+		<button disabled={loading} on:click={handleSave}>保存</button>
 	</div>
 </div>
 
