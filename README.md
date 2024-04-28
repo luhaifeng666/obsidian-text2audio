@@ -1,4 +1,4 @@
-<h1 align="center"><img width="100" src="./icon.png" ali /></h1>
+<p align="center"><img width="100" src="./icon.png" ali /></p>
 
 <p align="center">This is a text-to-audio plugin for Obsidian.</p>
 

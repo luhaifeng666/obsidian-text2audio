@@ -1,4 +1,4 @@
-<h1 align="center" ><img width="100" src="./icon.png" ali /></h1>
+<p align="center" ><img width="100" src="./icon.png" ali /></p>
 
 <p align="center">Obsidian 文本转音频插件。</p>
 
