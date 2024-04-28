@@ -9,17 +9,19 @@ import {
 import { generateSettings } from "./utils";
 import { Popup } from "./Popup";
 import { SETTINGS } from "./constants";
-import type { ConfigurationType } from "./type";
+import type { SettingConfig } from "./type";
 interface Text2AudioSettings {
 	key: string;
 	region: string;
 	directory: string;
+	language: "zh" | "en";
 }
 
-const DEFAULT_SETTINGS: Record<ConfigurationType, string> = {
+const DEFAULT_SETTINGS: Text2AudioSettings = {
 	key: "",
 	region: "",
 	directory: "",
+	language: "zh",
 };
 
 export default class Text2Audio extends Plugin {
@@ -95,7 +97,11 @@ class SampleSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
 		SETTINGS.forEach((setting) => {
-			generateSettings(containerEl, this.plugin, setting);
+			generateSettings(
+				containerEl,
+				this.plugin,
+				setting as SettingConfig
+			);
 		});
 	}
 }

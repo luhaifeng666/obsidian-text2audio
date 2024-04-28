@@ -1,6 +1,6 @@
 <h1 align="center"><img width="100" src="./icon.png" ali /></h1>
 
-This is a Text to Audio for [Obsidian](https://obsidian.md).
+This is a text-to-audio plugin for [Obsidian](https://obsidian.md).
 
 This project uses Typescript to provide type checking and documentation.
 The repo depends on the latest plugin API (obsidian.d.ts) in Typescript Definition format, which contains TSDoc comments describing what it does.

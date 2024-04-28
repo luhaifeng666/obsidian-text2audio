@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.1.0...1.2.0) (2024-04-28)
+
+
+### Features
+
+* 新增语言配置项,用于设置插件显示语言 ([9d583b1](https://github.com/luhaifeng666/obsidian-text2audio/commit/9d583b1428ef384cb28d62077bee554ceb400951))
+* Add settings ([7cbd697](https://github.com/luhaifeng666/obsidian-text2audio/commit/7cbd697458ba3d2604e2bf840a4e454a23c32856))
+
 ## [1.1.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.0.2...1.1.0) (2024-04-28)
 
 
