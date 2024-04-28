@@ -21,10 +21,39 @@
   align-items: center;
   justify-content: space-between;
   margin: 10px 0;
+  font-size: 14px;
+}
+.ob-t2v-box > span {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  flex-shrink: 0;
+}
+.ob-t2v-box > span::before {
+  content: '';
+  display: block;
+  width: 14px;
+  height: 14px;
+  margin-right: 4px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.ob-t2v-box > span.ob-t2v-lang::before {
+  background-image: url(https://raw.githubusercontent.com/luhaifeng666/pics/main/lang.png);
+}
+.ob-t2v-box > span.ob-t2v-voice::before {
+  background-image: url(https://raw.githubusercontent.com/luhaifeng666/pics/main/voice.png);
+}
+.ob-t2v-box > span.ob-t2v-filename::before {
+  background-image: url(https://raw.githubusercontent.com/luhaifeng666/pics/main/filename.png);
 }
 .ob-t2v-box > input,
 .ob-t2v-box > select {
-  width: 250px;
+  flex: 1;
+  width: 100%;
+  display: block;
+  text-align: right;
 }
 .ob-t2v-footer {
   display: flex;

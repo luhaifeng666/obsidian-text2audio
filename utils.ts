@@ -1,12 +1,7 @@
 import sdk from "microsoft-cognitiveservices-speech-sdk";
 import path from "path";
 import { Notice, Setting } from "obsidian";
-import type {
-	ConfigKeys,
-	MessageType,
-	SettingType,
-	SettingInputConfig,
-} from "./type";
+import type { ConfigKeys, MessageType, SettingConfig } from "./type";
 
 export const generateVoice = async (
 	config: Record<ConfigKeys, string> & {
@@ -123,23 +118,38 @@ export const generateNoticeText = (
 export const generateSettings = async (
 	container: HTMLElement,
 	plugin: any,
-	config: Record<SettingType, string> & {
-		inputConfig: SettingInputConfig;
-	}
+	config: SettingConfig
 ) => {
-	const { inputConfig, desc, name, key } = config;
+	const { inputConfig, desc, name, key, type, options } = config;
 	const { placeholder, callback } = inputConfig || {};
-	new Setting(container)
-		.setName(name)
-		.setDesc(desc)
-		.addText((text) =>
-			text
-				.setPlaceholder(placeholder)
-				.setValue(plugin.settings[key])
-				.onChange(async (value) => {
-					callback && callback(value);
-					plugin.settings[key] = value;
-					await plugin.saveSettings();
-				})
-		);
+	const settingEl = new Setting(container).setName(name).setDesc(desc);
+	switch (type) {
+		case "text":
+			settingEl.addText((text) =>
+				text
+					.setPlaceholder(placeholder || "")
+					.setValue(plugin.settings[key])
+					.onChange(async (value) => {
+						callback && callback(value);
+						plugin.settings[key] = value;
+						await plugin.saveSettings();
+					})
+			);
+			break;
+
+		case "select":
+			settingEl.addDropdown((dp) =>
+				dp
+					.addOptions(options || {})
+					.setValue(plugin.settings[key])
+					.onChange(async (value) => {
+						plugin.settings[key] = value;
+						await plugin.saveSettings();
+					})
+			);
+			break;
+
+		default:
+			break;
+	}
 };
