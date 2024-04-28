@@ -3,13 +3,13 @@ import Component from "./Component.svelte";
 import type Text2Audio from "./main";
 
 export class Popup extends Modal {
-	component: Component;
+	component: Component | null = null;
 	plugin: Text2Audio;
 	text: string;
-	constructor(app: App, plugin: Text2Audio, selectedText = '') {
+	constructor(app: App, plugin: Text2Audio, selectedText = "") {
 		super(app);
 		this.plugin = plugin;
-		this.text = selectedText
+		this.text = selectedText;
 	}
 
 	onOpen() {
@@ -26,6 +26,6 @@ export class Popup extends Modal {
 	}
 
 	onClose() {
-		this.component.$destroy();
+		this.component?.$destroy();
 	}
 }
