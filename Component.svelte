@@ -56,7 +56,12 @@
 	};
 </script>
 
-<h2 class="ob-t2v-title"><img src="./assets/icon.png" alt="t2a-icon" /></h2>
+<h2 class="ob-t2v-title">
+	<img
+		src="https://raw.githubusercontent.com/luhaifeng666/pics/main/icon.png"
+		alt="t2a-icon"
+	/>
+</h2>
 
 <textarea
 	class="ob-t2v-text"

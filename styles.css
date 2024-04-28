@@ -1,6 +1,11 @@
 .ob-t2v-title {
   text-align: center;
 }
+.ob-t2v-title img {
+  display: block;
+  width: 50px;
+  margin: 0 auto;
+}
 .ob-t2v-text {
   width: 100%;
   resize: none;
@@ -56,10 +61,10 @@
   margin-left: 8px;
 }
 .ob-t2v-footer button:first-child::before {
-  background-image: url(https://github.com/luhaifeng666/pics/assets/9375823/7208eed1-9280-459c-94f0-b9c21bddb073);
+  background-image: url(https://raw.githubusercontent.com/luhaifeng666/pics/main/trans.png);
 }
 .ob-t2v-footer button:last-child::before {
-  background-image: url(https://github.com/luhaifeng666/pics/assets/9375823/035fd534-362b-4c6e-b895-b5e5aff617ba);
+  background-image: url(https://raw.githubusercontent.com/luhaifeng666/pics/main/download.png);
 }
 .ob-t2v-loading {
   height: 14px;

@@ -1,4 +1,4 @@
-<h1 align="center" ><img width="100" src="./assets/icon.png" ali /></h1>
+<h1 align="center" ><img width="100" src="./icon.png" ali /></h1>
 
 This is a Text to Audio for [Obsidian](https://obsidian.md).
 
