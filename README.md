@@ -1,11 +1,8 @@
 <h1 align="center"><img width="100" src="./icon.png" ali /></h1>
 
-This is a text-to-audio plugin for [Obsidian](https://obsidian.md).
+<p align="center">This is a text-to-audio plugin for Obsidian.</p>
 
-This project uses Typescript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in Typescript Definition format, which contains TSDoc comments describing what it does.
-
-**Note:** The Obsidian API is still in early alpha and is subject to change at any time!
+<p align="center"><img src="https://img.shields.io/badge/version-1.2.0-blue" alt="version_tag" /></p>
 
 ## Documents
 
@@ -35,7 +32,7 @@ You can config the plugin by following steps.
 
 This plugin also supports convert the selected text.
 
-<p align="center"><img src="./example.gif" ali /></p>
+<p align="center"><img src="./en-example.gif" ali /></p>
 
 ### Set hotkeys
 

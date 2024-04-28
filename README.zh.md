@@ -1,11 +1,8 @@
 <h1 align="center" ><img width="100" src="./icon.png" ali /></h1>
 
-[Obsidian](https://obsidian.md) 文本转音频插件。
+<p align="center">Obsidian 文本转音频插件。</p>
 
-该项目使用 Typescript 提供类型检查和文档。
-该存储库依赖于 Typescript 定义格式的最新插件 API (obsidian.d.ts)，其中包含描述其功能的 TSDoc 注释。
-
-**注意：** Obsidian API 仍处于早期 alpha 阶段，可能随时更改！
+<p align="center"><img src="https://img.shields.io/badge/version-1.2.0-blue" alt="version_tag" /></p>
 
 ## 文档
 
@@ -35,7 +32,7 @@
 
 该插件还支持转换选定的文本。
 
-<p align="center"><img src="./example.gif" ali /></p>
+<p align="center"><img src="./zh-example.gif" ali /></p>
 
 ### 设置热键
 
