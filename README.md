@@ -1,4 +1,4 @@
-<h1 align="center" ><img width="100" src="./icon.png" ali /></h1>
+<h1 align="center"><img width="100" src="./icon.png" ali /></h1>
 
 This is a Text to Audio for [Obsidian](https://obsidian.md).
 
@@ -34,6 +34,8 @@ You can config the plugin by following steps.
 ### Convert the selected text
 
 This plugin also supports convert the selected text.
+
+<p align="center"><img src="./example.gif" ali /></p>
 
 ### Set hotkeys
 
