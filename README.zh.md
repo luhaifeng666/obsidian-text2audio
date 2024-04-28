@@ -35,7 +35,7 @@
 
 该插件还支持转换选定的文本。
 
-<p align="center"><img src="./example.gif" ali /></p>
+<p align="center"><img src="./zh-example.gif" ali /></p>
 
 ### 设置热键
 

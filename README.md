@@ -35,7 +35,7 @@ You can config the plugin by following steps.
 
 This plugin also supports convert the selected text.
 
-<p align="center"><img src="./example.gif" ali /></p>
+<p align="center"><img src="./en-example.gif" ali /></p>
 
 ### Set hotkeys
 
