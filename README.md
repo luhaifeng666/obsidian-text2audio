@@ -7,6 +7,10 @@ The repo depends on the latest plugin API (obsidian.d.ts) in Typescript Definiti
 
 **Note:** The Obsidian API is still in early alpha and is subject to change at any time!
 
+## Documents
+
+[Chinese](./README.zh.md) | [English](./README.md)
+
 ## Prerequisites
 
 Before you start using this plug-in, you need to [apply for Microsoft's text-to-speech service](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/index-text-to-speech).
@@ -33,7 +37,7 @@ This plugin also supports convert the selected text.
 
 ### Set hotkeys
 
-You can also set hotkey for the **Translator: translate** command.
+You can also set hotkeys for commands.
 
 - Open **Preferences** in Obsidian.
 - Click the **Community plugins** in the side menu.
