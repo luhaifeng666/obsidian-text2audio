@@ -35,6 +35,8 @@
 
 该插件还支持转换选定的文本。
 
+<p align="center"><img src="./example.gif" ali /></p>
+
 ### 设置热键
 
 您还可以为命令设置热键。
