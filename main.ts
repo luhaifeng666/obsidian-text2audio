@@ -1,10 +1,10 @@
 import {
 	App,
 	Editor,
-	MarkdownView,
 	Plugin,
 	PluginSettingTab,
-	type MarkdownFileInfo,
+	editorEditorField,
+	editorLivePreviewField,
 } from "obsidian";
 import { generateSettings } from "./utils";
 import { Popup } from "./Popup";
@@ -31,30 +31,17 @@ export default class Text2Audio extends Plugin {
 		await this.loadSettings();
 
 		// 点击左侧icon，弹出modal，用于输入自定义内容进行转换
-		this.addRibbonIcon("file-audio", "Text to Audio", (evt: MouseEvent) => {
-			// Called when the user clicks the icon.
-			new Popup(this.app, this).open();
+		this.addRibbonIcon("file-audio", "Text to Audio", () => {
+			// @ts-ignore
+			this.app.commands.executeCommandById('text2audio:convert-t2a');
 		});
 
-		// TODO: 在底部状态栏添加转换中的提示
-		const statusBarItemEl = this.addStatusBarItem();
-		statusBarItemEl.setText("Status Bar Text");
-
-		// 通过命令打开弹窗
-		this.addCommand({
-			id: "open-t2a-modal",
-			name: "Open t2a modal",
-			callback: () => {
-				new Popup(this.app, this).open();
-			},
-		});
 		// 将选中的内容填入弹窗中，进行转换
 		this.addCommand({
 			id: "convert-t2a",
 			name: "Convert text to audio",
 			editorCallback: (
-				editor: Editor,
-				view: MarkdownView | MarkdownFileInfo
+				editor: Editor
 			) => {
 				// 获取选中文本
 				const selectedText = editor.getSelection();
@@ -67,7 +54,7 @@ export default class Text2Audio extends Plugin {
 		this.addSettingTab(new Text2AudioSettingTab(this.app, this));
 	}
 
-	onunload() {}
+	onunload() { }
 
 	async loadSettings() {
 		this.settings = Object.assign(
