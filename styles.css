@@ -131,3 +131,12 @@
 .ob-t2v-loading span:nth-child(5) {
   animation-delay: 0.8s;
 }
+.ob-t2v-success {
+  color: #52c41a;
+}
+.ob-t2v-error {
+  color: #ff4d4f;
+}
+.ob-t2v-warning {
+  color: #faad14;
+}

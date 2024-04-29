@@ -64,7 +64,7 @@ export default class Text2Audio extends Plugin {
 		});
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(new SampleSettingTab(this.app, this));
+		this.addSettingTab(new Text2AudioSettingTab(this.app, this));
 	}
 
 	onunload() {}
@@ -83,7 +83,7 @@ export default class Text2Audio extends Plugin {
 }
 
 // 添加设置面板
-class SampleSettingTab extends PluginSettingTab {
+class Text2AudioSettingTab extends PluginSettingTab {
 	plugin: Text2Audio;
 
 	constructor(app: App, plugin: Text2Audio) {
