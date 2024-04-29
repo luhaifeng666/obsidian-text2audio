@@ -2,7 +2,7 @@
 
 <p align="center">Obsidian 文本转音频插件。</p>
 
-<p align="center"><img src="https://img.shields.io/badge/version-1.3.0-blue" alt="version_tag" /></p>
+<p align="center"><img src="https://img.shields.io/badge/version-1.3.1-blue" alt="version_tag" /></p>
 
 ## 文档
 
@@ -24,7 +24,7 @@
 
 ### 直接使用
 
-- 单击左侧菜单中的“文本转音频”图标，或单击左侧菜单中的命令图标并选择名为 **Text2Audio: Open t2a modal** 的命令以打开操作界面。
+- 单击左侧菜单中的“文本转音频”图标，或单击左侧菜单中的命令图标并选择名为 **Text2Audio: Convert text to audio** 的命令以打开操作界面。
 - 输入文本并选择您想要转换成的语言。
 - 单击播放或保存按钮。
 
