@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.2.0...1.2.1) (2024-04-29)
+
+
+### Bug Fixes
+
+* PR fix ([4bef135](https://github.com/luhaifeng666/obsidian-text2audio/commit/4bef135f6f7430a30e3f51cdd36f517348daf692))
+
 ## [1.2.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.1.0...1.2.0) (2024-04-28)
 
 
