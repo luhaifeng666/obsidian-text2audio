@@ -2,7 +2,7 @@
 
 <p align="center">This is a text-to-audio plugin for Obsidian.</p>
 
-<p align="center"><img src="https://img.shields.io/badge/version-1.3.0-blue" alt="version_tag" /></p>
+<p align="center"><img src="https://img.shields.io/badge/version-1.3.1-blue" alt="version_tag" /></p>
 
 ## Documents
 
