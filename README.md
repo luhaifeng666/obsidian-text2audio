@@ -24,7 +24,7 @@ You can config the plugin by following steps.
 
 ### Use directly
 
-- Click the `Text to Audio` icon in the left side menu, or click the command icon in the left side menu and select the command named **Text2Audio: Open t2a modal** to open the modal.
+- Click the `Text to Audio` icon in the left side menu, or click the command icon in the left side menu and select the command named **Text2Audio: Convert text to audio** to open the modal.
 - Enter the text and select the language that you wanna convert to.
 - Click the play or save button.
 

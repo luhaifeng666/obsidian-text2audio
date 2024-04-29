@@ -105,6 +105,7 @@
 							.replace(/男[性]*/g, "Male")
 							.replace(/女[性]*/g, "Female")
 							.replace(/儿童/g, "Child")
+							.replace(/中性/g, "Neutral")
 					: voice}</option
 			>
 		{/each}
