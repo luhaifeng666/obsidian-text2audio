@@ -9,17 +9,17 @@ export const generateVoice = async (
 	}
 ) => {
 	return new Promise((resolve, reject) => {
+		const { filename, text, key, region, filePath, voice, type, callback } =
+			config;
+		let synthesizer: sdk.SpeechSynthesizer | null = null;
+
+		const synthesizerClear = () => {
+			synthesizer?.close();
+			synthesizer = null;
+			callback && callback();
+		};
+
 		try {
-			const {
-				filename,
-				text,
-				key,
-				region,
-				filePath,
-				voice,
-				type,
-				callback,
-			} = config;
 			const audioFile = path.resolve(filePath, `${filename}.wav`);
 			const speechConfig = sdk.SpeechConfig.fromSubscription(key, region);
 			let audioConfig;
@@ -30,16 +30,16 @@ export const generateVoice = async (
 			speechConfig.speechSynthesisVoiceName = voice;
 
 			// Create the speech synthesizer.
-			let synthesizer: sdk.SpeechSynthesizer | null =
-				new sdk.SpeechSynthesizer(
-					speechConfig,
-					...(type === "save" ? [audioConfig] : [])
-				);
+			synthesizer = new sdk.SpeechSynthesizer(
+				speechConfig,
+				...(type === "save" ? [audioConfig] : [])
+			);
 
 			// Start the synthesizer and wait for a result.
 			synthesizer.speakTextAsync(
 				text,
 				function (result) {
+					let res = true;
 					if (
 						result.reason ===
 						sdk.ResultReason.SynthesizingAudioCompleted
@@ -54,8 +54,6 @@ export const generateVoice = async (
 								"success"
 							)
 						);
-						callback && callback();
-						resolve(true);
 					} else {
 						generateNotice().setMessage(
 							generateNoticeText(
@@ -63,22 +61,22 @@ export const generateVoice = async (
 								"error"
 							)
 						);
-						reject(false);
+						res = false;
 					}
-					synthesizer?.close();
-					synthesizer = null;
+					synthesizerClear();
+					res ? resolve(res) : reject(res);
 				},
 				function (err) {
 					generateNotice().setMessage(
 						generateNoticeText(err, "error")
 					);
-					synthesizer?.close();
-					synthesizer = null;
+					synthesizerClear();
 					reject(false);
 				}
 			);
 		} catch (e) {
 			generateNotice().setMessage(generateNoticeText(`${e}`, "error"));
+			synthesizerClear();
 			reject(false);
 		}
 	});
@@ -102,15 +100,10 @@ export const generateNoticeText = (
 	message: string,
 	messageType: MessageType
 ): DocumentFragment => {
-	const MESSAGE_COLOR: Record<MessageType, string> = {
-		success: "#52c41a",
-		error: "#ff4d4f",
-		warning: "#faad14",
-	};
 	const fragment = new DocumentFragment();
 	const spanDom = document.createElement("span");
-	spanDom.innerHTML = message;
-	spanDom.style.color = MESSAGE_COLOR[messageType];
+	spanDom.appendText(message);
+	spanDom.className = `ob-t2v-${messageType}`;
 	fragment.appendChild(spanDom);
 	return fragment;
 };
