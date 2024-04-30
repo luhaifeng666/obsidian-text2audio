@@ -1,5 +1,4 @@
 import sdk from "microsoft-cognitiveservices-speech-sdk";
-import path from "path";
 import { Notice, Setting } from "obsidian";
 import type { ConfigKeys, MessageType, SettingConfig } from "./type";
 
@@ -21,7 +20,7 @@ export const generateVoice = async (
     };
 
     try {
-      const audioFile = path.resolve(filePath, `${filename}.wav`);
+      const audioFile = `${filePath}/${filename}.wav`;
       const speechConfig = sdk.SpeechConfig.fromSubscription(key, region);
       let audioConfig;
       if (type === "save")
