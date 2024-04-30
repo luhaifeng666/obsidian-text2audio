@@ -1,3 +1,10 @@
+/*
+ * @Author: luhaifeng666 youzui@hotmail.com
+ * @Date: 2024-05-01 02:55:56
+ * @LastEditors: luhaifeng666 youzui@hotmail.com
+ * @LastEditTime: 2024-05-01 03:17:26
+ * @Description: 
+ */
 import esbuild from "esbuild";
 import process from "process";
 import builtins from "builtin-modules";
@@ -17,7 +24,7 @@ const context = await esbuild.context({
 	banner: {
 		js: banner,
 	},
-	entryPoints: ["main.ts"],
+	entryPoints: ["src/main.ts"],
 	bundle: true,
 	external: [
 		"obsidian",
