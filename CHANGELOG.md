@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.3.1...1.4.0) (2024-04-30)
+
+
+### Features
+
+* 移动源码至src ([4490b86](https://github.com/luhaifeng666/obsidian-text2audio/commit/4490b86eea6758a602b71ac053a4c577b30448f2))
+
+
+### Bug Fixes
+
+* 修改minAppVersion版本 ([c9b3237](https://github.com/luhaifeng666/obsidian-text2audio/commit/c9b3237613f55a55d3932ee77b93d25ff0400dce))
+* 修改图片为base64格式 ([440f6d0](https://github.com/luhaifeng666/obsidian-text2audio/commit/440f6d0b86c2d76d135330d3b5ed35cc2ea9473e))
+* 修改设置项标题格式 ([d19d3fd](https://github.com/luhaifeng666/obsidian-text2audio/commit/d19d3fd9c46c36ced58ea2583e97486e6668241a))
+* 移除path ([d278c62](https://github.com/luhaifeng666/obsidian-text2audio/commit/d278c62a82a69f44e6c73320a40a4ff267aa7c32))
+
 ### [1.3.1](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.3.0...1.3.1) (2024-04-29)
 
 
