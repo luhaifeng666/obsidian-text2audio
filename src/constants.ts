@@ -1098,7 +1098,7 @@ export const LANGUAGES = [
   {
     region: "zh-CN-GUANGXI",
     name: "中文 (广西口音普通话，简体)",
-    voices: ["YunqiNeural， (男)"],
+    voices: ["YunqiNeural (男)"],
     "name-en": "Chinese  (Guangxi Accent Mandarin, Simplified)",
   },
   {
@@ -1110,13 +1110,13 @@ export const LANGUAGES = [
   {
     region: "zh-CN-liaoning",
     name: "中文 (东北官话，简体)",
-    voices: ["XiaobeiNeural， (女)", "YunbiaoNeural， (男)"],
+    voices: ["XiaobeiNeural (女)", "YunbiaoNeural (男)"],
     "name-en": "Chinese  (Northeastern Mandarin, Simplified)",
   },
   {
     region: "zh-CN-shaanxi",
     name: "中文 (中原官话陕西，简体)",
-    voices: ["XiaoniNeural， (女)"],
+    voices: ["XiaoniNeural (女)"],
     "name-en": "Chinese  (Zhongyuan Mandarin Shaanxi, Simplified)",
   },
   {
@@ -1128,7 +1128,7 @@ export const LANGUAGES = [
   {
     region: "zh-CN-sichuan",
     name: "中文 (西南普通话，简体)",
-    voices: ["YunxiNeural， (男)"],
+    voices: ["YunxiNeural (男)"],
     "name-en": "Chinese  (Southwestern Mandarin, Simplified)",
   },
   {
