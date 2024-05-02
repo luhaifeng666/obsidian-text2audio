@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.1](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.4.0...1.4.1) (2024-05-02)
+
+
+### Bug Fixes
+
+* 修复语音配置错误的问题 ([33ba87d](https://github.com/luhaifeng666/obsidian-text2audio/commit/33ba87dddba2c912a9707b0ce1bb0752430a416e))
+
 ## [1.4.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.3.1...1.4.0) (2024-04-30)
 
 
