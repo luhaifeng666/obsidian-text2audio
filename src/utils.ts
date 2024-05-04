@@ -1,4 +1,4 @@
-import sdk from "microsoft-cognitiveservices-speech-sdk";
+import sdk, { SpeechSynthesisOutputFormat } from "microsoft-cognitiveservices-speech-sdk";
 import { Notice, Setting } from "obsidian";
 import type { ConfigKeys, MessageType, SettingConfig } from "./type";
 
@@ -9,7 +9,7 @@ export const generateVoice = async (
   }
 ) => {
   return new Promise((resolve, reject) => {
-    const { filename, text, key, region, filePath, voice, type, callback } =
+    const { filename, text, key, region, filePath, voice, type, callback, audioFormat } =
       config;
     let synthesizer: sdk.SpeechSynthesizer | null = null;
 
@@ -28,6 +28,7 @@ export const generateVoice = async (
 
       // The language of the voice that speaks.
       speechConfig.speechSynthesisVoiceName = voice;
+      speechConfig.speechSynthesisOutputFormat = audioFormat as unknown as SpeechSynthesisOutputFormat;
 
       // Create the speech synthesizer.
       synthesizer = new sdk.SpeechSynthesizer(

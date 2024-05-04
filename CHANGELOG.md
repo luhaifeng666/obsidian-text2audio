@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.4.1...1.5.0) (2024-05-04)
+
+
+### Features
+
+* 新增音频格式支持 ([e2f1b29](https://github.com/luhaifeng666/obsidian-text2audio/commit/e2f1b29e8621afea9045b894a440390e6bf89296))
+
 ### [1.4.1](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.4.0...1.4.1) (2024-05-02)
 
 

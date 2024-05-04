@@ -1,6 +1,11 @@
 <script lang="ts" module>
 	import { generateVoice } from "./utils";
-	import { LANGUAGES, LANGS } from "./constants";
+	import {
+		LANGUAGES,
+		LANGS,
+		VOICE_FORMAT_MAP,
+		VOICE_FORMAT_NAMES,
+	} from "./constants";
 
 	export let directory: string;
 	export let text: string; // 需要转换的文本
@@ -10,6 +15,7 @@
 	let region: string = LANGUAGES[0].region;
 	let voices: string[] = LANGUAGES[0].voices;
 	let voice: string = getVoiceName(voices[0]);
+	let audioFormat: string = "";
 	let convertedText: string = text;
 	let filename: string = "";
 	let loading: boolean = false;
@@ -35,6 +41,14 @@
 		voice = getVoiceName(selectElement.value);
 	};
 
+	const handleAudioFormatChange = (event: Event) => {
+		const selectElement = event.target as HTMLSelectElement;
+		audioFormat =
+			VOICE_FORMAT_MAP[
+				selectElement.value as keyof typeof VOICE_FORMAT_MAP
+			];
+	};
+
 	const handleVoiceGeneration = async (type: "save" | "play") => {
 		loading = true;
 		await generateVoice({
@@ -45,6 +59,7 @@
 			filePath: directory,
 			voice: `${region}-${voice}`,
 			type,
+			audioFormat,
 			callback() {
 				loading = false;
 			},
@@ -108,6 +123,19 @@
 							.replace(/中性/g, "Neutral")
 					: voice}</option
 			>
+		{/each}
+	</select>
+</div>
+
+<div class="ob-t2v-box">
+	<span class="ob-t2v-audio-format">{lang.audioFormat}</span>
+	<select
+		disabled={loading}
+		on:change={handleAudioFormatChange}
+		name="ob-t2v-voice-formats"
+	>
+		{#each VOICE_FORMAT_NAMES as format}
+			<option value={format}>{format}</option>
 		{/each}
 	</select>
 </div>

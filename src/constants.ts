@@ -1,3 +1,5 @@
+import { SpeechSynthesisOutputFormat } from "microsoft-cognitiveservices-speech-sdk";
+
 export const LANGUAGES = [
   {
     region: "af-ZA",
@@ -1159,6 +1161,45 @@ export const LANGUAGES = [
   },
 ];
 
+export const VOICE_FORMAT_NAMES = [
+  "raw-8khz-8bit-mono-mulaw",
+  "riff-16khz-16kbps-mono-siren",
+  "audio-16khz-16kbps-mono-siren",
+  "audio-16khz-32kbitrate-mono-mp3",
+  "audio-16khz-128kbitrate-mono-mp3",
+  "audio-16khz-64kbitrate-mono-mp3",
+  "raw-16khz-16bit-mono-truesilk",
+  "riff-16khz-16bit-mono-pcm",
+  "riff-24khz-16bit-mono-pcm",
+  "riff-8khz-8bit-mono-mulaw",
+  "raw-16khz-16bit-mono-pcm",
+  "raw-24khz-16bit-mono-pcm",
+  "raw-8khz-16bit-mono-pcm",
+  "ogg-16khz-16bit-mono-opus",
+  "raw-48khz-16bit-mono-pcm",
+  "ogg-48khz-16bit-mono-opus",
+  "webm-16khz-16bit-mono-opus",
+  "webm-24khz-16bit-mono-opus",
+  "raw-24khz-16bit-mono-truesilk",
+  "raw-8khz-8bit-mono-alaw",
+  "riff-8khz-8bit-mono-alaw",
+  "webm-24khz-16bit-24kbps-mono-opus",
+  "audio-16khz-16bit-32kbps-mono-opus",
+  "audio-24khz-16bit-48kbps-mono-opus",
+  "audio-24khz-16bit-24kbps-mono-opus",
+  "raw-22050hz-16bit-mono-pcm",
+  "riff-22050hz-16bit-mono-pcm",
+  "raw-44100hz-16bit-mono-pcm",
+  "riff-44100hz-16bit-mono-pcm",
+]
+
+const VOICE_FORMAT_VASL = Object.keys(SpeechSynthesisOutputFormat).filter(val => isNaN(Number(val)))
+
+export const VOICE_FORMAT_MAP = VOICE_FORMAT_NAMES.reduce((res, key, index) => ({
+  ...res,
+  [key]: VOICE_FORMAT_VASL[index]
+}), {})
+
 export const SETTINGS = [
   {
     name: "Speech key",
@@ -1208,6 +1249,7 @@ export const LANGS = {
     save: "保存",
     textAreaPlaceholder: "请输入需要转换的文本",
     filenamePlaceholder: "音频文件名称，保存时必填",
+    audioFormat: "音频格式",
   },
   en: {
     langType: "Language type",
@@ -1217,5 +1259,6 @@ export const LANGS = {
     save: "Save",
     textAreaPlaceholder: "Please enter the text to be converted...",
     filenamePlaceholder: "Audio file name, required when saving",
+    audioFormat: "Audio format",
   },
 };
