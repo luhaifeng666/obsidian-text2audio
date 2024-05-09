@@ -1229,6 +1229,12 @@ export const SETTINGS = [
     },
   },
   {
+    name: "Interposition",
+    key: "interposition",
+    desc: "Whether to insert the generated speech at the location of the cursor?",
+    type: "toggle"
+  },
+  {
     name: "Language",
     key: "language",
     desc: "Select plugin language.",

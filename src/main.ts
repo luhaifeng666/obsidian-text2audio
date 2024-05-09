@@ -1,8 +1,8 @@
 /*
  * @Author: haifeng.lu haifeng.lu@ly.com
  * @Date: 2024-05-01 03:05:47
- * @LastEditors: haifeng.lu haifeng.lu@ly.com
- * @LastEditTime: 2024-05-01 03:06:16
+ * @LastEditors: luhaifeng666 youzui@hotmail.com
+ * @LastEditTime: 2024-05-10 01:27:52
  * @Description: 
  */
 import {
@@ -19,6 +19,7 @@ interface Text2AudioSettings {
   key: string;
   region: string;
   directory: string;
+  interposition: boolean;
   language: "zh" | "en";
 }
 
@@ -26,6 +27,7 @@ const DEFAULT_SETTINGS: Text2AudioSettings = {
   key: "",
   region: "",
   directory: "",
+  interposition: false,
   language: "zh",
 };
 
@@ -50,8 +52,12 @@ export default class Text2Audio extends Plugin {
       ) => {
         // 获取选中文本
         const selectedText = editor.getSelection();
+        // 将保存的音频插入光标所在位置
+        const onSave = (url: string) => {
+          editor.replaceSelection(`${selectedText}![[${url}]]`);
+        };
         // 打开弹窗
-        new Popup(this.app, this, selectedText).open();
+        new Popup(this.app, this, selectedText, onSave).open();
       },
     });
 
