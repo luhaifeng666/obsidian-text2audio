@@ -13,10 +13,11 @@
 	export let regionCode: string;
 	export let language: "zh" | "en";
 	export let onSave: (url: string) => void;
-	let region: string = LANGUAGES[0].region;
-	let voices: string[] = LANGUAGES[0].voices;
-	let voice: string = getVoiceName(voices[0]);
-	let audioFormat: string = "";
+	let region: string = getLocalData("region") || LANGUAGES[0].region;
+	let voices: string[] = getVoices(region) || LANGUAGES[0].voices;
+	let voice: string = getLocalData("voice") || voices[0];
+	let audioFormat: string =
+		getLocalData("audioFormat") || VOICE_FORMAT_NAMES[0];
 	let convertedText: string = text;
 	let filename: string = "";
 	let loading: boolean = false;
@@ -24,8 +25,20 @@
 	$: saveBtnDisabled = playBtnDisabled || !filename;
 	$: lang = LANGS[language];
 
+	function getVoices(region: string) {
+		return LANGUAGES.find((lang) => lang.region === region)?.voices || null;
+	}
+
 	function getVoiceName(voice: string) {
 		return voice.replace(/\(.*\)/g, "");
+	}
+
+	const setLocalData = (key: string, value: string) => {
+		localStorage.setItem(key, value);
+	};
+
+	function getLocalData(key: string) {
+		return localStorage.getItem(key) || "";
 	}
 
 	const handleLangChange = (event: Event) => {
@@ -34,20 +47,21 @@
 		voices =
 			LANGUAGES.find((lang) => lang.region === selectElement.value)
 				?.voices || [];
-		voice = getVoiceName(voices[0]);
+		voice = voices[0];
+		setLocalData("region", region);
+		setLocalData("voice", voice);
 	};
 
 	const handleVoiceChange = (event: Event) => {
 		const selectElement = event.target as HTMLSelectElement;
-		voice = getVoiceName(selectElement.value);
+		voice = selectElement.value;
+		setLocalData("voice", voice);
 	};
 
 	const handleAudioFormatChange = (event: Event) => {
 		const selectElement = event.target as HTMLSelectElement;
-		audioFormat =
-			VOICE_FORMAT_MAP[
-				selectElement.value as keyof typeof VOICE_FORMAT_MAP
-			];
+		audioFormat = selectElement.value;
+		setLocalData("audioFormat", selectElement.value);
 	};
 
 	const handleVoiceGeneration = async (type: "save" | "play") => {
@@ -58,9 +72,10 @@
 			filename,
 			region: regionCode,
 			filePath: directory,
-			voice: `${region}-${voice}`,
+			voice: `${region}-${getVoiceName(voice)}`,
 			type,
-			audioFormat,
+			audioFormat:
+				VOICE_FORMAT_MAP[audioFormat as keyof typeof VOICE_FORMAT_MAP],
 			callback() {
 				loading = false;
 			},
@@ -98,6 +113,7 @@
 	<select
 		disabled={loading}
 		on:change={handleLangChange}
+		bind:value={region}
 		name="ob-t2v-languages"
 	>
 		{#each LANGUAGES as lang}
@@ -113,6 +129,7 @@
 	<select
 		disabled={loading}
 		on:change={handleVoiceChange}
+		bind:value={voice}
 		name="ob-t2v-voices"
 	>
 		{#each voices as voice}
@@ -134,6 +151,7 @@
 	<select
 		disabled={loading}
 		on:change={handleAudioFormatChange}
+		bind:value={audioFormat}
 		name="ob-t2v-voice-formats"
 	>
 		{#each VOICE_FORMAT_NAMES as format}
