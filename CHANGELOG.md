@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.5.0...1.6.0) (2024-05-10)
+
+
+### Features
+
+* 保留上一次操作的配置 ([7770754](https://github.com/luhaifeng666/obsidian-text2audio/commit/777075440ac612bc4d26a6bd04c26f64e3006bcc))
+* 插入已生成的音频 ([557a018](https://github.com/luhaifeng666/obsidian-text2audio/commit/557a018abaf4fb8eba504f82db2e8695ff94a7f8))
+* 新增插入音频链接功能 ([37ebf71](https://github.com/luhaifeng666/obsidian-text2audio/commit/37ebf714f56701e5d40b5b1f0e786aa0cbc890eb))
+
 ## [1.5.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.4.1...1.5.0) (2024-05-04)
 
 
