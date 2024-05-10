@@ -1,5 +1,11 @@
 <script lang="ts" module>
-	import { generateVoice } from "./utils";
+	import {
+		generateVoice,
+		getVoiceName,
+		setLocalData,
+		getLocalData,
+		getVoices,
+	} from "./utils";
 	import {
 		LANGUAGES,
 		LANGS,
@@ -24,22 +30,6 @@
 	$: playBtnDisabled = loading || !convertedText.replace(/\s/g, "");
 	$: saveBtnDisabled = playBtnDisabled || !filename;
 	$: lang = LANGS[language];
-
-	function getVoices(region: string) {
-		return LANGUAGES.find((lang) => lang.region === region)?.voices || null;
-	}
-
-	function getVoiceName(voice: string) {
-		return voice.replace(/\(.*\)/g, "");
-	}
-
-	const setLocalData = (key: string, value: string) => {
-		localStorage.setItem(key, value);
-	};
-
-	function getLocalData(key: string) {
-		return localStorage.getItem(key) || "";
-	}
 
 	const handleLangChange = (event: Event) => {
 		const selectElement = event.target as HTMLSelectElement;

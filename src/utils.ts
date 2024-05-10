@@ -1,9 +1,10 @@
 import sdk, { SpeechSynthesisOutputFormat } from "microsoft-cognitiveservices-speech-sdk";
 import { Notice, Setting } from "obsidian";
 import type { ConfigKeys, MessageType, SettingConfig } from "./type";
+import { LANGUAGES } from './constants';
 
 export const generateVoice = async (
-  config: Record<ConfigKeys, string> & {
+  config: Partial<Record<ConfigKeys, string>> & {
     callback?: () => void;
     type: "save" | "play";
   }
@@ -21,13 +22,13 @@ export const generateVoice = async (
 
     try {
       const audioFile = `${filePath}/${filename}.wav`;
-      const speechConfig = sdk.SpeechConfig.fromSubscription(key, region);
+      const speechConfig = sdk.SpeechConfig.fromSubscription(key || "", region || "");
       let audioConfig;
       if (type === "save")
         audioConfig = sdk.AudioConfig.fromAudioFileOutput(audioFile);
 
       // The language of the voice that speaks.
-      speechConfig.speechSynthesisVoiceName = voice;
+      speechConfig.speechSynthesisVoiceName = voice || "";
       speechConfig.speechSynthesisOutputFormat = audioFormat as unknown as SpeechSynthesisOutputFormat;
 
       // Create the speech synthesizer.
@@ -38,7 +39,7 @@ export const generateVoice = async (
 
       // Start the synthesizer and wait for a result.
       synthesizer.speakTextAsync(
-        text,
+        text || "",
         function (result) {
           let res = true;
           if (
@@ -157,3 +158,19 @@ export const generateSettings = async (
       break;
   }
 };
+
+export const getVoiceName = (voice: string) => {
+  return voice.replace(/\(.*\)/g, "");
+}
+
+export const setLocalData = (key: string, value: string) => {
+  localStorage.setItem(key, value);
+};
+
+export const getLocalData = (key: string) => {
+  return localStorage.getItem(key) || "";
+}
+
+export const getVoices = (region: string) => {
+  return LANGUAGES.find((lang) => lang.region === region)?.voices || null;
+}
