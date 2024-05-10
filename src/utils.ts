@@ -142,6 +142,17 @@ export const generateSettings = async (
       );
       break;
 
+    case "toggle":
+      settingEl.addToggle((tg) => {
+        tg
+          .setValue(plugin.settings[key])
+          .onChange(async (value) => {
+            plugin.settings[key] = value;
+            await plugin.saveSettings();
+          })
+      })
+      break;
+
     default:
       break;
   }

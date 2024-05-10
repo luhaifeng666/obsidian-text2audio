@@ -16,6 +16,6 @@ export interface SettingInputConfig {
 }
 export type SettingConfig = Record<SettingType, string> & {
   inputConfig?: SettingInputConfig;
-  type: "text" | "select";
+  type: "text" | "select" | "toggle";
   options?: Record<string, string>;
 };

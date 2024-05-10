@@ -12,6 +12,7 @@
 	export let key: string;
 	export let regionCode: string;
 	export let language: "zh" | "en";
+	export let onSave: (url: string) => void;
 	let region: string = LANGUAGES[0].region;
 	let voices: string[] = LANGUAGES[0].voices;
 	let voice: string = getVoiceName(voices[0]);
@@ -70,8 +71,9 @@
 		handleVoiceGeneration("play");
 	};
 
-	const handleSave = () => {
-		handleVoiceGeneration("save");
+	const handleSave = async () => {
+		await handleVoiceGeneration("save");
+		onSave(`${directory}/${filename}.wav`);
 	};
 </script>
 
