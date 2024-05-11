@@ -1240,6 +1240,15 @@ export const SETTINGS = [
 		type: "toggle",
 	},
 	{
+		name: "Text formatting",
+		key: "textFormatting",
+		desc: "The rule for filtering characters that do not need to be converted to speech.",
+		type: "text",
+		inputConfig: {
+			placeholder: "String or regExp",
+		},
+	},
+	{
 		name: "Language",
 		key: "language",
 		desc: "Select plugin language.",

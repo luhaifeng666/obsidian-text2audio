@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.7.0...1.8.0) (2024-05-11)
+
+
+### Features
+
+* 新增Text formatting 配置,用于自定义过滤文本中不需要阅读的内容 ([1d256b1](https://github.com/luhaifeng666/obsidian-text2audio/commit/1d256b1f743ecc09f52c0e877674fff6de1427f9))
+
 ## [1.7.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.6.0...1.7.0) (2024-05-10)
 
 

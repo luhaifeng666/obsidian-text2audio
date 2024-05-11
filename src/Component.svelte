@@ -5,6 +5,7 @@
 		setLocalData,
 		getLocalData,
 		getVoices,
+		handleTextFormat,
 	} from "./utils";
 	import {
 		LANGUAGES,
@@ -12,12 +13,10 @@
 		VOICE_FORMAT_MAP,
 		VOICE_FORMAT_NAMES,
 	} from "./constants";
+	import type { Text2AudioSettings } from "./type";
 
-	export let directory: string;
 	export let text: string; // 需要转换的文本
-	export let key: string;
-	export let regionCode: string;
-	export let language: "zh" | "en";
+	export let settings: Text2AudioSettings;
 	export let onSave: (url: string) => void;
 	let region: string = getLocalData("region") || LANGUAGES[0].region;
 	let voices: string[] = getVoices(region) || LANGUAGES[0].voices;
@@ -29,7 +28,7 @@
 	let loading: boolean = false;
 	$: playBtnDisabled = loading || !convertedText.replace(/\s/g, "");
 	$: saveBtnDisabled = playBtnDisabled || !filename;
-	$: lang = LANGS[language];
+	$: lang = LANGS[settings.language];
 
 	const handleLangChange = (event: Event) => {
 		const selectElement = event.target as HTMLSelectElement;
@@ -56,8 +55,9 @@
 
 	const handleVoiceGeneration = async (type: "save" | "play") => {
 		loading = true;
+		const { directory, region: regionCode, key, textFormatting } = settings;
 		await generateVoice({
-			text: convertedText,
+			text: handleTextFormat(convertedText, textFormatting),
 			key,
 			filename,
 			region: regionCode,
@@ -78,7 +78,7 @@
 
 	const handleSave = async () => {
 		await handleVoiceGeneration("save");
-		onSave(`${directory}/${filename}.wav`);
+		onSave(`${settings.directory}/${filename}.wav`);
 	};
 </script>
 
@@ -108,7 +108,7 @@
 	>
 		{#each LANGUAGES as lang}
 			<option value={lang.region}
-				>{lang[language === "en" ? "name-en" : "name"]}</option
+				>{lang[settings.language === "en" ? "name-en" : "name"]}</option
 			>
 		{/each}
 	</select>
@@ -124,7 +124,7 @@
 	>
 		{#each voices as voice}
 			<option value={voice}
-				>{language === "en"
+				>{settings.language === "en"
 					? voice
 							.replace(/男[性]*/g, "Male")
 							.replace(/女[性]*/g, "Female")
