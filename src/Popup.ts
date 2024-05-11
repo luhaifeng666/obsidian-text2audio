@@ -27,15 +27,11 @@ export class Popup extends Modal {
 	}
 
 	onOpen() {
-		const { key, region, directory, language } = this.plugin.settings;
 		this.component = new Component({
 			target: this.contentEl,
 			props: {
 				text: this.text,
-				key,
-				regionCode: region,
-				directory,
-				language,
+				settings: this.plugin.settings,
 				onSave: this.onSave,
 			},
 		});

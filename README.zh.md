@@ -3,13 +3,17 @@
 <p align="center">Obsidian 文本转音频插件。</p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.7.0-blue" alt="version_tag" />
+  <img src="https://img.shields.io/badge/version-1.8.0-blue" alt="version_tag" />
   <img src="https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=downloads&query=%24%5B%22text2audio%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json" />
 </p>
 
 ## 文档
 
 [中文文档](./README.zh.md) | [英文文档](./README.md)
+
+## 变更日志
+
+[您可以在这里查看最近的变更.](./CHANGELOG.md)
 
 ## 先决条件
 
