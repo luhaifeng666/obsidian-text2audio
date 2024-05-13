@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.1](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.8.0...1.8.1) (2024-05-13)
+
+
+### Bug Fixes
+
+* 修复语音格式保存一直是wav格式的问题 ([6393cf6](https://github.com/luhaifeng666/obsidian-text2audio/commit/6393cf6f128444bc861ff7b9c2c76efb0ec3db2e))
+
 ## [1.8.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.7.0...1.8.0) (2024-05-11)
 
 
