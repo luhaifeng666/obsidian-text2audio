@@ -6,6 +6,7 @@
 		getLocalData,
 		getVoices,
 		handleTextFormat,
+		getAudioFormatType,
 	} from "./utils";
 	import {
 		LANGUAGES,
@@ -64,6 +65,7 @@
 			filePath: directory,
 			voice: `${region}-${getVoiceName(voice)}`,
 			type,
+			audioFormatType: getAudioFormatType(audioFormat),
 			audioFormat:
 				VOICE_FORMAT_MAP[audioFormat as keyof typeof VOICE_FORMAT_MAP],
 			callback() {
@@ -78,7 +80,9 @@
 
 	const handleSave = async () => {
 		await handleVoiceGeneration("save");
-		onSave(`${settings.directory}/${filename}.wav`);
+		onSave(
+			`${settings.directory}/${filename}.${getAudioFormatType(audioFormat)}`,
+		);
 	};
 </script>
 

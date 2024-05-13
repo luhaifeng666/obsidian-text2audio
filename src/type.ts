@@ -6,6 +6,7 @@ export type ConfigKeys =
 	| "filePath"
 	| "voice"
 	| "audioFormat"
+	| "audioFormatType"
 	| "type";
 export type MessageType = "success" | "error" | "warning";
 export type SettingType = "name" | "desc" | "key";

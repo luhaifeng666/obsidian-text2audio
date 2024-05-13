@@ -22,6 +22,7 @@ export const generateVoice = async (
 			type,
 			callback,
 			audioFormat,
+			audioFormatType,
 		} = config;
 		let synthesizer: sdk.SpeechSynthesizer | null = null;
 
@@ -32,7 +33,7 @@ export const generateVoice = async (
 		};
 
 		try {
-			const audioFile = `${filePath}/${filename}.wav`;
+			const audioFile = `${filePath}/${filename}.${audioFormatType}`;
 			const speechConfig = sdk.SpeechConfig.fromSubscription(
 				key || "",
 				region || ""
@@ -197,3 +198,6 @@ export const handleTextFormat = (text: string, rule: string) => {
 		  )
 		: text;
 };
+
+export const getAudioFormatType = (audioFormat: string) =>
+	audioFormat.replace(/(.*-)/g, "").toLowerCase() === "mp3" ? "mp3" : "wav";
