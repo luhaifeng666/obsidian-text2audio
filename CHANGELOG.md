@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.8.1...1.9.0) (2024-05-13)
+
+
+### Features
+
+* 新增默认文件名 ([474838d](https://github.com/luhaifeng666/obsidian-text2audio/commit/474838d5236d66b5fa3890d6a32bae95dc74594c))
+
 ### [1.8.1](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.8.0...1.8.1) (2024-05-13)
 
 

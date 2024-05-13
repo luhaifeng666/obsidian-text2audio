@@ -7,6 +7,7 @@
 		getVoices,
 		handleTextFormat,
 		getAudioFormatType,
+		getDefaultFiletime,
 	} from "./utils";
 	import {
 		LANGUAGES,
@@ -28,7 +29,6 @@
 	let filename: string = "";
 	let loading: boolean = false;
 	$: playBtnDisabled = loading || !convertedText.replace(/\s/g, "");
-	$: saveBtnDisabled = playBtnDisabled || !filename;
 	$: lang = LANGS[settings.language];
 
 	const handleLangChange = (event: Event) => {
@@ -54,13 +54,16 @@
 		setLocalData("audioFormat", selectElement.value);
 	};
 
-	const handleVoiceGeneration = async (type: "save" | "play") => {
+	const handleVoiceGeneration = async (
+		type: "save" | "play",
+		defaultFilename?: string,
+	) => {
 		loading = true;
 		const { directory, region: regionCode, key, textFormatting } = settings;
 		await generateVoice({
 			text: handleTextFormat(convertedText, textFormatting),
 			key,
-			filename,
+			filename: filename || defaultFilename,
 			region: regionCode,
 			filePath: directory,
 			voice: `${region}-${getVoiceName(voice)}`,
@@ -79,9 +82,10 @@
 	};
 
 	const handleSave = async () => {
-		await handleVoiceGeneration("save");
+		const defaultFilename = getDefaultFiletime();
+		await handleVoiceGeneration("save", defaultFilename);
 		onSave(
-			`${settings.directory}/${filename}.${getAudioFormatType(audioFormat)}`,
+			`${settings.directory}/${filename || defaultFilename}.${getAudioFormatType(audioFormat)}`,
 		);
 	};
 </script>
@@ -180,7 +184,7 @@
 		<button disabled={playBtnDisabled} on:click={handlePlay}>
 			{lang.play}
 		</button>
-		<button disabled={saveBtnDisabled} on:click={handleSave}>
+		<button disabled={playBtnDisabled} on:click={handleSave}>
 			{lang.save}
 		</button>
 	</div>
