@@ -1240,6 +1240,12 @@ export const SETTINGS = [
 		type: "toggle",
 	},
 	{
+		name: "Read previous",
+		key: "readPrevious",
+		desc: "Whether to read content before the cursor position when no text is selected?",
+		type: "toggle",
+	},
+	{
 		name: "Text formatting",
 		key: "textFormatting",
 		desc: "The rule for filtering characters that do not need to be converted to speech.",

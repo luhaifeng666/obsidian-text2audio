@@ -26,6 +26,7 @@ const DEFAULT_SETTINGS: Text2AudioSettings = {
 	region: "",
 	directory: "",
 	interposition: false,
+	readPrevious: false,
 	textFormatting: "",
 	language: "zh",
 };
@@ -78,7 +79,16 @@ export default class Text2Audio extends Plugin {
 			name: "Convert text to speech",
 			editorCallback: (editor: Editor) => {
 				// 获取选中文本
-				const selectedText = editor.getSelection();
+				const selectedText =
+					editor.getSelection() ||
+					(this.settings.readPrevious
+						? editor
+								.getRange(
+									{ line: 0, ch: 0 },
+									editor.getCursor()
+								)
+								.trim()
+						: "");
 				selectedText && this.play(selectedText);
 			},
 		});
