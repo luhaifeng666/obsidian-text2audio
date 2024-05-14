@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.9.0...1.10.0) (2024-05-14)
+
+
+### Features
+
+* 新增阅读光标之前内容的功能 ([885f7c5](https://github.com/luhaifeng666/obsidian-text2audio/commit/885f7c593fd20789564ce6f8799b233b1d9ef734))
+* 优化默认文件格式为 w文件名_当前时间戳 ([5f2fff0](https://github.com/luhaifeng666/obsidian-text2audio/commit/5f2fff0fc0c27de29fe5843e8b576fcbd577fa38))
+* 优化提示文案,支持中英文 ([450e7fc](https://github.com/luhaifeng666/obsidian-text2audio/commit/450e7fc4f4512404dc890d47e3525df78f26a1aa))
+
 ## [1.9.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.8.1...1.9.0) (2024-05-13)
 
 

@@ -14,16 +14,20 @@ export class Popup extends Modal {
 	plugin: Text2Audio;
 	text: string;
 	onSave: (url: string) => void;
-	constructor(
-		app: App,
-		plugin: Text2Audio,
-		selectedText = "",
-		onSave: (url: string) => void
-	) {
+	defaultFilename: string;
+	constructor(config: {
+		app: App;
+		plugin: Text2Audio;
+		selectedText: string;
+		onSave: (url: string) => void;
+		defaultFilename: string;
+	}) {
+		const { app, plugin, selectedText, onSave, defaultFilename } = config;
 		super(app);
 		this.plugin = plugin;
 		this.text = selectedText;
 		this.onSave = onSave;
+		this.defaultFilename = defaultFilename;
 	}
 
 	onOpen() {
@@ -33,6 +37,7 @@ export class Popup extends Modal {
 				text: this.text,
 				settings: this.plugin.settings,
 				onSave: this.onSave,
+				defaultFilename: this.defaultFilename,
 			},
 		});
 	}
