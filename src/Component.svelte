@@ -68,6 +68,7 @@
 			filePath: directory,
 			voice: `${region}-${getVoiceName(voice)}`,
 			type,
+			lang: settings.language,
 			audioFormatType: getAudioFormatType(audioFormat),
 			audioFormat:
 				VOICE_FORMAT_MAP[audioFormat as keyof typeof VOICE_FORMAT_MAP],

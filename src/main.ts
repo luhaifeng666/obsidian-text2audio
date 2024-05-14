@@ -17,7 +17,7 @@ import {
 	handleTextFormat,
 } from "./utils";
 import { Popup } from "./Popup";
-import { SETTINGS, LANGUAGES } from "./constants";
+import { SETTINGS, LANGUAGES, LANGS } from "./constants";
 import type { SettingConfig, Text2AudioSettings } from "./type";
 
 const DEFAULT_SETTINGS: Text2AudioSettings = {
@@ -110,13 +110,13 @@ export default class Text2Audio extends Plugin {
 	}
 
 	async play(text: string) {
-		const { key, region, textFormatting } = this.settings;
+		const { key, region, textFormatting, language } = this.settings;
 		const regionCode: string =
 			getLocalData("region") || LANGUAGES[0].region;
 		const voices: string[] = getVoices(regionCode) || LANGUAGES[0].voices;
 		const voice: string = getLocalData("voice") || voices[0];
 		const notice = generateNotice().setMessage(
-			generateNoticeText("Convertting...", "warning")
+			generateNoticeText(LANGS[language].convertting, "warning")
 		);
 		// 阅读文本
 		generateVoice({
@@ -124,6 +124,7 @@ export default class Text2Audio extends Plugin {
 			text: handleTextFormat(text, textFormatting),
 			key,
 			region,
+			lang: language,
 			voice: `${regionCode}-${getVoiceName(voice)}`,
 			callback() {
 				notice.hide();
