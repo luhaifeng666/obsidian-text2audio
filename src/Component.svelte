@@ -7,7 +7,6 @@
 		getVoices,
 		handleTextFormat,
 		getAudioFormatType,
-		getDefaultFiletime,
 	} from "./utils";
 	import {
 		LANGUAGES,
@@ -20,6 +19,7 @@
 	export let text: string; // 需要转换的文本
 	export let settings: Text2AudioSettings;
 	export let onSave: (url: string) => void;
+	export let defaultFilename: string;
 	let region: string = getLocalData("region") || LANGUAGES[0].region;
 	let voices: string[] = getVoices(region) || LANGUAGES[0].voices;
 	let voice: string = getLocalData("voice") || voices[0];
@@ -54,10 +54,7 @@
 		setLocalData("audioFormat", selectElement.value);
 	};
 
-	const handleVoiceGeneration = async (
-		type: "save" | "play",
-		defaultFilename?: string,
-	) => {
+	const handleVoiceGeneration = async (type: "save" | "play") => {
 		loading = true;
 		const { directory, region: regionCode, key, textFormatting } = settings;
 		await generateVoice({
@@ -83,8 +80,7 @@
 	};
 
 	const handleSave = async () => {
-		const defaultFilename = getDefaultFiletime();
-		await handleVoiceGeneration("save", defaultFilename);
+		await handleVoiceGeneration("save");
 		onSave(
 			`${settings.directory}/${filename || defaultFilename}.${getAudioFormatType(audioFormat)}`,
 		);

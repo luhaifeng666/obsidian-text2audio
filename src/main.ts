@@ -15,6 +15,7 @@ import {
 	generateNotice,
 	generateNoticeText,
 	handleTextFormat,
+	getDefaultFiletime,
 } from "./utils";
 import { Popup } from "./Popup";
 import { SETTINGS, LANGUAGES, LANGS } from "./constants";
@@ -60,7 +61,15 @@ export default class Text2Audio extends Plugin {
 					editor.setCursor(lastLine + 1, 0);
 				};
 				// 打开弹窗
-				new Popup(this.app, this, selectedText, onSave).open();
+				new Popup({
+					app: this.app,
+					plugin: this,
+					selectedText,
+					onSave,
+					defaultFilename: `${
+						this.app.workspace.getActiveFile()?.basename
+					}_${getDefaultFiletime()}`,
+				}).open();
 			},
 		});
 
