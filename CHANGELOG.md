@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.11.3](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.11.2...1.11.3) (2024-05-15)
+
+
+### Bug Fixes
+
+* 修复弹窗关闭后,语音生成进度未终止的问题 ([15b745d](https://github.com/luhaifeng666/obsidian-text2audio/commit/15b745df6d0a7bb737efddd9af6bc61028f479e7))
+
 ### [1.11.2](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.11.1...1.11.2) (2024-05-15)
 
 
