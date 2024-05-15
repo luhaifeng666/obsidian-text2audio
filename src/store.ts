@@ -1,6 +1,10 @@
 import { AudioConfig } from "microsoft-cognitiveservices-speech-sdk";
 
-let audioConfig: AudioConfig | null;
+let audioConfig:
+	| (AudioConfig & {
+			privDestination?: any;
+	  })
+	| null;
 
 const actions = {
 	setAudioConfig: (config: AudioConfig) => {
