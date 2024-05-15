@@ -8,6 +8,7 @@
 import { App, Modal } from "obsidian";
 import Component from "./Component.svelte";
 import type Text2Audio from "./main";
+import { actions } from "./store";
 
 export class Popup extends Modal {
 	component: Component | null = null;
@@ -43,6 +44,7 @@ export class Popup extends Modal {
 	}
 
 	onClose() {
+		actions.clearsynthesizer();
 		this.component?.$destroy();
 	}
 }

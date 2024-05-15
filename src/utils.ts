@@ -72,6 +72,8 @@ export const generateVoice = async (
 			// Create the speech synthesizer.
 			synthesizer = new sdk.SpeechSynthesizer(speechConfig, audioConfig);
 
+			actions.setSpeechSynthesizer(synthesizer);
+
 			// Start the synthesizer and wait for a result.
 			synthesizer.speakTextAsync(
 				text || "",
