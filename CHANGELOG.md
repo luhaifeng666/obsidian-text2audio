@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.11.1](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.11.0...1.11.1) (2024-05-15)
+
+
+### Bug Fixes
+
+* 修复未选中文本时,无法右键选择阅读的问题 ([3c79397](https://github.com/luhaifeng666/obsidian-text2audio/commit/3c7939779e6befa069db91cb36a0bfb0b28a6a5d))
+
 ## [1.11.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.10.0...1.11.0) (2024-05-15)
 
 
