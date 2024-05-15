@@ -1,7 +1,7 @@
 import sdk, {
 	SpeechSynthesisOutputFormat,
 } from "microsoft-cognitiveservices-speech-sdk";
-import { Notice, Setting } from "obsidian";
+import { Notice, Setting, Editor } from "obsidian";
 import type { ConfigKeys, MessageType, SettingConfig } from "./type";
 import { LANGUAGES, LANGS } from "./constants";
 import { actions } from "./store";
@@ -223,3 +223,18 @@ export const handleTextFormat = (text: string, rule: string) => {
 
 export const getAudioFormatType = (audioFormat: string) =>
 	audioFormat.replace(/(.*-)/g, "").toLowerCase() === "mp3" ? "mp3" : "wav";
+
+export const getSelectedText = (
+	readPrevious: boolean,
+	editor?: Editor
+): string => {
+	if (editor) {
+		return (
+			editor.getSelection() ||
+			(readPrevious
+				? editor.getRange({ line: 0, ch: 0 }, editor.getCursor()).trim()
+				: "")
+		);
+	}
+	return "";
+};

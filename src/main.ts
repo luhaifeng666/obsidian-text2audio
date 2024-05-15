@@ -16,6 +16,7 @@ import {
 	generateNoticeText,
 	handleTextFormat,
 	getDefaultFiletime,
+	getSelectedText,
 } from "./utils";
 import { Popup } from "./Popup";
 import { SETTINGS, LANGUAGES, LANGS } from "./constants";
@@ -81,16 +82,10 @@ export default class Text2Audio extends Plugin {
 			name: "Convert text to speech",
 			editorCallback: (editor: Editor) => {
 				// 获取选中文本
-				const selectedText =
-					editor.getSelection() ||
-					(this.settings.readPrevious
-						? editor
-								.getRange(
-									{ line: 0, ch: 0 },
-									editor.getCursor()
-								)
-								.trim()
-						: "");
+				const selectedText = getSelectedText(
+					this.settings.readPrevious,
+					editor
+				);
 				selectedText && this.play(selectedText);
 			},
 		});
@@ -113,16 +108,16 @@ export default class Text2Audio extends Plugin {
 
 		this.registerEvent(
 			this.app.workspace.on("editor-menu", (menu, _, markdownView) => {
-				(activeWindow.getSelection() || "")
-					.toString()
-					.replace(/\s/g, "").length > 0 &&
+				const selectedText = getSelectedText(
+					this.settings.readPrevious,
+					markdownView?.editor
+				);
+				selectedText.toString().replace(/\s/g, "").length > 0 &&
 					menu.addItem((item) => {
 						item.setTitle("Read the selected text")
 							.setIcon("audio-file")
 							.onClick(() => {
-								this.play(
-									markdownView.editor?.getSelection() || ""
-								);
+								selectedText && this.play(selectedText);
 							});
 					});
 			})
