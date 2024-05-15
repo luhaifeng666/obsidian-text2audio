@@ -2,7 +2,7 @@
  * @Author: haifeng.lu haifeng.lu@ly.com
  * @Date: 2024-05-01 03:05:47
  * @LastEditors: luhaifeng666 youzui@hotmail.com
- * @LastEditTime: 2024-05-11 01:22:37
+ * @LastEditTime: 2024-05-15 01:12:05
  * @Description:
  */
 import { App, Editor, Plugin, PluginSettingTab } from "obsidian";
@@ -16,10 +16,12 @@ import {
 	generateNoticeText,
 	handleTextFormat,
 	getDefaultFiletime,
+	getSelectedText,
 } from "./utils";
 import { Popup } from "./Popup";
 import { SETTINGS, LANGUAGES, LANGS } from "./constants";
 import type { SettingConfig, Text2AudioSettings } from "./type";
+import { actions } from "./store";
 
 const DEFAULT_SETTINGS: Text2AudioSettings = {
 	key: "",
@@ -27,6 +29,7 @@ const DEFAULT_SETTINGS: Text2AudioSettings = {
 	directory: "",
 	interposition: false,
 	readPrevious: false,
+	autoStop: false,
 	textFormatting: "",
 	language: "zh",
 };
@@ -79,34 +82,53 @@ export default class Text2Audio extends Plugin {
 			name: "Convert text to speech",
 			editorCallback: (editor: Editor) => {
 				// 获取选中文本
-				const selectedText =
-					editor.getSelection() ||
-					(this.settings.readPrevious
-						? editor
-								.getRange(
-									{ line: 0, ch: 0 },
-									editor.getCursor()
-								)
-								.trim()
-						: "");
+				const selectedText = getSelectedText(
+					this.settings.readPrevious,
+					editor
+				);
 				selectedText && this.play(selectedText);
+			},
+		});
+
+		this.addCommand({
+			id: "t2a-pause",
+			name: "Pause the audio",
+			callback() {
+				actions.pause();
+			},
+		});
+
+		this.addCommand({
+			id: "t2a-resume",
+			name: "Resume the audio",
+			callback() {
+				actions.play();
 			},
 		});
 
 		this.registerEvent(
 			this.app.workspace.on("editor-menu", (menu, _, markdownView) => {
-				(activeWindow.getSelection() || "")
-					.toString()
-					.replace(/\s/g, "").length > 0 &&
+				const selectedText = getSelectedText(
+					this.settings.readPrevious,
+					markdownView?.editor
+				);
+				selectedText.toString().replace(/\s/g, "").length > 0 &&
 					menu.addItem((item) => {
 						item.setTitle("Read the selected text")
 							.setIcon("audio-file")
 							.onClick(() => {
-								this.play(
-									markdownView.editor?.getSelection() || ""
-								);
+								selectedText && this.play(selectedText);
 							});
 					});
+			})
+		);
+
+		this.registerEvent(
+			this.app.workspace.on("layout-change", () => {
+				if (this.settings.autoStop) {
+					actions.pause();
+					actions.clearAudioConfig();
+				}
 			})
 		);
 

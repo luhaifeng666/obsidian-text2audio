@@ -1,9 +1,10 @@
 import sdk, {
 	SpeechSynthesisOutputFormat,
 } from "microsoft-cognitiveservices-speech-sdk";
-import { Notice, Setting } from "obsidian";
+import { Notice, Setting, Editor } from "obsidian";
 import type { ConfigKeys, MessageType, SettingConfig } from "./type";
 import { LANGUAGES, LANGS } from "./constants";
+import { actions } from "./store";
 
 export const getDefaultFiletime = () => {
 	const formatTimeNumber = (number: number) =>
@@ -20,7 +21,7 @@ export const getDefaultFiletime = () => {
 
 export const generateVoice = async (
 	config: Partial<Record<ConfigKeys, string>> & {
-		callback?: () => void;
+		callback?: (audioConfig?: sdk.AudioConfig) => void;
 		type: "save" | "play";
 		lang: "zh" | "en";
 	}
@@ -55,9 +56,13 @@ export const generateVoice = async (
 				key || "",
 				region || ""
 			);
-			let audioConfig;
+			let audioConfig = sdk.AudioConfig.fromSpeakerOutput();
 			if (type === "save")
 				audioConfig = sdk.AudioConfig.fromAudioFileOutput(audioFile);
+
+			type === "save"
+				? actions.clearAudioConfig()
+				: actions.setAudioConfig(audioConfig);
 
 			// The language of the voice that speaks.
 			speechConfig.speechSynthesisVoiceName = voice || "";
@@ -65,10 +70,7 @@ export const generateVoice = async (
 				audioFormat as unknown as SpeechSynthesisOutputFormat;
 
 			// Create the speech synthesizer.
-			synthesizer = new sdk.SpeechSynthesizer(
-				speechConfig,
-				...(type === "save" ? [audioConfig] : [])
-			);
+			synthesizer = new sdk.SpeechSynthesizer(speechConfig, audioConfig);
 
 			// Start the synthesizer and wait for a result.
 			synthesizer.speakTextAsync(
@@ -101,8 +103,8 @@ export const generateVoice = async (
 						);
 						res = false;
 					}
-					synthesizerClear();
 					res ? resolve(res) : reject(res);
+					synthesizerClear();
 				},
 				function (err) {
 					generateNotice().setMessage(
@@ -221,3 +223,18 @@ export const handleTextFormat = (text: string, rule: string) => {
 
 export const getAudioFormatType = (audioFormat: string) =>
 	audioFormat.replace(/(.*-)/g, "").toLowerCase() === "mp3" ? "mp3" : "wav";
+
+export const getSelectedText = (
+	readPrevious: boolean,
+	editor?: Editor
+): string => {
+	if (editor) {
+		return (
+			editor.getSelection() ||
+			(readPrevious
+				? editor.getRange({ line: 0, ch: 0 }, editor.getCursor()).trim()
+				: "")
+		);
+	}
+	return "";
+};

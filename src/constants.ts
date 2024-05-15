@@ -1246,6 +1246,12 @@ export const SETTINGS = [
 		type: "toggle",
 	},
 	{
+		name: "Auto stop",
+		key: "autoStop",
+		desc: "Whether to stop playing when closing or opening a note?",
+		type: "toggle",
+	},
+	{
 		name: "Text formatting",
 		key: "textFormatting",
 		desc: "The rule for filtering characters that do not need to be converted to speech.",
