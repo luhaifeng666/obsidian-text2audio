@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.10.0...1.11.0) (2024-05-15)
+
+
+### Features
+
+* 控制语音暂停 ([7970cdb](https://github.com/luhaifeng666/obsidian-text2audio/commit/7970cdbff8e6ba6e420db629e3d3873c3adf92e4))
+* 新增暂停及继续播放功能;新增窗口变化后是否停止播放配置 ([7bed80d](https://github.com/luhaifeng666/obsidian-text2audio/commit/7bed80dff6e1630fa47bd4a0bcf12bef723a0bbc))
+
 ## [1.10.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.9.0...1.10.0) (2024-05-14)
 
 
