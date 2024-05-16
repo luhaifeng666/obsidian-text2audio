@@ -21,8 +21,10 @@ const actions = {
 		audioConfig = null;
 	},
 	clearsynthesizer: () => {
-		synthesizer?.close();
-		synthesizer = null;
+		if (synthesizer) {
+			synthesizer?.close();
+			synthesizer = null;
+		}
 	},
 	pause() {
 		audioConfig && audioConfig.privDestination.privAudio.pause();
