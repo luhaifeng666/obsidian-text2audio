@@ -15,6 +15,7 @@
 		VOICE_FORMAT_NAMES,
 	} from "./constants";
 	import type { Text2AudioSettings } from "./type";
+	import { Platform } from "obsidian";
 
 	export let text: string; // 需要转换的文本
 	export let settings: Text2AudioSettings;
@@ -28,6 +29,7 @@
 	let convertedText: string = text;
 	let filename: string = "";
 	let loading: boolean = false;
+	const isMobile: boolean = Platform.isMobile;
 	$: playBtnDisabled = loading || !convertedText.replace(/\s/g, "");
 	$: lang = LANGS[settings.language];
 
@@ -141,29 +143,31 @@
 	</select>
 </div>
 
-<div class="ob-t2v-box">
-	<span class="ob-t2v-audio-format">{lang.audioFormat}</span>
-	<select
-		disabled={loading}
-		on:change={handleAudioFormatChange}
-		bind:value={audioFormat}
-		name="ob-t2v-voice-formats"
-	>
-		{#each VOICE_FORMAT_NAMES as format}
-			<option value={format}>{format}</option>
-		{/each}
-	</select>
-</div>
+{#if !isMobile}
+	<div class="ob-t2v-box">
+		<span class="ob-t2v-audio-format">{lang.audioFormat}</span>
+		<select
+			disabled={loading}
+			on:change={handleAudioFormatChange}
+			bind:value={audioFormat}
+			name="ob-t2v-voice-formats"
+		>
+			{#each VOICE_FORMAT_NAMES as format}
+				<option value={format}>{format}</option>
+			{/each}
+		</select>
+	</div>
 
-<div class="ob-t2v-box">
-	<span class="ob-t2v-filename">{lang.filename}</span>
-	<input
-		type="text"
-		placeholder={lang.filenamePlaceholder}
-		bind:value={filename}
-		readonly={loading}
-	/>
-</div>
+	<div class="ob-t2v-box">
+		<span class="ob-t2v-filename">{lang.filename}</span>
+		<input
+			type="text"
+			placeholder={lang.filenamePlaceholder}
+			bind:value={filename}
+			readonly={loading}
+		/>
+	</div>
+{/if}
 
 <!-- TODO 添加转换格式 -->
 <!-- <div class="ob-t2v-box">
@@ -181,8 +185,10 @@
 		<button disabled={playBtnDisabled} on:click={handlePlay}>
 			{lang.play}
 		</button>
-		<button disabled={playBtnDisabled} on:click={handleSave}>
-			{lang.save}
-		</button>
+		{#if !isMobile}
+			<button disabled={playBtnDisabled} on:click={handleSave}>
+				{lang.save}
+			</button>
+		{/if}
 	</div>
 </div>
