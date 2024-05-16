@@ -85,17 +85,17 @@
   background-size: cover;
   margin-right: 3px;
 }
-.ob-t2v-footer button:first-child {
+.ob-t2v-footer button:nth-child(1) {
   background-color: #52c41a;
 }
-.ob-t2v-footer button:last-child {
+.ob-t2v-footer button:nth-child(2) {
   background-color: #1677ff;
   margin-left: 8px;
 }
-.ob-t2v-footer button:first-child::before {
+.ob-t2v-footer button:nth-child(1)::before {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAZdJREFUWEftlltuw0AIRcPKEq+sycrirowaCyzM8Jq2UVSp+c14OFwec+Hy5h+8Of7l7wEg4o1V+2io9wkA9+xcWwEOTEEFoIq/AsBSHWoBIOJzIjDFbAWngylAkPW6fffYPwZYEZEk1uVoB+8A2MwXCqplNQBucDoT9UKoQOdiAlHnouCSxAAfKmBlhQ0/aiYu083LkP8jgP3n3eNejBuBCvioRinrdJPMcNcAYKh/FFzA9BRZFTwA3dVu3WzGEiAqlUnqdKcHcHR+t/a/DSD1T+dZakuQGiBqStVXp3s9BUIADkrdfE8ApIQnqVUflABSgkEBvoQAlm8AuIlN9cCEAlda17I1s8mqxjCcgkgBbydku6ACCPeAbrbGFByjXe4B3u/6ESp3AWd49d7/6U3IAGQ6ZIeH40gq2NfRWVLpWs8emXAajEplnzCUW87KkDwDWXWJhosdIxOq2LJkxoBYk3IASGPOOKQpgMQbkkvyzGppz9oAk8Z0941Vg5ae0HvPE/MhXrEV+HBJlW9/9f/tErwK5B/gCwgpUzDgBw+rAAAAAElFTkSuQmCC);
 }
-.ob-t2v-footer button:last-child::before {
+.ob-t2v-footer button:nth-child(2)::before {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAN1JREFUWEftlmEOwyAIheFkW0+27WRrT8ZK0ibEKgVs40zsT1N5nw8QERp/2FgfBkDfDhDRExHnmjqqcoCIvgCwIOI7CjEAhgP/74DWard3AYsDALfaJ9dqGgARcWu+1jadtLviNAUi0AGiBKDtSe+LUwDeUAqYA/CIc2wTQAkiBfCKuwByEBIgIu4GSCHWAn3wLNjyygWXLVZtTphTIIOI08plt3jIgV0xgQiJVwGIdECzcRx9A8h9oRq4QniP0QeAmAmew6szwO3ABmEGsD5W+0iB+diBH4cDzR34AcRElCHjgm1oAAAAAElFTkSuQmCC);
 }
 .ob-t2v-loading {
