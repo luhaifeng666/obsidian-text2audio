@@ -189,7 +189,9 @@ class Text2AudioSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
 		SETTINGS.filter((setting) =>
-			Platform.isDesktopApp ? !!setting : setting.key !== "directory"
+			Platform.isDesktopApp
+				? !!setting
+				: !["interposition", "directory"].includes(setting.key)
 		).forEach((setting) => {
 			generateSettings(
 				containerEl,
