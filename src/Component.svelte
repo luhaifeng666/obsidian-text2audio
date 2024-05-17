@@ -29,7 +29,7 @@
 	let convertedText: string = text;
 	let filename: string = "";
 	let loading: boolean = false;
-	const isMobile: boolean = Platform.isMobile;
+	const isMobile: boolean = !Platform.isDesktopApp;
 	$: playBtnDisabled = loading || !convertedText.replace(/\s/g, "");
 	$: lang = LANGS[settings.language];
 

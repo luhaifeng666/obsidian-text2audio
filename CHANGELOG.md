@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.11.6...1.12.0) (2024-05-17)
+
+
+### Features
+
+* 移动端暂时隐藏保存文件入口 ([f8daec9](https://github.com/luhaifeng666/obsidian-text2audio/commit/f8daec9df564c08a21743b24cfec2766b3202fb1))
+
 ### [1.11.6](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.11.5...1.11.6) (2024-05-16)
 
 ### [1.11.5](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.11.4...1.11.5) (2024-05-16)
