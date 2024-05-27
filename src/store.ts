@@ -32,6 +32,9 @@ const actions = {
 	play() {
 		audioConfig && audioConfig.privDestination.privAudio.play();
 	},
+	isPaused() {
+		return audioConfig?.privDestination.privAudio.paused;
+	},
 };
 
 export { audioConfig, actions };

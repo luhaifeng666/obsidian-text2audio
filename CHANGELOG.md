@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.12.3...2.0.0) (2024-05-27)
+
+### [1.12.3](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.12.2...1.12.3) (2024-05-27)
+
+### [1.12.2](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.12.1...1.12.2) (2024-05-27)
+
+
+### Bug Fixes
+
+* 修复重复生成&播放的问题 ([cc435b7](https://github.com/luhaifeng666/obsidian-text2audio/commit/cc435b75ce8f0a2e49e8211b3b0259bc41a09458))
+* 移动端隐藏插入配置 ([cb21e48](https://github.com/luhaifeng666/obsidian-text2audio/commit/cb21e489bd3d3c7e2634c96a7247edb36eb9b0c9))
+
 ### [1.12.1](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.12.0...1.12.1) (2024-05-17)
 
 
