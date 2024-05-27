@@ -92,18 +92,10 @@ export default class Text2Audio extends Plugin {
 		});
 
 		this.addCommand({
-			id: "t2a-pause",
-			name: "Pause the audio",
+			id: "t2a-controller",
+			name: "Pause or resume the audio",
 			callback() {
-				actions.pause();
-			},
-		});
-
-		this.addCommand({
-			id: "t2a-resume",
-			name: "Resume the audio",
-			callback() {
-				actions.play();
+				actions.isPaused() ? actions.play() : actions.pause();
 			},
 		});
 
