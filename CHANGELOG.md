@@ -4,9 +4,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.0.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.12.3...2.0.0) (2024-05-27)
 
-### [1.12.3](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.12.2...1.12.3) (2024-05-27)
+### BREAKING CHANGES
 
-### [1.12.2](https://github.com/luhaifeng666/obsidian-text2audio/compare/1.12.1...1.12.2) (2024-05-27)
+* 合并`播放/暂停`指令为同一个指令：`Pause or resume the audio`
 
 
 ### Bug Fixes
