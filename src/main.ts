@@ -36,6 +36,7 @@ const DEFAULT_SETTINGS: Text2AudioSettings = {
 
 export default class Text2Audio extends Plugin {
 	settings: Text2AudioSettings = DEFAULT_SETTINGS;
+	convertting = false;
 
 	async onload() {
 		await this.loadSettings();
@@ -151,26 +152,31 @@ export default class Text2Audio extends Plugin {
 	}
 
 	async play(text: string) {
-		const { key, region, textFormatting, language } = this.settings;
-		const regionCode: string =
-			getLocalData("region") || LANGUAGES[0].region;
-		const voices: string[] = getVoices(regionCode) || LANGUAGES[0].voices;
-		const voice: string = getLocalData("voice") || voices[0];
-		const notice = generateNotice().setMessage(
-			generateNoticeText(LANGS[language].convertting, "warning")
-		);
 		// 阅读文本
-		generateVoice({
-			type: "play",
-			text: handleTextFormat(text, textFormatting),
-			key,
-			region,
-			lang: language,
-			voice: `${regionCode}-${getVoiceName(voice)}`,
-			callback() {
-				notice.hide();
-			},
-		});
+		if (!this.convertting) {
+			this.convertting = true;
+			const { key, region, textFormatting, language } = this.settings;
+			const regionCode: string =
+				getLocalData("region") || LANGUAGES[0].region;
+			const voices: string[] =
+				getVoices(regionCode) || LANGUAGES[0].voices;
+			const voice: string = getLocalData("voice") || voices[0];
+			const notice = generateNotice().setMessage(
+				generateNoticeText(LANGS[language].convertting, "warning")
+			);
+			generateVoice({
+				type: "play",
+				text: handleTextFormat(text, textFormatting),
+				key,
+				region,
+				lang: language,
+				voice: `${regionCode}-${getVoiceName(voice)}`,
+				callback: () => {
+					notice.hide();
+					this.convertting = false;
+				},
+			});
+		}
 	}
 }
 

@@ -47,8 +47,11 @@ export const generateVoice = async (
 			synthesizer = null;
 			callback && callback();
 		};
-
 		const langSettings = LANGS[lang];
+
+		// 生成时停止播放，并清除 sdk.AudioConfig 缓存
+		actions.pause();
+		actions.clearAudioConfig();
 
 		try {
 			const audioFile = `${filePath}/${filename}.${audioFormatType}`;
