@@ -17,7 +17,7 @@ export interface SettingInputConfig {
 }
 export type SettingConfig = Record<SettingType, string> & {
 	inputConfig?: SettingInputConfig;
-	type: "text" | "select" | "toggle";
+	type: "text" | "select" | "toggle" | "textArea";
 	options?: Record<string, string>;
 };
 export interface Text2AudioSettings {

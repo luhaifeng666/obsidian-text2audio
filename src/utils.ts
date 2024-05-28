@@ -163,7 +163,8 @@ export const generateSettings = async (
 	const settingEl = new Setting(container).setName(name).setDesc(desc);
 	switch (type) {
 		case "text":
-			settingEl.addText((text) =>
+		case "textArea":
+			settingEl[type === "text" ? "addText" : "addTextArea"]((text) =>
 				text
 					.setPlaceholder(placeholder || "")
 					.setValue(plugin.settings[key])
@@ -172,7 +173,7 @@ export const generateSettings = async (
 						plugin.settings[key] = value;
 						await plugin.saveSettings();
 					})
-			);
+			).setClass(type === "textArea" ? "ob-t2v-setting-textarea" : "");
 			break;
 
 		case "select":

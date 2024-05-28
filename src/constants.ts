@@ -1255,9 +1255,10 @@ export const SETTINGS = [
 		name: "Text formatting",
 		key: "textFormatting",
 		desc: "The rule for filtering characters that do not need to be converted to speech.",
-		type: "text",
+		type: "textArea",
 		inputConfig: {
-			placeholder: "String or regExp",
+			placeholder:
+				"Fill in the regular expression. For example: /[^\\w\\s]/g",
 		},
 	},
 	{

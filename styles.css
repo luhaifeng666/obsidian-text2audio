@@ -143,3 +143,6 @@
 .ob-t2v-warning {
   color: #faad14;
 }
+.ob-t2v-setting-textarea textarea {
+  height: 100px;
+}
