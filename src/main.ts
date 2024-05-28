@@ -1,10 +1,3 @@
-/*
- * @Author: haifeng.lu haifeng.lu@ly.com
- * @Date: 2024-05-01 03:05:47
- * @LastEditors: luhaifeng666 youzui@hotmail.com
- * @LastEditTime: 2024-05-16 23:54:46
- * @Description:
- */
 import { App, Editor, Plugin, PluginSettingTab, Platform } from "obsidian";
 import {
 	generateSettings,
@@ -28,7 +21,7 @@ const DEFAULT_SETTINGS: Text2AudioSettings = {
 	region: "",
 	directory: "",
 	interposition: false,
-	readPrevious: false,
+	readBeforeOrAfter: "before",
 	autoStop: false,
 	textFormatting: "",
 	language: "zh",
@@ -84,7 +77,7 @@ export default class Text2Audio extends Plugin {
 			editorCallback: (editor: Editor) => {
 				// 获取选中文本
 				const selectedText = getSelectedText(
-					this.settings.readPrevious,
+					this.settings.readBeforeOrAfter,
 					editor
 				);
 				selectedText && this.play(selectedText);
@@ -102,7 +95,7 @@ export default class Text2Audio extends Plugin {
 		this.registerEvent(
 			this.app.workspace.on("editor-menu", (menu, _, markdownView) => {
 				const selectedText = getSelectedText(
-					this.settings.readPrevious,
+					this.settings.readBeforeOrAfter,
 					markdownView?.editor
 				);
 				selectedText.toString().replace(/\s/g, "").length > 0 &&
