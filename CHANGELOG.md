@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/2.1.0...2.2.0) (2024-05-28)
+
+
+### Features
+
+* 调整阅读光标前后内容配置项,支持阅读光标后的内容 ([45cccbe](https://github.com/luhaifeng666/obsidian-text2audio/commit/45cccbef106c8e34df6eb79455e2dd065d13617d))
+
 ## [2.1.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/2.0.0...2.1.0) (2024-05-28)
 
 

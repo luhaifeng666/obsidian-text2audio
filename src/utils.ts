@@ -173,7 +173,8 @@ export const generateSettings = async (
 						plugin.settings[key] = value;
 						await plugin.saveSettings();
 					})
-			).setClass(type === "textArea" ? "ob-t2v-setting-textarea" : "");
+			)
+      type === "textArea" && settingEl.setClass("ob-t2v-setting-textarea");
 			break;
 
 		case "select":
@@ -231,15 +232,22 @@ export const getAudioFormatType = (audioFormat: string) =>
 	audioFormat.replace(/(.*-)/g, "").toLowerCase() === "mp3" ? "mp3" : "wav";
 
 export const getSelectedText = (
-	readPrevious: boolean,
+	readBeforeOrAfter: "before" | "after",
 	editor?: Editor
 ): string => {
 	if (editor) {
+    let from = { line: 0, ch: 0 }, to = editor.getCursor();
+    if (readBeforeOrAfter === "after") {
+      const defaultToValue = {
+        line: editor.lastLine(),
+        ch: 0
+      }
+      const lastWordPosition = editor.wordAt(defaultToValue);
+      from = editor.getCursor();
+      to = lastWordPosition?.to || defaultToValue;
+    }
 		return (
-			editor.getSelection() ||
-			(readPrevious
-				? editor.getRange({ line: 0, ch: 0 }, editor.getCursor()).trim()
-				: "")
+			(editor.getSelection() || editor.getRange(from, to)).trim()
 		);
 	}
 	return "";

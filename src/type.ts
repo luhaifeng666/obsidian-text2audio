@@ -25,7 +25,7 @@ export interface Text2AudioSettings {
 	region: string;
 	directory: string;
 	interposition: boolean;
-	readPrevious: boolean;
+	readBeforeOrAfter: "before" | "after";
 	autoStop: boolean;
 	textFormatting: string;
 	language: "zh" | "en";

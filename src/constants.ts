@@ -1233,16 +1233,20 @@ export const SETTINGS = [
 			placeholder: "Full path",
 		},
 	},
+  {
+		name: "Read before or after",
+		key: "readBeforeOrAfter",
+		desc: "Read content before or after the cursor.",
+		type: "select",
+    options: {
+			before: "Before",
+			after: "After",
+		},
+	},
 	{
 		name: "Interposition",
 		key: "interposition",
 		desc: "Whether to insert the generated speech at the location of the cursor?",
-		type: "toggle",
-	},
-	{
-		name: "Read previous",
-		key: "readPrevious",
-		desc: "Whether to read content before the cursor position when no text is selected?",
 		type: "toggle",
 	},
 	{
