@@ -17,6 +17,7 @@ import type { SettingConfig, Text2AudioSettings } from "./type";
 import { actions } from "./store";
 
 const DEFAULT_SETTINGS: Text2AudioSettings = {
+	keyHide: true,
 	key: "",
 	region: "",
 	directory: "",
@@ -52,8 +53,7 @@ export default class Text2Audio extends Plugin {
 					const lastLine = editor.lastLine();
 					this.settings.interposition &&
 						editor.replaceSelection(
-							`${selectedText}<audio controls src="${
-								Platform.resourcePathPrefix
+							`${selectedText}<audio controls src="${Platform.resourcePathPrefix
 							}${encodeURIComponent(url)}" />`
 						);
 					editor.setCursor(lastLine + 1, 0);
@@ -64,9 +64,8 @@ export default class Text2Audio extends Plugin {
 					plugin: this,
 					selectedText,
 					onSave,
-					defaultFilename: `${
-						this.app.workspace.getActiveFile()?.basename
-					}_${getDefaultFiletime()}`,
+					defaultFilename: `${this.app.workspace.getActiveFile()?.basename
+						}_${getDefaultFiletime()}`,
 				}).open();
 			},
 		});
@@ -122,7 +121,7 @@ export default class Text2Audio extends Plugin {
 		this.addSettingTab(new Text2AudioSettingTab(this.app, this));
 	}
 
-	onunload() {}
+	onunload() { }
 
 	async loadSettings() {
 		this.settings = Object.assign(
