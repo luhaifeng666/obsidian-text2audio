@@ -1211,6 +1211,7 @@ export const SETTINGS = [
 		key: "key",
 		desc: "Your Azure AI services API's secret key.",
 		type: "text",
+		isPassword: true,
 		inputConfig: {
 			placeholder: "Enter your secret key",
 		},
@@ -1233,12 +1234,12 @@ export const SETTINGS = [
 			placeholder: "Full path",
 		},
 	},
-  {
+	{
 		name: "Read before or after",
 		key: "readBeforeOrAfter",
 		desc: "Read content before or after the cursor.",
 		type: "select",
-    options: {
+		options: {
 			before: "Before",
 			after: "After",
 		},

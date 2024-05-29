@@ -1,7 +1,7 @@
 import sdk, {
 	SpeechSynthesisOutputFormat,
 } from "microsoft-cognitiveservices-speech-sdk";
-import { Notice, Setting, Editor } from "obsidian";
+import { Notice, Setting, Editor, type ButtonComponent, type TextComponent } from "obsidian";
 import type { ConfigKeys, MessageType, SettingConfig } from "./type";
 import { LANGUAGES, LANGS } from "./constants";
 import { actions } from "./store";
@@ -156,13 +156,21 @@ export const generateSettings = async (
 	plugin: any,
 	config: SettingConfig
 ) => {
-	const { inputConfig, desc, name, key, type, options } = config;
+	const { inputConfig, desc, name, key, type, options, isPassword } = config;
 	const { placeholder, callback } = inputConfig || {};
 	const settingEl = new Setting(container).setName(name).setDesc(desc);
 	switch (type) {
 		case "text":
 		case "textArea":
-			settingEl[type === "text" ? "addText" : "addTextArea"]((text) =>
+			let textEl: TextComponent;
+			const handleIconSwitch = (btn: ButtonComponent) => {
+				btn.setIcon(plugin.settings.keyHide ? "eye" : "eye-off")
+				return btn
+			}
+			const handleInputTypeSwitch = (textEl: TextComponent) => {
+				textEl && textEl.inputEl.setAttribute("type", plugin.settings.keyHide ? "password" : "text")
+			}
+			settingEl[type === "text" ? "addText" : "addTextArea"]((text) => {
 				text
 					.setPlaceholder(placeholder || "")
 					.setValue(plugin.settings[key])
@@ -171,8 +179,18 @@ export const generateSettings = async (
 						plugin.settings[key] = value;
 						await plugin.saveSettings();
 					})
-			)
+				if (isPassword) {
+					textEl = text as TextComponent
+					handleInputTypeSwitch(textEl)
+				}
+			})
 			type === "textArea" && settingEl.setClass("ob-t2v-setting-textarea");
+			isPassword && settingEl.addButton(btn => handleIconSwitch(btn).onClick(async () => {
+				plugin.settings.keyHide = !plugin.settings.keyHide;
+				await plugin.saveSettings()
+				handleIconSwitch(btn)
+				handleInputTypeSwitch(textEl)
+			}))
 			break;
 
 		case "select":
@@ -190,8 +208,8 @@ export const generateSettings = async (
 		case "toggle":
 			settingEl.addToggle((tg) => {
 				tg.setValue(plugin.settings[key]).onChange(async (value) => {
-					plugin.settings[key] = value;
-					await plugin.saveSettings();
+					plugin.settings[key] = value
+					await plugin.saveSettings()
 				});
 			});
 			break;

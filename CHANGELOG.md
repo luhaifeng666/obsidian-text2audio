@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.3.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/2.2.1...2.3.0) (2024-05-29)
+
+
+### Features
+
+* Speech Key 添加显示隐藏功能 ([6198d86](https://github.com/luhaifeng666/obsidian-text2audio/commit/6198d86c64d4d5736e4fb0ef11244cb5ccbf2817))
+
 ### [2.2.1](https://github.com/luhaifeng666/obsidian-text2audio/compare/2.2.0...2.2.1) (2024-05-29)
 
 

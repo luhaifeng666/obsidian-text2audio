@@ -19,8 +19,10 @@ export type SettingConfig = Record<SettingType, string> & {
 	inputConfig?: SettingInputConfig;
 	type: "text" | "select" | "toggle" | "textArea";
 	options?: Record<string, string>;
+	isPassword?: boolean;
 };
 export interface Text2AudioSettings {
+	keyHide: boolean;
 	key: string;
 	region: string;
 	directory: string;
