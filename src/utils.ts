@@ -88,13 +88,11 @@ export const generateVoice = async (
 					) {
 						generateNotice().setMessage(
 							generateNoticeText(
-								`${
-									langSettings.tipMessage.success.synthesis
-								}. ${
-									type === "save"
-										? `${langSettings.tipMessage.success.save} ` +
-										  audioFile
-										: ""
+								`${langSettings.tipMessage.success.synthesis
+								}. ${type === "save"
+									? `${langSettings.tipMessage.success.save} ` +
+									audioFile
+									: ""
 								}`,
 								"success"
 							)
@@ -174,7 +172,7 @@ export const generateSettings = async (
 						await plugin.saveSettings();
 					})
 			)
-      type === "textArea" && settingEl.setClass("ob-t2v-setting-textarea");
+			type === "textArea" && settingEl.setClass("ob-t2v-setting-textarea");
 			break;
 
 		case "select":
@@ -222,9 +220,9 @@ export const getVoices = (region: string) => {
 export const handleTextFormat = (text: string, rule: string) => {
 	return text && rule
 		? text.replace(
-				new RegExp(rule.replace(/^\/(.*)\/.*/g, "$1"), "gi"),
-				" "
-		  )
+			new RegExp(rule.replace(/^\/(.*)\/.*/g, "$1"), "gi"),
+			" "
+		)
 		: text;
 };
 
@@ -236,16 +234,17 @@ export const getSelectedText = (
 	editor?: Editor
 ): string => {
 	if (editor) {
-    let from = { line: 0, ch: 0 }, to = editor.getCursor();
-    if (readBeforeOrAfter === "after") {
-      const defaultToValue = {
-        line: editor.lastLine(),
-        ch: 0
-      }
-      const lastWordPosition = editor.wordAt(defaultToValue);
-      from = editor.getCursor();
-      to = lastWordPosition?.to || defaultToValue;
-    }
+		let from = { line: 0, ch: 0 }, to = editor.getCursor();
+		if (readBeforeOrAfter === "after") {
+			const lastLineNumber = editor.lastLine();
+			const defaultToValue = {
+				line: lastLineNumber,
+				ch: editor.getLine(lastLineNumber).length
+			}
+			const lastWordPosition = editor.wordAt(defaultToValue);
+			from = editor.getCursor();
+			to = lastWordPosition?.to || defaultToValue;
+		}
 		return (
 			(editor.getSelection() || editor.getRange(from, to)).trim()
 		);
