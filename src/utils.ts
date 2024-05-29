@@ -130,8 +130,8 @@ export const generateVoice = async (
  * @param message
  * @returns
  */
-export const generateNotice = (message?: string | DocumentFragment) =>
-	new Notice(message || "");
+export const generateNotice = (message?: string | DocumentFragment, duration?: number) =>
+	new Notice(message || "", duration);
 
 /**
  * 生成提示信息

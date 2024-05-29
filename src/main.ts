@@ -145,9 +145,7 @@ export default class Text2Audio extends Plugin {
 			const voices: string[] =
 				getVoices(regionCode) || LANGUAGES[0].voices;
 			const voice: string = getLocalData("voice") || voices[0];
-			const notice = generateNotice().setMessage(
-				generateNoticeText(LANGS[language].convertting, "warning")
-			);
+			const notice = generateNotice(generateNoticeText(LANGS[language].convertting, "warning"), 0);
 			generateVoice({
 				type: "play",
 				text: handleTextFormat(text, textFormatting),
