@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/2.4.0...2.5.0) (2024-05-30)
+
+
+### Features
+
+* 新增播放速度配置 ([5b938a5](https://github.com/luhaifeng666/obsidian-text2audio/commit/5b938a55faed10e6949de49ab5867f37299b8259))
+
 ## [2.4.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/2.3.0...2.4.0) (2024-05-30)
 
 
