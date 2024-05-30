@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/2.3.0...2.4.0) (2024-05-30)
+
+
+### Features
+
+* 优化提示气泡显示逻辑 ([2919db2](https://github.com/luhaifeng666/obsidian-text2audio/commit/2919db23c7c971fd3c054e9a1810e3fb5a80a08b))
+* Read before or after 新增 off 选项,用于关闭此功能 ([8e2cb96](https://github.com/luhaifeng666/obsidian-text2audio/commit/8e2cb96cdcaa1b148c334407155086079b388b7a))
+
 ## [2.3.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/2.2.1...2.3.0) (2024-05-29)
 
 

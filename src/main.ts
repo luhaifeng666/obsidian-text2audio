@@ -22,7 +22,7 @@ const DEFAULT_SETTINGS: Text2AudioSettings = {
 	region: "",
 	directory: "",
 	interposition: false,
-	readBeforeOrAfter: "before",
+	readBeforeOrAfter: "off",
 	autoStop: false,
 	textFormatting: "",
 	language: "zh",
@@ -53,7 +53,8 @@ export default class Text2Audio extends Plugin {
 					const lastLine = editor.lastLine();
 					this.settings.interposition &&
 						editor.replaceSelection(
-							`${selectedText}<audio controls src="${Platform.resourcePathPrefix
+							`${selectedText}<audio controls src="${
+								Platform.resourcePathPrefix
 							}${encodeURIComponent(url)}" />`
 						);
 					editor.setCursor(lastLine + 1, 0);
@@ -64,8 +65,9 @@ export default class Text2Audio extends Plugin {
 					plugin: this,
 					selectedText,
 					onSave,
-					defaultFilename: `${this.app.workspace.getActiveFile()?.basename
-						}_${getDefaultFiletime()}`,
+					defaultFilename: `${
+						this.app.workspace.getActiveFile()?.basename
+					}_${getDefaultFiletime()}`,
 				}).open();
 			},
 		});
@@ -121,7 +123,7 @@ export default class Text2Audio extends Plugin {
 		this.addSettingTab(new Text2AudioSettingTab(this.app, this));
 	}
 
-	onunload() { }
+	onunload() {}
 
 	async loadSettings() {
 		this.settings = Object.assign(
@@ -145,8 +147,9 @@ export default class Text2Audio extends Plugin {
 			const voices: string[] =
 				getVoices(regionCode) || LANGUAGES[0].voices;
 			const voice: string = getLocalData("voice") || voices[0];
-			const notice = generateNotice().setMessage(
-				generateNoticeText(LANGS[language].convertting, "warning")
+			const notice = generateNotice(
+				generateNoticeText(LANGS[language].convertting, "warning"),
+				0
 			);
 			generateVoice({
 				type: "play",

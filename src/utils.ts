@@ -1,8 +1,19 @@
 import sdk, {
 	SpeechSynthesisOutputFormat,
 } from "microsoft-cognitiveservices-speech-sdk";
-import { Notice, Setting, Editor, type ButtonComponent, type TextComponent } from "obsidian";
-import type { ConfigKeys, MessageType, SettingConfig } from "./type";
+import {
+	Notice,
+	Setting,
+	Editor,
+	type ButtonComponent,
+	type TextComponent,
+} from "obsidian";
+import type {
+	ConfigKeys,
+	MessageType,
+	SettingConfig,
+	Text2AudioSettings,
+} from "./type";
 import { LANGUAGES, LANGS } from "./constants";
 import { actions } from "./store";
 
@@ -88,11 +99,13 @@ export const generateVoice = async (
 					) {
 						generateNotice().setMessage(
 							generateNoticeText(
-								`${langSettings.tipMessage.success.synthesis
-								}. ${type === "save"
-									? `${langSettings.tipMessage.success.save} ` +
-									audioFile
-									: ""
+								`${
+									langSettings.tipMessage.success.synthesis
+								}. ${
+									type === "save"
+										? `${langSettings.tipMessage.success.save} ` +
+										  audioFile
+										: ""
 								}`,
 								"success"
 							)
@@ -130,8 +143,10 @@ export const generateVoice = async (
  * @param message
  * @returns
  */
-export const generateNotice = (message?: string | DocumentFragment) =>
-	new Notice(message || "");
+export const generateNotice = (
+	message?: string | DocumentFragment,
+	duration?: number
+) => new Notice(message || "", duration);
 
 /**
  * 生成提示信息
@@ -159,38 +174,45 @@ export const generateSettings = async (
 	const { inputConfig, desc, name, key, type, options, isPassword } = config;
 	const { placeholder, callback } = inputConfig || {};
 	const settingEl = new Setting(container).setName(name).setDesc(desc);
+	let textEl: TextComponent;
+	const handleIconSwitch = (btn: ButtonComponent) => {
+		btn.setIcon(plugin.settings.keyHide ? "eye" : "eye-off");
+		return btn;
+	};
+	const handleInputTypeSwitch = (textEl: TextComponent) => {
+		textEl &&
+			textEl.inputEl.setAttribute(
+				"type",
+				plugin.settings.keyHide ? "password" : "text"
+			);
+	};
 	switch (type) {
 		case "text":
 		case "textArea":
-			let textEl: TextComponent;
-			const handleIconSwitch = (btn: ButtonComponent) => {
-				btn.setIcon(plugin.settings.keyHide ? "eye" : "eye-off")
-				return btn
-			}
-			const handleInputTypeSwitch = (textEl: TextComponent) => {
-				textEl && textEl.inputEl.setAttribute("type", plugin.settings.keyHide ? "password" : "text")
-			}
 			settingEl[type === "text" ? "addText" : "addTextArea"]((text) => {
-				text
-					.setPlaceholder(placeholder || "")
+				text.setPlaceholder(placeholder || "")
 					.setValue(plugin.settings[key])
 					.onChange(async (value) => {
 						callback && callback(value);
 						plugin.settings[key] = value;
 						await plugin.saveSettings();
-					})
+					});
 				if (isPassword) {
-					textEl = text as TextComponent
-					handleInputTypeSwitch(textEl)
+					textEl = text as TextComponent;
+					handleInputTypeSwitch(textEl);
 				}
-			})
-			type === "textArea" && settingEl.setClass("ob-t2v-setting-textarea");
-			isPassword && settingEl.addButton(btn => handleIconSwitch(btn).onClick(async () => {
-				plugin.settings.keyHide = !plugin.settings.keyHide;
-				await plugin.saveSettings()
-				handleIconSwitch(btn)
-				handleInputTypeSwitch(textEl)
-			}))
+			});
+			type === "textArea" &&
+				settingEl.setClass("ob-t2v-setting-textarea");
+			isPassword &&
+				settingEl.addButton((btn) =>
+					handleIconSwitch(btn).onClick(async () => {
+						plugin.settings.keyHide = !plugin.settings.keyHide;
+						await plugin.saveSettings();
+						handleIconSwitch(btn);
+						handleInputTypeSwitch(textEl);
+					})
+				);
 			break;
 
 		case "select":
@@ -208,8 +230,8 @@ export const generateSettings = async (
 		case "toggle":
 			settingEl.addToggle((tg) => {
 				tg.setValue(plugin.settings[key]).onChange(async (value) => {
-					plugin.settings[key] = value
-					await plugin.saveSettings()
+					plugin.settings[key] = value;
+					await plugin.saveSettings();
 				});
 			});
 			break;
@@ -238,9 +260,9 @@ export const getVoices = (region: string) => {
 export const handleTextFormat = (text: string, rule: string) => {
 	return text && rule
 		? text.replace(
-			new RegExp(rule.replace(/^\/(.*)\/.*/g, "$1"), "gi"),
-			" "
-		)
+				new RegExp(rule.replace(/^\/(.*)\/.*/g, "$1"), "gi"),
+				" "
+		  )
 		: text;
 };
 
@@ -248,24 +270,27 @@ export const getAudioFormatType = (audioFormat: string) =>
 	audioFormat.replace(/(.*-)/g, "").toLowerCase() === "mp3" ? "mp3" : "wav";
 
 export const getSelectedText = (
-	readBeforeOrAfter: "before" | "after",
+	readBeforeOrAfter: Text2AudioSettings["readBeforeOrAfter"],
 	editor?: Editor
 ): string => {
 	if (editor) {
-		let from = { line: 0, ch: 0 }, to = editor.getCursor();
-		if (readBeforeOrAfter === "after") {
-			const lastLineNumber = editor.lastLine();
-			const defaultToValue = {
-				line: lastLineNumber,
-				ch: editor.getLine(lastLineNumber).length
+		let content = editor.getSelection();
+		if (readBeforeOrAfter !== "off") {
+			let from = { line: 0, ch: 0 },
+				to = editor.getCursor();
+			if (readBeforeOrAfter === "after") {
+				const lastLineNumber = editor.lastLine();
+				const defaultToValue = {
+					line: lastLineNumber,
+					ch: editor.getLine(lastLineNumber).length,
+				};
+				const lastWordPosition = editor.wordAt(defaultToValue);
+				from = editor.getCursor();
+				to = lastWordPosition?.to || defaultToValue;
 			}
-			const lastWordPosition = editor.wordAt(defaultToValue);
-			from = editor.getCursor();
-			to = lastWordPosition?.to || defaultToValue;
+			content = content || editor.getRange(from, to);
 		}
-		return (
-			(editor.getSelection() || editor.getRange(from, to)).trim()
-		);
+		return content.trim();
 	}
 	return "";
 };
