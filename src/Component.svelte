@@ -21,8 +21,8 @@
 	export let settings: Text2AudioSettings;
 	export let onSave: (url: string) => void;
 	export let defaultFilename: string;
-	let region: string = getLocalData("region") || LANGUAGES[0].region;
-	let voices: string[] = getVoices(region) || LANGUAGES[0].voices;
+	let regionCode: string = getLocalData("region") || LANGUAGES[0].region;
+	let voices: string[] = getVoices(regionCode) || LANGUAGES[0].voices;
 	let voice: string = getLocalData("voice") || voices[0];
 	let audioFormat: string =
 		getLocalData("audioFormat") || VOICE_FORMAT_NAMES[0];
@@ -35,12 +35,12 @@
 
 	const handleLangChange = (event: Event) => {
 		const selectElement = event.target as HTMLSelectElement;
-		region = selectElement.value;
+		regionCode = selectElement.value;
 		voices =
 			LANGUAGES.find((lang) => lang.region === selectElement.value)
 				?.voices || [];
 		voice = voices[0];
-		setLocalData("region", region);
+		setLocalData("region", regionCode);
 		setLocalData("voice", voice);
 	};
 
@@ -58,15 +58,17 @@
 
 	const handleVoiceGeneration = async (type: "save" | "play") => {
 		loading = true;
-		const { directory, region: regionCode, key, textFormatting } = settings;
+		const { directory, region, key, textFormatting, speed } = settings;
 		await generateVoice({
 			text: handleTextFormat(convertedText, textFormatting),
 			key,
 			filename: filename || defaultFilename,
-			region: regionCode,
+			region,
+			regionCode,
 			filePath: directory,
-			voice: `${region}-${getVoiceName(voice)}`,
+			voice: `${regionCode}-${getVoiceName(voice)}`,
 			type,
+			speed,
 			lang: settings.language,
 			audioFormatType: getAudioFormatType(audioFormat),
 			audioFormat:
@@ -110,7 +112,7 @@
 	<select
 		disabled={loading}
 		on:change={handleLangChange}
-		bind:value={region}
+		bind:value={regionCode}
 		name="ob-t2v-languages"
 	>
 		{#each LANGUAGES as lang}

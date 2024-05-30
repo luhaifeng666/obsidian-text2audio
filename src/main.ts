@@ -25,6 +25,7 @@ const DEFAULT_SETTINGS: Text2AudioSettings = {
 	readBeforeOrAfter: "off",
 	autoStop: false,
 	textFormatting: "",
+	speed: 1,
 	language: "zh",
 };
 
@@ -53,8 +54,7 @@ export default class Text2Audio extends Plugin {
 					const lastLine = editor.lastLine();
 					this.settings.interposition &&
 						editor.replaceSelection(
-							`${selectedText}<audio controls src="${
-								Platform.resourcePathPrefix
+							`${selectedText}<audio controls src="${Platform.resourcePathPrefix
 							}${encodeURIComponent(url)}" />`
 						);
 					editor.setCursor(lastLine + 1, 0);
@@ -65,9 +65,8 @@ export default class Text2Audio extends Plugin {
 					plugin: this,
 					selectedText,
 					onSave,
-					defaultFilename: `${
-						this.app.workspace.getActiveFile()?.basename
-					}_${getDefaultFiletime()}`,
+					defaultFilename: `${this.app.workspace.getActiveFile()?.basename
+						}_${getDefaultFiletime()}`,
 				}).open();
 			},
 		});
@@ -123,7 +122,7 @@ export default class Text2Audio extends Plugin {
 		this.addSettingTab(new Text2AudioSettingTab(this.app, this));
 	}
 
-	onunload() {}
+	onunload() { }
 
 	async loadSettings() {
 		this.settings = Object.assign(
@@ -141,7 +140,7 @@ export default class Text2Audio extends Plugin {
 		// 阅读文本
 		if (!this.convertting) {
 			this.convertting = true;
-			const { key, region, textFormatting, language } = this.settings;
+			const { key, region, textFormatting, language, speed } = this.settings;
 			const regionCode: string =
 				getLocalData("region") || LANGUAGES[0].region;
 			const voices: string[] =
@@ -151,11 +150,13 @@ export default class Text2Audio extends Plugin {
 				generateNoticeText(LANGS[language].convertting, "warning"),
 				0
 			);
-			generateVoice({
+			await generateVoice({
 				type: "play",
 				text: handleTextFormat(text, textFormatting),
 				key,
 				region,
+				speed,
+				regionCode,
 				lang: language,
 				voice: `${regionCode}-${getVoiceName(voice)}`,
 				callback: () => {
