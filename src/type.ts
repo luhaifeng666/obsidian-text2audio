@@ -7,6 +7,7 @@ export type ConfigKeys =
 	| "voice"
 	| "audioFormat"
 	| "audioFormatType"
+	| "regionCode"
 	| "type";
 export type MessageType = "success" | "error" | "warning";
 export type SettingType = "name" | "desc" | "key";
@@ -17,7 +18,7 @@ export interface SettingInputConfig {
 }
 export type SettingConfig = Record<SettingType, string> & {
 	inputConfig?: SettingInputConfig;
-	type: "text" | "select" | "toggle" | "textArea";
+	type: "text" | "select" | "toggle" | "textArea" | "slider";
 	options?: Record<string, string>;
 	isPassword?: boolean;
 };
@@ -30,5 +31,6 @@ export interface Text2AudioSettings {
 	readBeforeOrAfter: "off" | "before" | "after";
 	autoStop: boolean;
 	textFormatting: string;
+	speed: number;
 	language: "zh" | "en";
 }

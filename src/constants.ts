@@ -1268,6 +1268,12 @@ export const SETTINGS = [
 		},
 	},
 	{
+		name: "Play speed",
+		key: "speed",
+		desc: "Set the audio playback speed.",
+		type: "slider",
+	},
+	{
 		name: "Language",
 		key: "language",
 		desc: "Select plugin language.",

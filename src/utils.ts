@@ -35,6 +35,7 @@ export const generateVoice = async (
 		callback?: (audioConfig?: sdk.AudioConfig) => void;
 		type: "save" | "play";
 		lang: "zh" | "en";
+		speed: number;
 	}
 ) => {
 	return new Promise((resolve, reject) => {
@@ -50,12 +51,13 @@ export const generateVoice = async (
 			callback,
 			audioFormat,
 			audioFormatType,
+			speed,
+			regionCode,
 		} = config;
 		let synthesizer: sdk.SpeechSynthesizer | null = null;
 
 		const synthesizerClear = () => {
-			synthesizer?.close();
-			synthesizer = null;
+			actions.clearsynthesizer();
 			callback && callback();
 		};
 		const langSettings = LANGS[lang];
@@ -71,12 +73,11 @@ export const generateVoice = async (
 				region || ""
 			);
 			let audioConfig = sdk.AudioConfig.fromSpeakerOutput();
-			if (type === "save")
+			if (type === "save") {
 				audioConfig = sdk.AudioConfig.fromAudioFileOutput(audioFile);
-
-			type === "save"
-				? actions.clearAudioConfig()
-				: actions.setAudioConfig(audioConfig);
+			} else {
+				actions.setAudioConfig(audioConfig);
+			}
 
 			// The language of the voice that speaks.
 			speechConfig.speechSynthesisVoiceName = voice || "";
@@ -88,9 +89,18 @@ export const generateVoice = async (
 
 			actions.setSpeechSynthesizer(synthesizer);
 
+			// SSML content	
+			const ssmlContent = text ? `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="${regionCode}">
+				<voice name="${voice}">
+					<prosody rate="${speed}">
+						${text || ""}
+					</prosody>
+				</voice>
+			</speak>` : "";
+
 			// Start the synthesizer and wait for a result.
-			synthesizer.speakTextAsync(
-				text || "",
+			ssmlContent && synthesizer.speakSsmlAsync(
+				ssmlContent,
 				function (result) {
 					let res = true;
 					if (
@@ -99,13 +109,11 @@ export const generateVoice = async (
 					) {
 						generateNotice().setMessage(
 							generateNoticeText(
-								`${
-									langSettings.tipMessage.success.synthesis
-								}. ${
-									type === "save"
-										? `${langSettings.tipMessage.success.save} ` +
-										  audioFile
-										: ""
+								`${langSettings.tipMessage.success.synthesis
+								}. ${type === "save"
+									? `${langSettings.tipMessage.success.save} ` +
+									audioFile
+									: ""
 								}`,
 								"success"
 							)
@@ -186,6 +194,10 @@ export const generateSettings = async (
 				plugin.settings.keyHide ? "password" : "text"
 			);
 	};
+	const handleSettingSave = async (key: string, value: boolean | string | number) => {
+		plugin.settings[key] = value;
+		await plugin.saveSettings();
+	}
 	switch (type) {
 		case "text":
 		case "textArea":
@@ -194,8 +206,7 @@ export const generateSettings = async (
 					.setValue(plugin.settings[key])
 					.onChange(async (value) => {
 						callback && callback(value);
-						plugin.settings[key] = value;
-						await plugin.saveSettings();
+						handleSettingSave(key, value);
 					});
 				if (isPassword) {
 					textEl = text as TextComponent;
@@ -221,8 +232,7 @@ export const generateSettings = async (
 					.addOptions(options || {})
 					.setValue(plugin.settings[key])
 					.onChange(async (value) => {
-						plugin.settings[key] = value;
-						await plugin.saveSettings();
+						handleSettingSave(key, value);
 					})
 			);
 			break;
@@ -230,10 +240,21 @@ export const generateSettings = async (
 		case "toggle":
 			settingEl.addToggle((tg) => {
 				tg.setValue(plugin.settings[key]).onChange(async (value) => {
-					plugin.settings[key] = value;
-					await plugin.saveSettings();
+					handleSettingSave(key, value);
 				});
 			});
+			break;
+
+		case "slider":
+			settingEl.addSlider((slider) =>
+				slider
+					.setLimits(0.5, 2, 0.1)
+					.setValue(plugin.settings.speed)
+					.onChange((value) => {
+						handleSettingSave(key, value);
+					})
+					.setDynamicTooltip()
+			)
 			break;
 
 		default:
@@ -260,9 +281,9 @@ export const getVoices = (region: string) => {
 export const handleTextFormat = (text: string, rule: string) => {
 	return text && rule
 		? text.replace(
-				new RegExp(rule.replace(/^\/(.*)\/.*/g, "$1"), "gi"),
-				" "
-		  )
+			new RegExp(rule.replace(/^\/(.*)\/.*/g, "$1"), "gi"),
+			" "
+		)
 		: text;
 };
 
