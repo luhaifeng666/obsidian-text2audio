@@ -1240,6 +1240,7 @@ export const SETTINGS = [
 		desc: "Read content before or after the cursor.",
 		type: "select",
 		options: {
+			off: "Off",
 			before: "Before",
 			after: "After",
 		},
