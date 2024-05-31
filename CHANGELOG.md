@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.6.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/2.5.0...2.6.0) (2024-05-31)
+
+
+### Features
+
+* 新增停止生成语音指令: Stop conversion ([6cfbcc0](https://github.com/luhaifeng666/obsidian-text2audio/commit/6cfbcc0e32cc7af28545cba3b03a0f6828494210))
+
 ## [2.5.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/2.4.0...2.5.0) (2024-05-30)
 
 
