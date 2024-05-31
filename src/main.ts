@@ -1,4 +1,11 @@
-import { App, Editor, Plugin, PluginSettingTab, Platform } from "obsidian";
+import {
+	App,
+	Editor,
+	Plugin,
+	PluginSettingTab,
+	Platform,
+	Notice,
+} from "obsidian";
 import {
 	generateSettings,
 	generateVoice,
@@ -29,6 +36,8 @@ const DEFAULT_SETTINGS: Text2AudioSettings = {
 	language: "zh",
 };
 
+let notice: Notice;
+
 export default class Text2Audio extends Plugin {
 	settings: Text2AudioSettings = DEFAULT_SETTINGS;
 	convertting = false;
@@ -54,7 +63,8 @@ export default class Text2Audio extends Plugin {
 					const lastLine = editor.lastLine();
 					this.settings.interposition &&
 						editor.replaceSelection(
-							`${selectedText}<audio controls src="${Platform.resourcePathPrefix
+							`${selectedText}<audio controls src="${
+								Platform.resourcePathPrefix
 							}${encodeURIComponent(url)}" />`
 						);
 					editor.setCursor(lastLine + 1, 0);
@@ -65,8 +75,9 @@ export default class Text2Audio extends Plugin {
 					plugin: this,
 					selectedText,
 					onSave,
-					defaultFilename: `${this.app.workspace.getActiveFile()?.basename
-						}_${getDefaultFiletime()}`,
+					defaultFilename: `${
+						this.app.workspace.getActiveFile()?.basename
+					}_${getDefaultFiletime()}`,
 				}).open();
 			},
 		});
@@ -92,6 +103,14 @@ export default class Text2Audio extends Plugin {
 			},
 		});
 
+		this.addCommand({
+			id: "t2a-stop",
+			name: "Stop conversion",
+			callback: () => {
+				this.stop();
+			},
+		});
+
 		this.registerEvent(
 			this.app.workspace.on("editor-menu", (menu, _, markdownView) => {
 				const selectedText = getSelectedText(
@@ -111,10 +130,7 @@ export default class Text2Audio extends Plugin {
 
 		this.registerEvent(
 			this.app.workspace.on("layout-change", () => {
-				if (this.settings.autoStop) {
-					actions.pause();
-					actions.clearAudioConfig();
-				}
+				this.settings.autoStop && actions.pause();
 			})
 		);
 
@@ -122,7 +138,7 @@ export default class Text2Audio extends Plugin {
 		this.addSettingTab(new Text2AudioSettingTab(this.app, this));
 	}
 
-	onunload() { }
+	onunload() {}
 
 	async loadSettings() {
 		this.settings = Object.assign(
@@ -136,17 +152,24 @@ export default class Text2Audio extends Plugin {
 		await this.saveData(this.settings);
 	}
 
+	stop() {
+		notice && notice.hide();
+		actions.clearsynthesizer();
+		this.convertting = false;
+	}
+
 	async play(text: string) {
 		// 阅读文本
 		if (!this.convertting) {
 			this.convertting = true;
-			const { key, region, textFormatting, language, speed } = this.settings;
+			const { key, region, textFormatting, language, speed } =
+				this.settings;
 			const regionCode: string =
 				getLocalData("region") || LANGUAGES[0].region;
 			const voices: string[] =
 				getVoices(regionCode) || LANGUAGES[0].voices;
 			const voice: string = getLocalData("voice") || voices[0];
-			const notice = generateNotice(
+			notice = generateNotice(
 				generateNoticeText(LANGS[language].convertting, "warning"),
 				0
 			);
