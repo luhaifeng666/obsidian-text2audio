@@ -1252,9 +1252,15 @@ export const SETTINGS = [
 		type: "toggle",
 	},
 	{
+		name: "Auto pause",
+		key: "autoPause",
+		desc: "Whether to stop playing when closing or opening a note?",
+		type: "toggle",
+	},
+	{
 		name: "Auto stop",
 		key: "autoStop",
-		desc: "Whether to stop playing when closing or opening a note?",
+		desc: "Whether to terminate speech conversion when closing or opening a note?",
 		type: "toggle",
 	},
 	{

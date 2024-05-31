@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.7.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/2.6.0...2.7.0) (2024-05-31)
+
+
+### Features
+
+* 更改Auto Stop为Auto Pause, 并将Auto Stop配置的功能调整为,在打开或关闭笔记的时候,终止语音转换 ([a6f26b0](https://github.com/luhaifeng666/obsidian-text2audio/commit/a6f26b0e783bd717ac9377be40509f58ad4955a9))
+
 ## [2.6.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/2.5.0...2.6.0) (2024-05-31)
 
 
