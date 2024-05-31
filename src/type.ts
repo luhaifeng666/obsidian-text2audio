@@ -30,6 +30,7 @@ export interface Text2AudioSettings {
 	interposition: boolean;
 	readBeforeOrAfter: "off" | "before" | "after";
 	autoStop: boolean;
+	autoPause: boolean;
 	textFormatting: string;
 	speed: number;
 	language: "zh" | "en";

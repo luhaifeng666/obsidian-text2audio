@@ -31,6 +31,7 @@ const DEFAULT_SETTINGS: Text2AudioSettings = {
 	interposition: false,
 	readBeforeOrAfter: "off",
 	autoStop: false,
+	autoPause: false,
 	textFormatting: "",
 	speed: 1,
 	language: "zh",
@@ -130,7 +131,8 @@ export default class Text2Audio extends Plugin {
 
 		this.registerEvent(
 			this.app.workspace.on("layout-change", () => {
-				this.settings.autoStop && actions.pause();
+				this.settings.autoPause && actions.pause();
+				this.settings.autoStop && this.stop();
 			})
 		);
 
