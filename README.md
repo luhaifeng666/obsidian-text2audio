@@ -12,7 +12,7 @@
 
 ## Change Log
 
-[You can view the latest changes here.](./CHANGELOG.md)/
+[You can view the latest changes here.](./CHANGELOG.md)
 
 ## Prerequisites
 
