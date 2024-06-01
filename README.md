@@ -6,9 +6,11 @@
   <img src="https://img.shields.io/badge/version-2.7.0-blue" alt="version_tag" />
   <img src="https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=downloads&query=%24%5B%22text2audio%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json" />
 </p>
+
+
 ## Documents
 
-[Chinese](./README.zh.md) | [English](./README.md)
+[Simplified Chinese](./README.zh.md) | [Traditional Chinese](./README.zh.md) | [English](./README.md)
 
 ## Change Log
 
@@ -16,7 +18,7 @@
 
 ## Prerequisites
 
-Before you start using this plug-in, you need to [apply for Microsoft's text-to-speech service](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/index-text-to-speech).
+Before using this plugin, you need to apply for Microsoft's [Text-to-Speech Service](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/index-text-to-speech).
 
 ## Installation and Configuration
 
@@ -34,26 +36,26 @@ You can configure the plugin by following the steps below.
 
 - After logging in, click on `Azure AI services`.
   
-  <p align="left"><img src="./.attachments/Pasted_image_20240531141159.png" alt="img" width="800" /></p>
+  <p align="center"><img src="./.attachments/Pasted_image_20240531141159.png" alt="img" width="800" /></p>
   
 - Find `Speech service` and click `create` to create a service instance.
-  <p align="left"><img src="./.attachments/Pasted_image_20240531141323.png" alt="img" width="800" /></p>
+  <p align="center"><img src="./.attachments/Pasted_image_20240531141323.png" alt="img" width="800" /></p>
 
 - Create a `Resource group` (if it's your first time using it), and then choose the Region closest to you.
-  <p align="left"><img src="./.attachments/Pasted_image_20240531141619.png" alt="img" width="800" /></p>
+  <p align="center"><img src="./.attachments/Pasted_image_20240531141619.png" alt="img" width="800" /></p>
 
 - The `Name` must be unique globally, so please name it longer, note: no spaces or `_` are allowed.
 - Choose `Free F0` for Pricing tier.
 - Click `Review + create`, then click `Create` after the page transitions.
 - Wait a moment for the instance to be created, then click Go to resource.
-  <p align="left"><img src="./.attachments/Pasted_image_20240531142151.png" alt="img" width="800" /></p>
+  <p align="center"><img src="./.attachments/Pasted_image_20240531142151.png" alt="img" width="800" /></p>
 
 - Click on `Keys and Endpoint` in the left sidebar.
-  <p align="left"><img src="./.attachments/Pasted_image_20240531142300.png" alt="img" width="800" /></p>
+  <p align="center"><img src="./.attachments/Pasted_image_20240531142300.png" alt="img" width="800" /></p>
 
 - Copy the `KEY` to the `Speech key` field in Obsidian **Text2Audio**, and copy `Location/Region` to the `Speech Region` field.
-  <p align="left"><img src="./.attachments/Pasted_image_20240531142344.png" alt="img" width="800" /></p>
-  <p align="left"><img src="./.attachments/Pasted_image_20240531142516.png" alt="img" width="800" /></p>
+  <p align="center"><img src="./.attachments/Pasted_image_20240531142344.png" alt="img" width="800" /></p>
+  <p align="center"><img src="./.attachments/Pasted_image_20240531142516.png" alt="img" width="800" /></p>
 
 - Congratulations, you have completed the setup!
 
@@ -68,7 +70,7 @@ By setting hotkeys, you can quickly convert text to speech using keyboard shortc
 - Pause or resume the audio: Pause/play.
 - Stop conversion: Terminate text-to-speech conversion and close the current player process.
 - Convert text to audio: Open the plugin window (select text with the mouse, then press the shortcut key, and the selected text will appear in the plugin window input box).
-  <p align="left"><img src="./.attachments/Pasted_image_20240601005203.png" alt="img" width="500" /></p>
+  <p align="center"><img src="./.attachments/Pasted_image_20240601005203.png" alt="img" width="500" /></p>
 
 ### Using the plugin window
 
