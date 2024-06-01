@@ -77,4 +77,4 @@ By setting hotkeys, you can quickly convert text to speech using keyboard shortc
 -   Enter the text and select the language that you wanna convert to.
 -   Click the play or save button.
 
-<p align="center"><img src="./zh-example.gif" ali /></p>
+<p align="center"><img src="./en-example.gif" ali /></p>
