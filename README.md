@@ -32,29 +32,28 @@ You can configure the plugin by following the steps below.
 
 - You can quickly register or log in to **Microsoft Azure Cloud Services** through this [website](https://portal.azure.com/#home).
 
-  <p align="left"><img src="./_attachments/Pasted_image_20240531141159.png" alt="img" width="800" /></p>
-
 - After logging in, click on `Azure AI services`.
-  <p align="left"><img src="./_attachments/Pasted_image_20240531141323.png" alt="img" width="800" /></p>
-
+  
+  <p align="left"><img src="./.attachments/Pasted_image_20240531141159.png" alt="img" width="800" /></p>
+  
 - Find `Speech service` and click `create` to create a service instance.
-  <p align="left"><img src="./_attachments/Pasted_image_20240531141323.png" alt="img" width="800" /></p>
+  <p align="left"><img src="./.attachments/Pasted_image_20240531141323.png" alt="img" width="800" /></p>
 
 - Create a `Resource group` (if it's your first time using it), and then choose the Region closest to you.
-  <p align="left"><img src="./_attachments/Pasted_image_20240531141619.png" alt="img" width="800" /></p>
+  <p align="left"><img src="./.attachments/Pasted_image_20240531141619.png" alt="img" width="800" /></p>
 
 - The `Name` must be unique globally, so please name it longer, note: no spaces or `_` are allowed.
 - Choose `Free F0` for Pricing tier.
 - Click `Review + create`, then click `Create` after the page transitions.
 - Wait a moment for the instance to be created, then click Go to resource.
-  <p align="left"><img src="./_attachments/Pasted_image_20240531142151.png" alt="img" width="800" /></p>
+  <p align="left"><img src="./.attachments/Pasted_image_20240531142151.png" alt="img" width="800" /></p>
 
 - Click on `Keys and Endpoint` in the left sidebar.
-  <p align="left"><img src="./_attachments/Pasted_image_20240531142300.png" alt="img" width="800" /></p>
+  <p align="left"><img src="./.attachments/Pasted_image_20240531142300.png" alt="img" width="800" /></p>
 
 - Copy the `KEY` to the `Speech key` field in Obsidian **Text2Audio**, and copy `Location/Region` to the `Speech Region` field.
-  <p align="left"><img src="./_attachments/Pasted_image_20240531142344.png" alt="img" width="800" /></p>
-  <p align="left"><img src="./_attachments/Pasted_image_20240531142516.png" alt="img" width="800" /></p>
+  <p align="left"><img src="./.attachments/Pasted_image_20240531142344.png" alt="img" width="800" /></p>
+  <p align="left"><img src="./.attachments/Pasted_image_20240531142516.png" alt="img" width="800" /></p>
 
 - Congratulations, you have completed the setup!
 
@@ -69,7 +68,7 @@ By setting hotkeys, you can quickly convert text to speech using keyboard shortc
 - Pause or resume the audio: Pause/play.
 - Stop conversion: Terminate text-to-speech conversion and close the current player process.
 - Convert text to audio: Open the plugin window (select text with the mouse, then press the shortcut key, and the selected text will appear in the plugin window input box).
-  <p align="left"><img src="./_attachments/Pasted_image_20240601005203.png" alt="img" width="500" /></p>
+  <p align="left"><img src="./.attachments/Pasted_image_20240601005203.png" alt="img" width="500" /></p>
 
 ### Using the plugin window
 
@@ -77,4 +76,4 @@ By setting hotkeys, you can quickly convert text to speech using keyboard shortc
 -   Enter the text and select the language that you wanna convert to.
 -   Click the play or save button.
 
-<p align="center"><img src="./zh-example.gif" ali /></p>
+<p align="center"><img src=".attachments/en-example.gif" ali /></p>

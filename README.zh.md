@@ -33,16 +33,14 @@
 ### 配置插件
 - 您可以通过这个[网址](https://portal.azure.com/#home)快速注册或登录**微软Azure云服务**。
 
-  <p align="left"><img src="./_attachments/Pasted_image_20240531141159.png" alt="img" width="800" /></p>
-
 - 登录后，点击 `Azure AI services`。
-  <p align="left"><img src="./_attachments/Pasted_image_20240531141323.png" alt="img" width="800" /></p>
+  <p align="left"><img src=".attachments\Pasted_image_20240531141159.png" alt="img" width="800" /></p>
   
 - 找到 `Speech service` 后点击 `create`，创建一个服务实例。
-  <p align="left"><img src="./_attachments/Pasted_image_20240531141323.png" alt="img" width="800" /></p>
+  <p align="left"><img src="./.attachments/Pasted_image_20240531141323.png" alt="img" width="800" /></p>
   
 - 创建一个 `Resource group`（如果是第一次使用），然后选择离您最近的 `Region`。
-  <p align="left"><img src="./_attachments/Pasted_image_20240531141619.png" alt="img" width="800" /></p>
+  <p align="left"><img src="./.attachments/Pasted_image_20240531141619.png" alt="img" width="800" /></p>
   
 - `Name` 规定全网不能重复，所以请命名长一些，注意：不能有空格或 ` _` 等。
 
@@ -51,14 +49,14 @@
 - 点击 `Review + create`，页面跳转后点击 `Create`。
 
 - 稍等一会儿等待实例创建，点击 `Go to resource`。
-  <p align="left"><img src="./_attachments/Pasted_image_20240531142151.png" alt="img" width="800" /></p>
+  <p align="left"><img src="./.attachments/Pasted_image_20240531142151.png" alt="img" width="800" /></p>
   
 - 点击左侧侧边栏的 `Keys and Endpoint`。
-  <p align="left"><img src="./_attachments/Pasted_image_20240531142300.png" alt="img" width="800" /></p>
+  <p align="left"><img src="./.attachments/Pasted_image_20240531142300.png" alt="img" width="800" /></p>
   
 - 复制 `KEY` 到 Obsidian **Text2Audio** 的 `Speech key`，复制 `Location/Region` 到 `Speech Region`。
-  <p align="left"><img src="./_attachments/Pasted_image_20240531142344.png" alt="img" width="800" /></p>
-  <p align="left"><img src="./_attachments/Pasted_image_20240531142516.png" alt="img" width="800" /></p>
+  <p align="left"><img src="./.attachments/Pasted_image_20240531142344.png" alt="img" width="800" /></p>
+  <p align="left"><img src="./.attachments/Pasted_image_20240531142516.png" alt="img" width="800" /></p>
   
 - 恭喜你，完成设置！
 ## 如何使用
@@ -71,7 +69,7 @@
 - Stop conversion: 终止文本转语音并关闭当前播放器进程。
 - 通过设置热键，使用快捷键快速将文本转换成语音，可自定义快捷键和解释如下。
 - Convert text to audio: 打开插件输入框窗口（鼠标选中文本，再按下快捷键将，选中的文本将出现在插件窗口的输入框中）。
-  <p align="left"><img src="./_attachments/Pasted_image_20240601005203.png" alt="img" width="500" /></p>
+  <p align="left"><img src="./.attachments/Pasted_image_20240601005203.png" alt="img" width="500" /></p>
 
 ### 通过插件窗口
 
@@ -79,4 +77,4 @@
 - 输入文本并选择您想要转换成的语言。
 - 单击播放或保存按钮。
 
-<p align="center"><img src="./zh-example.gif" alt="example" /></p>
+<p align="center"><img src=".attachments/zh-example.gif" alt="example" /></p>
