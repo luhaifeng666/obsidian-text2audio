@@ -1197,6 +1197,54 @@ const VOICE_FORMAT_VASL = Object.keys(SpeechSynthesisOutputFormat).filter(
 	(val) => isNaN(Number(val))
 );
 
+const STYLE_OPTIONS = {
+	advertisement_upbeat: "advertisement upbeat",
+	affectionate: "affectionate",
+	angry: "angry",
+	assistant: "assistant",
+	calm: "calm",
+	chat: "chat",
+	cheerful: "cheerful",
+	customerservice: "customerservice",
+	depressed: "depressed",
+	disgruntled: "disgruntled",
+	"documentary-narration": "documentary narration",
+	embarrassed: "embarrassed",
+	empathetic: "empathetic",
+	envious: "envious",
+	excited: "excited",
+	fearful: "fearful",
+	friendly: "friendly",
+	gentle: "gentle",
+	hopeful: "hopeful",
+	lyrical: "lyrical",
+	"narration-professional": "narration professional",
+	"narration-relaxed": "narration relaxed",
+	newscast: "newscast",
+	"newscast-casual": "newscast casual",
+	"newscast-formal": "newscast formal",
+	"poetry-reading": "poetry reading",
+	sad: "sad",
+	serious: "serious",
+	shouting: "shouting",
+	sports_commentary: "sports commentary",
+	sports_commentary_excited: "sports commentary excited",
+	whispering: "whispering",
+	terrified: "terrified",
+	unfriendly: "unfriendly",
+};
+
+// const ROLE_OPTIONS = {
+// 	Girl: "Girl",
+// 	Boy: "Boy",
+// 	YoungAdultFemale: "YoungAdultFemale",
+// 	YoungAdultMale: "YoungAdultMale",
+// 	OlderAdultFemale: "OlderAdultFemale",
+// 	OlderAdultMale: "OlderAdultMale",
+// 	SeniorFemale: "SeniorFemale",
+// 	SeniorMale: "SeniorMale",
+// };
+
 export const VOICE_FORMAT_MAP = VOICE_FORMAT_NAMES.reduce(
 	(res, key, index) => ({
 		...res,
@@ -1274,10 +1322,42 @@ export const SETTINGS = [
 		},
 	},
 	{
+		name: "Speaking style",
+		key: "style",
+		desc: "The voice-specific speaking style.",
+		type: "select",
+		options: STYLE_OPTIONS,
+	},
+	// {
+	// 	name: "Speaking role",
+	// 	key: "role",
+	// 	desc: "The speaking role-play.",
+	// 	type: "select",
+	// 	options: ROLE_OPTIONS,
+	// },
+	{
+		name: "Intensity",
+		key: "intensity",
+		desc: "The intensity of the speaking style.",
+		type: "slider",
+		range: [1, 200],
+		step: 1,
+	},
+	{
 		name: "Play speed",
 		key: "speed",
 		desc: "Set the audio playback speed.",
 		type: "slider",
+		range: [0.5, 2],
+		step: 0.1,
+	},
+	{
+		name: "Volume",
+		key: "volume",
+		desc: "Indicates the volume level of the speaking voice.",
+		type: "slider",
+		range: [0, 100],
+		step: 1,
 	},
 	{
 		name: "Language",
