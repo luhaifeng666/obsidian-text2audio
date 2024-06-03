@@ -1,6 +1,6 @@
 {
   "name": "text2audio",
-  "version": "2.7.0",
+  "version": "3.0.0",
   "description": "Convert text to speech",
   "main": "main.js",
   "type": "module",

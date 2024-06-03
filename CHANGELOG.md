@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/2.7.0...3.0.0) (2024-06-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* 合并播放暂停指令
+
+### Features
+
+* 新增音量&阅读情感&情感强度配置 ([ebb1e99](https://github.com/luhaifeng666/obsidian-text2audio/commit/ebb1e99f08b904e6a5c7dfcc2a2ebd68d40b0bff))
+
+
+* Merge pull request #53 from luhaifeng666/test ([10eeb42](https://github.com/luhaifeng666/obsidian-text2audio/commit/10eeb4206f962e7e2331ffaffe1fce0bb3d88382)), closes [#53](https://github.com/luhaifeng666/obsidian-text2audio/issues/53)
+
 ## [2.7.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/2.6.0...2.7.0) (2024-05-31)
 
 
