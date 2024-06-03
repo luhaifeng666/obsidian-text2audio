@@ -10,7 +10,7 @@
 
 ## Documents
 
-[Simplified Chinese](./README.zh.md) | [Traditional Chinese](./README.zh.md) | [English](./README.md)
+[Simplified Chinese](./README.zh.md) | [Traditional Chinese](./README.zht.md) | [English](./README.md)
 
 ## Change Log
 
