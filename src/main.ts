@@ -34,7 +34,11 @@ const DEFAULT_SETTINGS: Text2AudioSettings = {
 	autoPause: false,
 	textFormatting: "",
 	speed: 1,
+	intensity: 100,
+	style: "advertisement_upbeat",
+	// role: "Boy",
 	language: "zh",
+	volume: 50,
 };
 
 let notice: Notice;
@@ -164,8 +168,7 @@ export default class Text2Audio extends Plugin {
 		// 阅读文本
 		if (!this.convertting) {
 			this.convertting = true;
-			const { key, region, textFormatting, language, speed } =
-				this.settings;
+			const { textFormatting, language } = this.settings;
 			const regionCode: string =
 				getLocalData("region") || LANGUAGES[0].region;
 			const voices: string[] =
@@ -178,12 +181,9 @@ export default class Text2Audio extends Plugin {
 			await generateVoice({
 				type: "play",
 				text: handleTextFormat(text, textFormatting),
-				key,
-				region,
-				speed,
 				regionCode,
-				lang: language,
 				voice: `${regionCode}-${getVoiceName(voice)}`,
+				settings: this.settings,
 				callback: () => {
 					notice.hide();
 					this.convertting = false;

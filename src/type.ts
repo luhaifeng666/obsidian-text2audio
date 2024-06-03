@@ -1,8 +1,6 @@
 export type ConfigKeys =
 	| "text"
 	| "filename"
-	| "key"
-	| "region"
 	| "filePath"
 	| "voice"
 	| "audioFormat"
@@ -21,6 +19,8 @@ export type SettingConfig = Record<SettingType, string> & {
 	type: "text" | "select" | "toggle" | "textArea" | "slider";
 	options?: Record<string, string>;
 	isPassword?: boolean;
+	range?: Array<number>;
+	step?: number;
 };
 export interface Text2AudioSettings {
 	keyHide: boolean;
@@ -34,4 +34,8 @@ export interface Text2AudioSettings {
 	textFormatting: string;
 	speed: number;
 	language: "zh" | "en";
+	style: string;
+	// role: string;
+	intensity: number;
+	volume: number;
 }

@@ -34,40 +34,46 @@ export const generateVoice = async (
 	config: Partial<Record<ConfigKeys, string>> & {
 		callback?: (audioConfig?: sdk.AudioConfig) => void;
 		type: "save" | "play";
-		lang: "zh" | "en";
-		speed: number;
+		settings: Text2AudioSettings;
 	}
 ) => {
 	return new Promise((resolve, reject) => {
 		const {
 			filename,
 			text,
-			key,
-			region,
-			filePath,
 			voice,
 			type,
-			lang,
 			callback,
 			audioFormat,
 			audioFormatType,
-			speed,
 			regionCode,
+			settings,
 		} = config;
 		let synthesizer: sdk.SpeechSynthesizer | null = null;
+		const {
+			key,
+			region,
+			language,
+			speed,
+			directory,
+			style,
+			// role,
+			volume,
+			intensity,
+		} = settings;
 
 		const synthesizerClear = () => {
 			actions.clearsynthesizer();
 			callback && callback();
 		};
-		const langSettings = LANGS[lang];
+		const langSettings = LANGS[language];
 
 		// 生成时停止播放，并清除 sdk.AudioConfig 缓存
 		actions.pause();
 		actions.clearAudioConfig();
 
 		try {
-			const audioFile = `${filePath}/${filename}.${audioFormatType}`;
+			const audioFile = `${directory}/${filename}.${audioFormatType}`;
 			const speechConfig = sdk.SpeechConfig.fromSubscription(
 				key || "",
 				region || ""
@@ -89,55 +95,63 @@ export const generateVoice = async (
 
 			actions.setSpeechSynthesizer(synthesizer);
 
-			// SSML content	
-			const ssmlContent = text ? `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="${regionCode}">
+			// SSML content
+			const ssmlContent = text
+				? `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="${regionCode}">
 				<voice name="${voice}">
-					<prosody rate="${speed}">
-						${text || ""}
-					</prosody>
+					<mstts:express-as style="${style}" styledegree="${intensity / 100}">
+						<prosody rate="${speed}" volume="${volume}">
+							${text || ""}
+						</prosody>
+					</mstts:express-as>
 				</voice>
-			</speak>` : "";
+			</speak>`
+				: "";
 
 			// Start the synthesizer and wait for a result.
-			ssmlContent && synthesizer.speakSsmlAsync(
-				ssmlContent,
-				function (result) {
-					let res = true;
-					if (
-						result.reason ===
-						sdk.ResultReason.SynthesizingAudioCompleted
-					) {
+			ssmlContent &&
+				synthesizer.speakSsmlAsync(
+					ssmlContent,
+					function (result) {
+						let res = true;
+						if (
+							result.reason ===
+							sdk.ResultReason.SynthesizingAudioCompleted
+						) {
+							generateNotice().setMessage(
+								generateNoticeText(
+									`${
+										langSettings.tipMessage.success
+											.synthesis
+									}. ${
+										type === "save"
+											? `${langSettings.tipMessage.success.save} ` +
+											  audioFile
+											: ""
+									}`,
+									"success"
+								)
+							);
+						} else {
+							generateNotice().setMessage(
+								generateNoticeText(
+									`${langSettings.tipMessage.error.synthesis}`,
+									"error"
+								)
+							);
+							res = false;
+						}
+						res ? resolve(res) : reject(res);
+						synthesizerClear();
+					},
+					function (err) {
 						generateNotice().setMessage(
-							generateNoticeText(
-								`${langSettings.tipMessage.success.synthesis
-								}. ${type === "save"
-									? `${langSettings.tipMessage.success.save} ` +
-									audioFile
-									: ""
-								}`,
-								"success"
-							)
+							generateNoticeText(err, "error")
 						);
-					} else {
-						generateNotice().setMessage(
-							generateNoticeText(
-								`${langSettings.tipMessage.error.synthesis}`,
-								"error"
-							)
-						);
-						res = false;
+						synthesizerClear();
+						reject(false);
 					}
-					res ? resolve(res) : reject(res);
-					synthesizerClear();
-				},
-				function (err) {
-					generateNotice().setMessage(
-						generateNoticeText(err, "error")
-					);
-					synthesizerClear();
-					reject(false);
-				}
-			);
+				);
 		} catch (e) {
 			generateNotice().setMessage(generateNoticeText(`${e}`, "error"));
 			synthesizerClear();
@@ -179,7 +193,17 @@ export const generateSettings = async (
 	plugin: any,
 	config: SettingConfig
 ) => {
-	const { inputConfig, desc, name, key, type, options, isPassword } = config;
+	const {
+		inputConfig,
+		desc,
+		name,
+		key,
+		type,
+		options,
+		isPassword,
+		range,
+		step,
+	} = config;
 	const { placeholder, callback } = inputConfig || {};
 	const settingEl = new Setting(container).setName(name).setDesc(desc);
 	let textEl: TextComponent;
@@ -194,10 +218,13 @@ export const generateSettings = async (
 				plugin.settings.keyHide ? "password" : "text"
 			);
 	};
-	const handleSettingSave = async (key: string, value: boolean | string | number) => {
+	const handleSettingSave = async (
+		key: string,
+		value: boolean | string | number
+	) => {
 		plugin.settings[key] = value;
 		await plugin.saveSettings();
-	}
+	};
 	switch (type) {
 		case "text":
 		case "textArea":
@@ -248,13 +275,17 @@ export const generateSettings = async (
 		case "slider":
 			settingEl.addSlider((slider) =>
 				slider
-					.setLimits(0.5, 2, 0.1)
-					.setValue(plugin.settings.speed)
+					.setLimits(
+						(range as number[])[0],
+						(range as number[])[1],
+						step as number
+					)
+					.setValue(plugin.settings[key])
 					.onChange((value) => {
 						handleSettingSave(key, value);
 					})
 					.setDynamicTooltip()
-			)
+			);
 			break;
 
 		default:
@@ -281,9 +312,9 @@ export const getVoices = (region: string) => {
 export const handleTextFormat = (text: string, rule: string) => {
 	return text && rule
 		? text.replace(
-			new RegExp(rule.replace(/^\/(.*)\/.*/g, "$1"), "gi"),
-			" "
-		)
+				new RegExp(rule.replace(/^\/(.*)\/.*/g, "$1"), "gi"),
+				" "
+		  )
 		: text;
 };
 
