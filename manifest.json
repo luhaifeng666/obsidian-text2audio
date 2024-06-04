@@ -1,7 +1,7 @@
 {
   "id": "text2audio",
   "name": "Text2Audio",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "minAppVersion": "0.15.0",
   "description": "Convert text to speech",
   "author": "luhaifeng666",
