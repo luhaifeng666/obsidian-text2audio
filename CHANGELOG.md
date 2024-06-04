@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/3.0.0...3.1.0) (2024-06-04)
+
+
+### Features
+
+* 优化配置界面结构，新增开发者选项开关 ([ba9d8f8](https://github.com/luhaifeng666/obsidian-text2audio/commit/ba9d8f8ed432646f3aca035d6ac4f71bde8608a7))
+
 ## [3.0.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/2.7.0...3.0.0) (2024-06-03)
 
 
