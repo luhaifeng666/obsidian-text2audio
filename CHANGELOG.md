@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.3](https://github.com/luhaifeng666/obsidian-text2audio/compare/3.1.2...3.1.3) (2024-06-04)
+
+
+### Bug Fixes
+
+* 修复mp3格式不生效的问题 ([c485a00](https://github.com/luhaifeng666/obsidian-text2audio/commit/c485a0095c00c45137d0eb020709165e5a39b3ef))
+
 ### [3.1.2](https://github.com/luhaifeng666/obsidian-text2audio/compare/3.1.1...3.1.2) (2024-06-04)
 
 ### [3.1.1](https://github.com/luhaifeng666/obsidian-text2audio/compare/3.1.0...3.1.1) (2024-06-04)
