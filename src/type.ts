@@ -38,4 +38,5 @@ export interface Text2AudioSettings {
 	// role: string;
 	intensity: number;
 	volume: number;
+	enableDeveloperMode: boolean;
 }

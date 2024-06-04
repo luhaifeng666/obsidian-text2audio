@@ -1252,124 +1252,147 @@ export const VOICE_FORMAT_MAP = VOICE_FORMAT_NAMES.reduce(
 	}),
 	{}
 );
-
-export const SETTINGS = [
+export const SETTINGS_GROUP = [
 	{
-		name: "Speech key",
-		key: "key",
-		desc: "Your Azure AI services API's secret key.",
-		type: "text",
-		isPassword: true,
-		inputConfig: {
-			placeholder: "Enter your secret key",
-		},
+		title: "Basic Settings",
+		desc: "",
+		settings: [
+			{
+				name: "Speech key",
+				key: "key",
+				desc: "Your Azure AI services API's secret key.",
+				type: "text",
+				isPassword: true,
+				inputConfig: {
+					placeholder: "Enter your secret key",
+				},
+			},
+			{
+				name: "Speech region",
+				key: "region",
+				desc: "Your Azure AI services API's region.",
+				type: "text",
+				inputConfig: {
+					placeholder: "Enter your region",
+				},
+			},
+			{
+				name: "Directory",
+				key: "directory",
+				desc: "Save the audio file to this directory.",
+				type: "text",
+				inputConfig: {
+					placeholder: "Full path",
+				},
+			},
+			{
+				name: "Language",
+				key: "language",
+				desc: "Select plugin language.",
+				type: "select",
+				options: {
+					zh: "中文",
+					en: "English",
+				},
+			},
+		]
 	},
 	{
-		name: "Speech region",
-		key: "region",
-		desc: "Your Azure AI services API's region.",
-		type: "text",
-		inputConfig: {
-			placeholder: "Enter your region",
-		},
+		title: "Voice Settings",
+		desc: "",
+		settings: [
+			{
+				name: "Interposition",
+				key: "interposition",
+				desc: "Whether to insert the generated speech at the location of the cursor?",
+				type: "toggle",
+			},
+			{
+				name: "Auto pause",
+				key: "autoPause",
+				desc: "Whether to stop playing when closing or opening a note?",
+				type: "toggle",
+			},
+			{
+				name: "Auto stop",
+				key: "autoStop",
+				desc: "Whether to terminate speech conversion when closing or opening a note?",
+				type: "toggle",
+			},
+			{
+				name: "Read before or after",
+				key: "readBeforeOrAfter",
+				desc: "Read content before or after the cursor.",
+				type: "select",
+				options: {
+					off: "Off",
+					before: "Before",
+					after: "After",
+				},
+			},
+			{
+				name: "Speaking style",
+				key: "style",
+				desc: "The voice-specific speaking style.",
+				type: "select",
+				options: STYLE_OPTIONS,
+			},
+			// {
+			// 	name: "Speaking role",
+			// 	key: "role",
+			// 	desc: "The speaking role-play.",
+			// 	type: "select",
+			// 	options: ROLE_OPTIONS,
+			// },
+			{
+				name: "Intensity",
+				key: "intensity",
+				desc: "The intensity of the speaking style.",
+				type: "slider",
+				range: [1, 200],
+				step: 1,
+			},
+			{
+				name: "Play speed",
+				key: "speed",
+				desc: "Set the audio playback speed.",
+				type: "slider",
+				range: [0.5, 2],
+				step: 0.1,
+			},
+			{
+				name: "Volume",
+				key: "volume",
+				desc: "Indicates the volume level of the speaking voice.",
+				type: "slider",
+				range: [0, 100],
+				step: 1,
+			},
+		]
 	},
 	{
-		name: "Directory",
-		key: "directory",
-		desc: "Save the audio file to this directory.",
-		type: "text",
-		inputConfig: {
-			placeholder: "Full path",
-		},
-	},
-	{
-		name: "Read before or after",
-		key: "readBeforeOrAfter",
-		desc: "Read content before or after the cursor.",
-		type: "select",
-		options: {
-			off: "Off",
-			before: "Before",
-			after: "After",
-		},
-	},
-	{
-		name: "Interposition",
-		key: "interposition",
-		desc: "Whether to insert the generated speech at the location of the cursor?",
-		type: "toggle",
-	},
-	{
-		name: "Auto pause",
-		key: "autoPause",
-		desc: "Whether to stop playing when closing or opening a note?",
-		type: "toggle",
-	},
-	{
-		name: "Auto stop",
-		key: "autoStop",
-		desc: "Whether to terminate speech conversion when closing or opening a note?",
-		type: "toggle",
-	},
-	{
-		name: "Text formatting",
-		key: "textFormatting",
-		desc: "The rule for filtering characters that do not need to be converted to speech.",
-		type: "textArea",
-		inputConfig: {
-			placeholder:
-				"Fill in the regular expression. For example: /[^\\w\\s]/g",
-		},
-	},
-	{
-		name: "Speaking style",
-		key: "style",
-		desc: "The voice-specific speaking style.",
-		type: "select",
-		options: STYLE_OPTIONS,
-	},
-	// {
-	// 	name: "Speaking role",
-	// 	key: "role",
-	// 	desc: "The speaking role-play.",
-	// 	type: "select",
-	// 	options: ROLE_OPTIONS,
-	// },
-	{
-		name: "Intensity",
-		key: "intensity",
-		desc: "The intensity of the speaking style.",
-		type: "slider",
-		range: [1, 200],
-		step: 1,
-	},
-	{
-		name: "Play speed",
-		key: "speed",
-		desc: "Set the audio playback speed.",
-		type: "slider",
-		range: [0.5, 2],
-		step: 0.1,
-	},
-	{
-		name: "Volume",
-		key: "volume",
-		desc: "Indicates the volume level of the speaking voice.",
-		type: "slider",
-		range: [0, 100],
-		step: 1,
-	},
-	{
-		name: "Language",
-		key: "language",
-		desc: "Select plugin language.",
-		type: "select",
-		options: {
-			zh: "中文",
-			en: "English",
-		},
-	},
-];
+		title: "Developer Settings",
+		desc: "",
+		settings: [
+			{
+				name: "Enable developer mode",
+				key: "enableDeveloperMode",
+				desc: "If you turn off developer mode, the configuration in this mode will become invalid.",
+				type: "toggle"
+			},
+			{
+				name: "Text formatting",
+				key: "textFormatting",
+				desc: "The rule for filtering characters that do not need to be converted to speech.",
+				type: "textArea",
+				inputConfig: {
+					placeholder:
+						"Fill in the regular expression. For example: /[^\\w\\s]/g",
+				},
+			},
+		]
+	}
+]
 
 export const LANGS = {
 	zh: {

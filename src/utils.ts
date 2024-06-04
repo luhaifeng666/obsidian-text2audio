@@ -5,6 +5,7 @@ import {
 	Notice,
 	Setting,
 	Editor,
+	Platform,
 	type ButtonComponent,
 	type TextComponent,
 } from "obsidian";
@@ -14,7 +15,7 @@ import type {
 	SettingConfig,
 	Text2AudioSettings,
 } from "./type";
-import { LANGUAGES, LANGS } from "./constants";
+import { LANGUAGES, LANGS, SETTINGS_GROUP } from "./constants";
 import { actions } from "./store";
 
 export const getDefaultFiletime = () => {
@@ -120,14 +121,12 @@ export const generateVoice = async (
 						) {
 							generateNotice().setMessage(
 								generateNoticeText(
-									`${
-										langSettings.tipMessage.success
-											.synthesis
-									}. ${
-										type === "save"
-											? `${langSettings.tipMessage.success.save} ` +
-											  audioFile
-											: ""
+									`${langSettings.tipMessage.success
+										.synthesis
+									}. ${type === "save"
+										? `${langSettings.tipMessage.success.save} ` +
+										audioFile
+										: ""
 									}`,
 									"success"
 								)
@@ -188,7 +187,7 @@ export const generateNoticeText = (
 	return fragment;
 };
 
-export const generateSettings = async (
+const generateSettings = async (
 	container: HTMLElement,
 	plugin: any,
 	config: SettingConfig
@@ -268,6 +267,7 @@ export const generateSettings = async (
 			settingEl.addToggle((tg) => {
 				tg.setValue(plugin.settings[key]).onChange(async (value) => {
 					handleSettingSave(key, value);
+					key === "enableDeveloperMode" && renderSettings(container, plugin);
 				});
 			});
 			break;
@@ -293,6 +293,40 @@ export const generateSettings = async (
 	}
 };
 
+export const renderSettings = async (
+	container: HTMLElement,
+	plugin: any
+) => {
+	container.empty();
+
+	SETTINGS_GROUP.forEach((setting) => {
+		const { title, desc, settings } = setting;
+		container.createDiv("settings-banner", (banner) => {
+			banner.createEl("h3", {
+				text: title,
+			});
+			desc && banner.createEl("p", {
+				cls: "setting-item-description",
+				text: desc,
+			});
+		});
+
+		const _settings = title === "Developer Settings" ? settings.slice(0, plugin.settings.enableDeveloperMode ? settings.length : 1) : settings;
+
+		_settings.filter((item) =>
+			Platform.isDesktopApp
+				? !!item
+				: !["interposition", "directory"].includes(item.key)
+		).forEach((item) => {
+			generateSettings(
+				container,
+				plugin,
+				item as SettingConfig
+			);
+		});
+	})
+}
+
 export const getVoiceName = (voice: string) => {
 	return voice.replace(/\(.*\)/g, "");
 };
@@ -312,9 +346,9 @@ export const getVoices = (region: string) => {
 export const handleTextFormat = (text: string, rule: string) => {
 	return text && rule
 		? text.replace(
-				new RegExp(rule.replace(/^\/(.*)\/.*/g, "$1"), "gi"),
-				" "
-		  )
+			new RegExp(rule.replace(/^\/(.*)\/.*/g, "$1"), "gi"),
+			" "
+		)
 		: text;
 };
 

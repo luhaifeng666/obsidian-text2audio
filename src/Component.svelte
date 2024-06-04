@@ -58,9 +58,11 @@
 
 	const handleVoiceGeneration = async (type: "save" | "play") => {
 		loading = true;
-		const { textFormatting } = settings;
+		const { textFormatting, enableDeveloperMode } = settings;
 		await generateVoice({
-			text: handleTextFormat(convertedText, textFormatting),
+			text: enableDeveloperMode
+				? handleTextFormat(convertedText, textFormatting)
+				: convertedText,
 			filename: filename || defaultFilename,
 			regionCode,
 			voice: `${regionCode}-${getVoiceName(voice)}`,
