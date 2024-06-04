@@ -79,3 +79,7 @@ By setting hotkeys, you can quickly convert text to speech using keyboard shortc
 -   Click the play or save button.
 
 <p align="center"><img src=".attachments/en-example.gif" ali /></p>
+
+## Activity
+
+![Alt](https://repobeats.axiom.co/api/embed/d1cff5661b49fa02b4b5714e89bc3e48f47f4c41.svg "Repobeats analytics image")

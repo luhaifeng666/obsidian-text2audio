@@ -79,3 +79,7 @@
 - 单击播放或保存按钮。
 
 <p align="center"><img src=".attachments/zh-example.gif" alt="example" /></p>
+
+## 活动
+
+![Alt](https://repobeats.axiom.co/api/embed/d1cff5661b49fa02b4b5714e89bc3e48f47f4c41.svg "Repobeats analytics image")
