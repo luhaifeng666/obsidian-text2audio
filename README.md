@@ -61,7 +61,7 @@ You can configure the plugin by following the steps below.
 
 ## How to Use
 
-This plugin has two usage methods, using Keyboard Shortcuts or 
+This plugin has two usage methods, using Keyboard Shortcuts or using the plugin window.
 
 ### Using Keyboard Shortcuts (**Recommended**)
 
