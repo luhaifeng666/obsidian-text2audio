@@ -321,7 +321,7 @@ export const renderSettings = async (
 			generateSettings(
 				container,
 				plugin,
-				item as SettingConfig
+				item,
 			);
 		});
 	})
@@ -352,8 +352,7 @@ export const handleTextFormat = (text: string, rule: string) => {
 		: text;
 };
 
-export const getAudioFormatType = (audioFormat: string) =>
-	audioFormat.replace(/(.*-)/g, "").toLowerCase() === "mp3" ? "mp3" : "wav";
+export const getAudioFormatType = (audioFormat: string) => audioFormat.replace(/.*\(\.(.*)\)/g, "$1").toLowerCase() === "mp3" ? "mp3" : "wav";
 
 export const getSelectedText = (
 	readBeforeOrAfter: Text2AudioSettings["readBeforeOrAfter"],
