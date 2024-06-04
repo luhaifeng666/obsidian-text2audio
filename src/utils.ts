@@ -321,7 +321,7 @@ export const renderSettings = async (
 			generateSettings(
 				container,
 				plugin,
-				item as SettingConfig
+				item,
 			);
 		});
 	})
