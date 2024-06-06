@@ -19,8 +19,8 @@ import {
 	getSelectedText,
 } from "./utils";
 import { Popup } from "./Popup";
-import { LANGUAGES, LANGS, SETTINGS_GROUP } from "./constants";
-import type { SettingConfig, Text2AudioSettings } from "./type";
+import { LANGUAGES, LANGS } from "./constants";
+import type { Text2AudioSettings } from "./type";
 import { actions } from "./store";
 
 const DEFAULT_SETTINGS: Text2AudioSettings = {
@@ -36,7 +36,7 @@ const DEFAULT_SETTINGS: Text2AudioSettings = {
 	speed: 1,
 	intensity: 100,
 	style: "advertisement_upbeat",
-	// role: "Boy",
+	role: "Boy",
 	language: "zh",
 	volume: 50,
 	enableDeveloperMode: false,

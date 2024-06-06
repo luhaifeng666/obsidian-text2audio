@@ -35,7 +35,7 @@ export interface Text2AudioSettings {
 	speed: number;
 	language: "zh" | "en";
 	style: string;
-	// role: string;
+	role: string;
 	intensity: number;
 	volume: number;
 	enableDeveloperMode: boolean;
