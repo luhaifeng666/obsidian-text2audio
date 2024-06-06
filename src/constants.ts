@@ -1235,16 +1235,16 @@ const STYLE_OPTIONS = {
 	unfriendly: "unfriendly",
 };
 
-// const ROLE_OPTIONS = {
-// 	Girl: "Girl",
-// 	Boy: "Boy",
-// 	YoungAdultFemale: "YoungAdultFemale",
-// 	YoungAdultMale: "YoungAdultMale",
-// 	OlderAdultFemale: "OlderAdultFemale",
-// 	OlderAdultMale: "OlderAdultMale",
-// 	SeniorFemale: "SeniorFemale",
-// 	SeniorMale: "SeniorMale",
-// };
+const ROLE_OPTIONS = {
+	Girl: "Girl",
+	Boy: "Boy",
+	YoungAdultFemale: "YoungAdultFemale",
+	YoungAdultMale: "YoungAdultMale",
+	OlderAdultFemale: "OlderAdultFemale",
+	OlderAdultMale: "OlderAdultMale",
+	SeniorFemale: "SeniorFemale",
+	SeniorMale: "SeniorMale",
+};
 
 export const VOICE_FORMAT_MAP = VOICE_FORMAT_NAMES.reduce(
 	(res, key, index) => ({
@@ -1342,13 +1342,13 @@ export const SETTINGS_GROUP: {
 					type: "select",
 					options: STYLE_OPTIONS,
 				},
-				// {
-				// 	name: "Speaking role",
-				// 	key: "role",
-				// 	desc: "The speaking role-play.",
-				// 	type: "select",
-				// 	options: ROLE_OPTIONS,
-				// },
+				{
+					name: "Speaking role",
+					key: "role",
+					desc: "The speaking role-play.",
+					type: "select",
+					options: ROLE_OPTIONS,
+				},
 				{
 					name: "Intensity",
 					key: "intensity",

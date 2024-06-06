@@ -58,7 +58,7 @@ export const generateVoice = async (
 			speed,
 			directory,
 			style,
-			// role,
+			role,
 			volume,
 			intensity,
 		} = settings;
@@ -100,7 +100,7 @@ export const generateVoice = async (
 			const ssmlContent = text
 				? `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="${regionCode}">
 				<voice name="${voice}">
-					<mstts:express-as style="${style}" styledegree="${intensity / 100}">
+					<mstts:express-as role="${role}" style="${style}" styledegree="${intensity / 100}">
 						<prosody rate="${speed}" volume="${volume}">
 							${text || ""}
 						</prosody>

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/3.1.3...3.2.0) (2024-06-06)
+
+
+### Features
+
+* 新增角色配置，用于模仿不同角色的发音 ([0738bd6](https://github.com/luhaifeng666/obsidian-text2audio/commit/0738bd6663af78708b94a768fbddf0482659dffc))
+
 ### [3.1.3](https://github.com/luhaifeng666/obsidian-text2audio/compare/3.1.2...3.1.3) (2024-06-04)
 
 
