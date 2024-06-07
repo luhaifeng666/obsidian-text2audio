@@ -255,10 +255,25 @@ const generateSettings = async (
 		case "select":
 			settingEl.addDropdown((dp) =>
 				dp
-					.addOptions(options || {})
+					.addOptions(
+						(Object.prototype.toString.call(options) ===
+							"[object Function]"
+							? options(plugin.settings.regionCode)
+							: options) || {}
+					)
 					.setValue(plugin.settings[key])
 					.onChange(async (value) => {
 						handleSettingSave(key, value);
+						// 当在配置中修改 Language type 时
+						if (key === "languageType") {
+							const regionData = LANGUAGES.find(lang => lang["name-en"] === value);
+							// 设置regionCode
+							await handleSettingSave("regionCode", regionData?.region || "");
+							// 设置默认 Voice type
+							await handleSettingSave("voiceType", initVoiceName(regionData?.voices[0] || ""));
+							// 刷新配置页面
+							renderSettings(container, plugin);
+						}
 					})
 			);
 			break;
@@ -267,7 +282,8 @@ const generateSettings = async (
 			settingEl.addToggle((tg) => {
 				tg.setValue(plugin.settings[key]).onChange(async (value) => {
 					handleSettingSave(key, value);
-					key === "enableDeveloperMode" && renderSettings(container, plugin);
+					key === "enableDeveloperMode" &&
+						renderSettings(container, plugin);
 				});
 			});
 			break;
@@ -293,10 +309,7 @@ const generateSettings = async (
 	}
 };
 
-export const renderSettings = async (
-	container: HTMLElement,
-	plugin: any
-) => {
+export const renderSettings = async (container: HTMLElement, plugin: any) => {
 	container.empty();
 
 	SETTINGS_GROUP.forEach((setting) => {
@@ -305,27 +318,34 @@ export const renderSettings = async (
 			banner.createEl("h3", {
 				text: title,
 			});
-			desc && banner.createEl("p", {
-				cls: "setting-item-description",
-				text: desc,
+			desc &&
+				banner.createEl("p", {
+					cls: "setting-item-description",
+					text: desc,
+				});
+		});
+
+		const _settings =
+			title === "Developer Settings"
+				? settings.slice(
+					0,
+					plugin.settings.enableDeveloperMode
+						? settings.length
+						: 1
+				)
+				: settings;
+
+		_settings
+			.filter((item) =>
+				Platform.isDesktopApp
+					? !!item
+					: !["interposition", "directory"].includes(item.key)
+			)
+			.forEach((item) => {
+				generateSettings(container, plugin, item);
 			});
-		});
-
-		const _settings = title === "Developer Settings" ? settings.slice(0, plugin.settings.enableDeveloperMode ? settings.length : 1) : settings;
-
-		_settings.filter((item) =>
-			Platform.isDesktopApp
-				? !!item
-				: !["interposition", "directory"].includes(item.key)
-		).forEach((item) => {
-			generateSettings(
-				container,
-				plugin,
-				item,
-			);
-		});
-	})
-}
+	});
+};
 
 export const getVoiceName = (voice: string) => {
 	return voice.replace(/\(.*\)/g, "");
@@ -352,7 +372,10 @@ export const handleTextFormat = (text: string, rule: string) => {
 		: text;
 };
 
-export const getAudioFormatType = (audioFormat: string) => audioFormat.replace(/.*\(\.(.*)\)/g, "$1").toLowerCase() === "mp3" ? "mp3" : "wav";
+export const getAudioFormatType = (audioFormat: string) =>
+	audioFormat.replace(/.*\(\.(.*)\)/g, "$1").toLowerCase() === "mp3"
+		? "mp3"
+		: "wav";
 
 export const getSelectedText = (
 	readBeforeOrAfter: Text2AudioSettings["readBeforeOrAfter"],
@@ -379,3 +402,9 @@ export const getSelectedText = (
 	}
 	return "";
 };
+
+export const initVoiceName = (voiceName: string) =>
+	voiceName.replace(/男[性]*/g, "Male")
+		.replace(/女[性]*/g, "Female")
+		.replace(/儿童/g, "Child")
+		.replace(/中性/g, "Neutral")
