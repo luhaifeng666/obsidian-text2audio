@@ -256,8 +256,7 @@ const generateSettings = async (
 			settingEl.addDropdown((dp) =>
 				dp
 					.addOptions(
-						(Object.prototype.toString.call(options) ===
-							"[object Function]"
+						(typeof options === "function"
 							? options(plugin.settings.regionCode)
 							: options) || {}
 					)

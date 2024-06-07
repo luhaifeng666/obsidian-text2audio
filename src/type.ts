@@ -17,7 +17,7 @@ export interface SettingInputConfig {
 export type SettingConfig = Record<SettingType, string> & {
 	inputConfig?: SettingInputConfig;
 	type: "text" | "select" | "toggle" | "textArea" | "slider";
-	options?: Record<string, string> | (() => Record<string, string>);
+	options?: Record<string, string> | ((regionCode: string) => Record<string, string>);
 	isPassword?: boolean;
 	range?: Array<number>;
 	step?: number;
