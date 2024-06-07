@@ -121,14 +121,12 @@ export const generateVoice = async (
 						) {
 							generateNotice().setMessage(
 								generateNoticeText(
-									`${
-										langSettings.tipMessage.success
-											.synthesis
-									}. ${
-										type === "save"
-											? `${langSettings.tipMessage.success.save} ` +
-											  audioFile
-											: ""
+									`${langSettings.tipMessage.success
+										.synthesis
+									}. ${type === "save"
+										? `${langSettings.tipMessage.success.save} ` +
+										audioFile
+										: ""
 									}`,
 									"success"
 								)
@@ -259,13 +257,23 @@ const generateSettings = async (
 				dp
 					.addOptions(
 						(Object.prototype.toString.call(options) ===
-						"[object Function]"
-							? options()
+							"[object Function]"
+							? options(plugin.settings.regionCode)
 							: options) || {}
 					)
 					.setValue(plugin.settings[key])
 					.onChange(async (value) => {
 						handleSettingSave(key, value);
+						// 当在配置中修改 Language type 时
+						if (key === "languageType") {
+							const regionData = LANGUAGES.find(lang => lang["name-en"] === value);
+							// 设置regionCode
+							await handleSettingSave("regionCode", regionData?.region || "");
+							// 设置默认 Voice type
+							await handleSettingSave("voiceType", initVoiceName(regionData?.voices[0] || ""));
+							// 刷新配置页面
+							renderSettings(container, plugin);
+						}
 					})
 			);
 			break;
@@ -320,11 +328,11 @@ export const renderSettings = async (container: HTMLElement, plugin: any) => {
 		const _settings =
 			title === "Developer Settings"
 				? settings.slice(
-						0,
-						plugin.settings.enableDeveloperMode
-							? settings.length
-							: 1
-				  )
+					0,
+					plugin.settings.enableDeveloperMode
+						? settings.length
+						: 1
+				)
 				: settings;
 
 		_settings
@@ -358,9 +366,9 @@ export const getVoices = (region: string) => {
 export const handleTextFormat = (text: string, rule: string) => {
 	return text && rule
 		? text.replace(
-				new RegExp(rule.replace(/^\/(.*)\/.*/g, "$1"), "gi"),
-				" "
-		  )
+			new RegExp(rule.replace(/^\/(.*)\/.*/g, "$1"), "gi"),
+			" "
+		)
 		: text;
 };
 
@@ -394,3 +402,9 @@ export const getSelectedText = (
 	}
 	return "";
 };
+
+export const initVoiceName = (voiceName: string) =>
+	voiceName.replace(/男[性]*/g, "Male")
+		.replace(/女[性]*/g, "Female")
+		.replace(/儿童/g, "Child")
+		.replace(/中性/g, "Neutral")

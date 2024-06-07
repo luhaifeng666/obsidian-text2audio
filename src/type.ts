@@ -42,4 +42,5 @@ export interface Text2AudioSettings {
 	languageType: string;
 	voiceType: string;
 	audioFormat: string;
+	regionCode: string;
 }

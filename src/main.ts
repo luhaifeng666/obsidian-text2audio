@@ -28,6 +28,7 @@ const DEFAULT_SETTINGS: Text2AudioSettings = {
 	keyHide: true,
 	key: "",
 	region: "",
+	regionCode: "",
 	directory: "",
 	interposition: false,
 	readBeforeOrAfter: "off",
@@ -43,7 +44,7 @@ const DEFAULT_SETTINGS: Text2AudioSettings = {
 	enableDeveloperMode: false,
 	languageType:
 		LANGUAGES.find((lang) => lang.region === DEFAULT_LANGUAGE_TYPE)?.[
-			"name-en"
+		"name-en"
 		] || "",
 	voiceType: (
 		getLocalData("voice") ||
@@ -83,8 +84,7 @@ export default class Text2Audio extends Plugin {
 					const lastLine = editor.lastLine();
 					this.settings.interposition &&
 						editor.replaceSelection(
-							`${selectedText}<audio controls src="${
-								Platform.resourcePathPrefix
+							`${selectedText}<audio controls src="${Platform.resourcePathPrefix
 							}${encodeURIComponent(url)}" />`
 						);
 					editor.setCursor(lastLine + 1, 0);
@@ -95,9 +95,8 @@ export default class Text2Audio extends Plugin {
 					plugin: this,
 					selectedText,
 					onSave,
-					defaultFilename: `${
-						this.app.workspace.getActiveFile()?.basename
-					}_${getDefaultFiletime()}`,
+					defaultFilename: `${this.app.workspace.getActiveFile()?.basename
+						}_${getDefaultFiletime()}`,
 				}).open();
 			},
 		});
@@ -159,7 +158,7 @@ export default class Text2Audio extends Plugin {
 		this.addSettingTab(new Text2AudioSettingTab(this.app, this));
 	}
 
-	onunload() {}
+	onunload() { }
 
 	async loadSettings() {
 		this.settings = Object.assign(
@@ -167,6 +166,14 @@ export default class Text2Audio extends Plugin {
 			DEFAULT_SETTINGS,
 			await this.loadData()
 		);
+	}
+
+	saveSettingForPopup(config: Partial<Text2AudioSettings>) {
+		this.settings = {
+			...this.settings,
+			...config,
+		}
+		this.saveSettings();
 	}
 
 	async saveSettings() {
@@ -183,13 +190,11 @@ export default class Text2Audio extends Plugin {
 		// 阅读文本
 		if (!this.convertting) {
 			this.convertting = true;
-			const { textFormatting, language, enableDeveloperMode } =
+			const { textFormatting, language, enableDeveloperMode, regionCode, voiceType } =
 				this.settings;
-			const regionCode: string =
-				getLocalData("region") || LANGUAGES[0].region;
 			const voices: string[] =
 				getVoices(regionCode) || LANGUAGES[0].voices;
-			const voice: string = getLocalData("voice") || voices[0];
+			const voice: string = voiceType || voices[0];
 			notice = generateNotice(
 				generateNoticeText(LANGS[language].convertting, "warning"),
 				0
@@ -199,7 +204,7 @@ export default class Text2Audio extends Plugin {
 				text: enableDeveloperMode
 					? handleTextFormat(text, textFormatting)
 					: text,
-				regionCode,
+				regionCode: regionCode || LANGUAGES[0].region,
 				voice: `${regionCode}-${getVoiceName(voice)}`,
 				settings: this.settings,
 				callback: () => {

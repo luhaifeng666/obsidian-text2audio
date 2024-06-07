@@ -2,11 +2,10 @@
 	import {
 		generateVoice,
 		getVoiceName,
-		setLocalData,
-		getLocalData,
 		getVoices,
 		handleTextFormat,
 		getAudioFormatType,
+		initVoiceName,
 	} from "./utils";
 	import {
 		LANGUAGES,
@@ -14,25 +13,27 @@
 		VOICE_FORMAT_MAP,
 		VOICE_FORMAT_NAMES,
 	} from "./constants";
-	import type { Text2AudioSettings } from "./type";
 	import { Platform } from "obsidian";
 
 	export let text: string; // 需要转换的文本
-	export let settings: Text2AudioSettings;
 	export let onSave: (url: string) => void;
 	export let defaultFilename: string;
-	let regionCode: string = getLocalData("region") || LANGUAGES[0].region;
+	export let plugin;
+	let regionCode: string = plugin.settings.regionCode || LANGUAGES[0].region;
 	let voices: string[] = getVoices(regionCode) || LANGUAGES[0].voices;
-	let voice: string = getLocalData("voice") || voices[0];
+	let voice: string =
+		voices.find((vItem) =>
+			vItem.includes(getVoiceName(plugin.settings.voiceType)),
+		) || voices[0];
 	let audioFormat: string =
-		getLocalData("audioFormat") || VOICE_FORMAT_NAMES[0];
+		plugin.settings.audioFormat || VOICE_FORMAT_NAMES[0];
 	let convertedText: string = text;
 	let filename: string = "";
 	let loading: boolean = false;
 	const isMobile: boolean = !Platform.isDesktopApp;
 	$: playBtnDisabled = loading || !convertedText.replace(/\s/g, "");
-	$: lang = LANGS[settings.language];
-
+	$: lang = LANGS[plugin.settings.language as "zh" | "en"];
+	console.log(plugin.settings);
 	const handleLangChange = (event: Event) => {
 		const selectElement = event.target as HTMLSelectElement;
 		regionCode = selectElement.value;
@@ -40,25 +41,35 @@
 			LANGUAGES.find((lang) => lang.region === selectElement.value)
 				?.voices || [];
 		voice = voices[0];
-		setLocalData("region", regionCode);
-		setLocalData("voice", voice);
+		// 保存设置
+		plugin.saveSettingForPopup({
+			regionCode,
+			voiceType: initVoiceName(voice),
+			languageType: LANGUAGES.find(
+				(item) => item.region === regionCode,
+			)?.["name-en"],
+		});
 	};
 
 	const handleVoiceChange = (event: Event) => {
 		const selectElement = event.target as HTMLSelectElement;
 		voice = selectElement.value;
-		setLocalData("voice", voice);
+		plugin.saveSettingForPopup({
+			voiceType: initVoiceName(voice),
+		});
 	};
 
 	const handleAudioFormatChange = (event: Event) => {
 		const selectElement = event.target as HTMLSelectElement;
 		audioFormat = selectElement.value;
-		setLocalData("audioFormat", selectElement.value);
+		plugin.saveSettingForPopup({
+			audioFormat: selectElement.value,
+		});
 	};
 
 	const handleVoiceGeneration = async (type: "save" | "play") => {
 		loading = true;
-		const { textFormatting, enableDeveloperMode } = settings;
+		const { textFormatting, enableDeveloperMode } = plugin.settings;
 		await generateVoice({
 			text: enableDeveloperMode
 				? handleTextFormat(convertedText, textFormatting)
@@ -70,7 +81,7 @@
 			audioFormatType: getAudioFormatType(audioFormat),
 			audioFormat:
 				VOICE_FORMAT_MAP[audioFormat as keyof typeof VOICE_FORMAT_MAP],
-			settings,
+			settings: plugin.settings,
 			callback() {
 				loading = false;
 			},
@@ -84,7 +95,7 @@
 	const handleSave = async () => {
 		await handleVoiceGeneration("save");
 		onSave(
-			`${settings.directory}/${filename || defaultFilename}.${getAudioFormatType(audioFormat)}`,
+			`${plugin.settings.directory}/${filename || defaultFilename}.${getAudioFormatType(audioFormat)}`,
 		);
 	};
 </script>
@@ -115,7 +126,9 @@
 	>
 		{#each LANGUAGES as lang}
 			<option value={lang.region}
-				>{lang[settings.language === "en" ? "name-en" : "name"]}</option
+				>{lang[
+					plugin.settings.language === "en" ? "name-en" : "name"
+				]}</option
 			>
 		{/each}
 	</select>
@@ -131,12 +144,8 @@
 	>
 		{#each voices as voice}
 			<option value={voice}
-				>{settings.language === "en"
-					? voice
-							.replace(/男[性]*/g, "Male")
-							.replace(/女[性]*/g, "Female")
-							.replace(/儿童/g, "Child")
-							.replace(/中性/g, "Neutral")
+				>{plugin.settings.language === "en"
+					? initVoiceName(voice)
 					: voice}</option
 			>
 		{/each}
@@ -168,12 +177,6 @@
 		/>
 	</div>
 {/if}
-
-<!-- TODO 添加转换格式 -->
-<!-- <div class="ob-t2v-box">
-	转换格式
-	<select name="" id=""></select>
-</div> -->
 
 <div class="ob-t2v-footer">
 	{#if loading}

@@ -36,9 +36,9 @@ export class Popup extends Modal {
 			target: this.contentEl,
 			props: {
 				text: this.text,
-				settings: this.plugin.settings,
 				onSave: this.onSave,
 				defaultFilename: this.defaultFilename,
+				plugin: this.plugin,
 			},
 		});
 	}

@@ -1259,193 +1259,193 @@ export const SETTINGS_GROUP: {
 	desc: string;
 	settings: SettingConfig[];
 }[] = [
-	{
-		title: "Basic Settings",
-		desc: "",
-		settings: [
-			{
-				name: "Speech key",
-				key: "key",
-				desc: "Your Azure AI services API's secret key.",
-				type: "text",
-				isPassword: true,
-				inputConfig: {
-					placeholder: "Enter your secret key",
+		{
+			title: "Basic Settings",
+			desc: "",
+			settings: [
+				{
+					name: "Speech key",
+					key: "key",
+					desc: "Your Azure AI services API's secret key.",
+					type: "text",
+					isPassword: true,
+					inputConfig: {
+						placeholder: "Enter your secret key",
+					},
 				},
-			},
-			{
-				name: "Speech region",
-				key: "region",
-				desc: "Your Azure AI services API's region.",
-				type: "text",
-				inputConfig: {
-					placeholder: "Enter your region",
+				{
+					name: "Speech region",
+					key: "region",
+					desc: "Your Azure AI services API's region.",
+					type: "text",
+					inputConfig: {
+						placeholder: "Enter your region",
+					},
 				},
-			},
-			{
-				name: "Directory",
-				key: "directory",
-				desc: "Save the audio file to this directory.",
-				type: "text",
-				inputConfig: {
-					placeholder: "Full path",
+				{
+					name: "Directory",
+					key: "directory",
+					desc: "Save the audio file to this directory.",
+					type: "text",
+					inputConfig: {
+						placeholder: "Full path",
+					},
 				},
-			},
-			{
-				name: "Language",
-				key: "language",
-				desc: "Select plugin language.",
-				type: "select",
-				options: {
-					zh: "中文",
-					en: "English",
+				{
+					name: "Language",
+					key: "language",
+					desc: "Select plugin language.",
+					type: "select",
+					options: {
+						zh: "中文",
+						en: "English",
+					},
 				},
-			},
-		],
-	},
-	{
-		title: "Voice Settings",
-		desc: "",
-		settings: [
-			{
-				name: "Language type",
-				key: "languageType",
-				desc: "The language type of the speech.",
-				type: "select",
-				options: LANGUAGES.reduce(
-					(res, lang) => ({
-						...res,
-						[lang["name-en"]]: lang["name-en"],
-					}),
-					{}
-				),
-			},
-			{
-				name: "Voice type",
-				key: "voiceType",
-				desc: "The voice type of the speech.",
-				type: "select",
-				options: () =>
-					(
-						LANGUAGES.find(
-							(item) =>
-								item.region ===
-								(getLocalData("region") || LANGUAGES[0].region)
-						)?.voices || []
-					).reduce((res, name) => {
-						const key = name
-							.replace(/男[性]*/g, "Male")
-							.replace(/女[性]*/g, "Female")
-							.replace(/儿童/g, "Child")
-							.replace(/中性/g, "Neutral");
-						return {
+			],
+		},
+		{
+			title: "Voice Settings",
+			desc: "",
+			settings: [
+				{
+					name: "Language type",
+					key: "languageType",
+					desc: "The language type of the speech.",
+					type: "select",
+					options: LANGUAGES.reduce(
+						(res, lang) => ({
 							...res,
-							[key]: key,
-						};
-					}, {}),
-			},
-			{
-				name: "Audio format",
-				key: "audioFormat",
-				desc: "The audio format of the speech.",
-				type: "select",
-				options: VOICE_FORMAT_NAMES.reduce(
-					(res, name) => ({ ...res, [name]: name }),
-					{}
-				),
-			},
-			{
-				name: "Interposition",
-				key: "interposition",
-				desc: "Whether to insert the generated speech at the location of the cursor?",
-				type: "toggle",
-			},
-			{
-				name: "Auto pause",
-				key: "autoPause",
-				desc: "Whether to stop playing when closing or opening a note?",
-				type: "toggle",
-			},
-			{
-				name: "Auto stop",
-				key: "autoStop",
-				desc: "Whether to terminate speech conversion when closing or opening a note?",
-				type: "toggle",
-			},
-			{
-				name: "Read before or after",
-				key: "readBeforeOrAfter",
-				desc: "Read content before or after the cursor.",
-				type: "select",
-				options: {
-					off: "Off",
-					before: "Before",
-					after: "After",
+							[lang["name-en"]]: lang["name-en"],
+						}),
+						{}
+					),
 				},
-			},
-			{
-				name: "Speaking style",
-				key: "style",
-				desc: "The voice-specific speaking style.",
-				type: "select",
-				options: STYLE_OPTIONS,
-			},
-			{
-				name: "Speaking role",
-				key: "role",
-				desc: "The speaking role-play.",
-				type: "select",
-				options: ROLE_OPTIONS,
-			},
-			{
-				name: "Intensity",
-				key: "intensity",
-				desc: "The intensity of the speaking style.",
-				type: "slider",
-				range: [1, 200],
-				step: 1,
-			},
-			{
-				name: "Play speed",
-				key: "speed",
-				desc: "Set the audio playback speed.",
-				type: "slider",
-				range: [0.5, 2],
-				step: 0.1,
-			},
-			{
-				name: "Volume",
-				key: "volume",
-				desc: "Indicates the volume level of the speaking voice.",
-				type: "slider",
-				range: [0, 100],
-				step: 1,
-			},
-		],
-	},
-	{
-		title: "Developer Settings",
-		desc: "",
-		settings: [
-			{
-				name: "Enable developer mode",
-				key: "enableDeveloperMode",
-				desc: "If you turn off developer mode, the configuration in this mode will become invalid.",
-				type: "toggle",
-			},
-			{
-				name: "Text formatting",
-				key: "textFormatting",
-				desc: "The rule for filtering characters that do not need to be converted to speech.",
-				type: "textArea",
-				inputConfig: {
-					placeholder:
-						"Fill in the regular expression. For example: /[^\\w\\s]/g",
+				{
+					name: "Voice type",
+					key: "voiceType",
+					desc: "The voice type of the speech.",
+					type: "select",
+					options: (regionCode: string) =>
+						(
+							LANGUAGES.find(
+								(item) =>
+									item.region ===
+									(regionCode || LANGUAGES[0].region)
+							)?.voices || []
+						).reduce((res, name) => {
+							const key = name
+								.replace(/男[性]*/g, "Male")
+								.replace(/女[性]*/g, "Female")
+								.replace(/儿童/g, "Child")
+								.replace(/中性/g, "Neutral");
+							return {
+								...res,
+								[key]: key,
+							};
+						}, {}),
 				},
-			},
-		],
-	},
-];
+				{
+					name: "Audio format",
+					key: "audioFormat",
+					desc: "The audio format of the speech.",
+					type: "select",
+					options: VOICE_FORMAT_NAMES.reduce(
+						(res, name) => ({ ...res, [name]: name }),
+						{}
+					),
+				},
+				{
+					name: "Interposition",
+					key: "interposition",
+					desc: "Whether to insert the generated speech at the location of the cursor?",
+					type: "toggle",
+				},
+				{
+					name: "Auto pause",
+					key: "autoPause",
+					desc: "Whether to stop playing when closing or opening a note?",
+					type: "toggle",
+				},
+				{
+					name: "Auto stop",
+					key: "autoStop",
+					desc: "Whether to terminate speech conversion when closing or opening a note?",
+					type: "toggle",
+				},
+				{
+					name: "Read before or after",
+					key: "readBeforeOrAfter",
+					desc: "Read content before or after the cursor.",
+					type: "select",
+					options: {
+						off: "Off",
+						before: "Before",
+						after: "After",
+					},
+				},
+				{
+					name: "Speaking style",
+					key: "style",
+					desc: "The voice-specific speaking style.",
+					type: "select",
+					options: STYLE_OPTIONS,
+				},
+				{
+					name: "Speaking role",
+					key: "role",
+					desc: "The speaking role-play.",
+					type: "select",
+					options: ROLE_OPTIONS,
+				},
+				{
+					name: "Intensity",
+					key: "intensity",
+					desc: "The intensity of the speaking style.",
+					type: "slider",
+					range: [1, 200],
+					step: 1,
+				},
+				{
+					name: "Play speed",
+					key: "speed",
+					desc: "Set the audio playback speed.",
+					type: "slider",
+					range: [0.5, 2],
+					step: 0.1,
+				},
+				{
+					name: "Volume",
+					key: "volume",
+					desc: "Indicates the volume level of the speaking voice.",
+					type: "slider",
+					range: [0, 100],
+					step: 1,
+				},
+			],
+		},
+		{
+			title: "Developer Settings",
+			desc: "",
+			settings: [
+				{
+					name: "Enable developer mode",
+					key: "enableDeveloperMode",
+					desc: "If you turn off developer mode, the configuration in this mode will become invalid.",
+					type: "toggle",
+				},
+				{
+					name: "Text formatting",
+					key: "textFormatting",
+					desc: "The rule for filtering characters that do not need to be converted to speech.",
+					type: "textArea",
+					inputConfig: {
+						placeholder:
+							"Fill in the regular expression. For example: /[^\\w\\s]/g",
+					},
+				},
+			],
+		},
+	];
 
 export const LANGS = {
 	zh: {
