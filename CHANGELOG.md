@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/3.2.0...4.0.0) (2024-06-07)
+
+
+### Features
+
+* Adding role attributes ([513682b](https://github.com/luhaifeng666/obsidian-text2audio/commit/513682b72a26b96114e332750f1750ca6ec557f2))
+* 新增语言配置选项 ([f429898](https://github.com/luhaifeng666/obsidian-text2audio/commit/f4298980be9d2a2d15f49d0e241f63c7acb2774f))
+
 ## [3.2.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/3.1.3...3.2.0) (2024-06-06)
 
 
