@@ -58,7 +58,7 @@ export const generateVoice = async (
 			speed,
 			directory,
 			style,
-			role,
+			// role,
 			volume,
 			intensity,
 		} = settings;
@@ -100,7 +100,7 @@ export const generateVoice = async (
 			const ssmlContent = text
 				? `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="${regionCode}">
 				<voice name="${voice}">
-					<mstts:express-as role="${role}" style="${style}" styledegree="${intensity / 100}">
+					<mstts:express-as style="${style}" styledegree="${intensity / 100}">
 						<prosody rate="${speed}" volume="${volume}">
 							${text || ""}
 						</prosody>
@@ -121,12 +121,14 @@ export const generateVoice = async (
 						) {
 							generateNotice().setMessage(
 								generateNoticeText(
-									`${langSettings.tipMessage.success
-										.synthesis
-									}. ${type === "save"
-										? `${langSettings.tipMessage.success.save} ` +
-										audioFile
-										: ""
+									`${
+										langSettings.tipMessage.success
+											.synthesis
+									}. ${
+										type === "save"
+											? `${langSettings.tipMessage.success.save} ` +
+											  audioFile
+											: ""
 									}`,
 									"success"
 								)
@@ -255,7 +257,12 @@ const generateSettings = async (
 		case "select":
 			settingEl.addDropdown((dp) =>
 				dp
-					.addOptions(options || {})
+					.addOptions(
+						(Object.prototype.toString.call(options) ===
+						"[object Function]"
+							? options()
+							: options) || {}
+					)
 					.setValue(plugin.settings[key])
 					.onChange(async (value) => {
 						handleSettingSave(key, value);
@@ -267,7 +274,8 @@ const generateSettings = async (
 			settingEl.addToggle((tg) => {
 				tg.setValue(plugin.settings[key]).onChange(async (value) => {
 					handleSettingSave(key, value);
-					key === "enableDeveloperMode" && renderSettings(container, plugin);
+					key === "enableDeveloperMode" &&
+						renderSettings(container, plugin);
 				});
 			});
 			break;
@@ -293,10 +301,7 @@ const generateSettings = async (
 	}
 };
 
-export const renderSettings = async (
-	container: HTMLElement,
-	plugin: any
-) => {
+export const renderSettings = async (container: HTMLElement, plugin: any) => {
 	container.empty();
 
 	SETTINGS_GROUP.forEach((setting) => {
@@ -305,27 +310,34 @@ export const renderSettings = async (
 			banner.createEl("h3", {
 				text: title,
 			});
-			desc && banner.createEl("p", {
-				cls: "setting-item-description",
-				text: desc,
+			desc &&
+				banner.createEl("p", {
+					cls: "setting-item-description",
+					text: desc,
+				});
+		});
+
+		const _settings =
+			title === "Developer Settings"
+				? settings.slice(
+						0,
+						plugin.settings.enableDeveloperMode
+							? settings.length
+							: 1
+				  )
+				: settings;
+
+		_settings
+			.filter((item) =>
+				Platform.isDesktopApp
+					? !!item
+					: !["interposition", "directory"].includes(item.key)
+			)
+			.forEach((item) => {
+				generateSettings(container, plugin, item);
 			});
-		});
-
-		const _settings = title === "Developer Settings" ? settings.slice(0, plugin.settings.enableDeveloperMode ? settings.length : 1) : settings;
-
-		_settings.filter((item) =>
-			Platform.isDesktopApp
-				? !!item
-				: !["interposition", "directory"].includes(item.key)
-		).forEach((item) => {
-			generateSettings(
-				container,
-				plugin,
-				item,
-			);
-		});
-	})
-}
+	});
+};
 
 export const getVoiceName = (voice: string) => {
 	return voice.replace(/\(.*\)/g, "");
@@ -346,13 +358,16 @@ export const getVoices = (region: string) => {
 export const handleTextFormat = (text: string, rule: string) => {
 	return text && rule
 		? text.replace(
-			new RegExp(rule.replace(/^\/(.*)\/.*/g, "$1"), "gi"),
-			" "
-		)
+				new RegExp(rule.replace(/^\/(.*)\/.*/g, "$1"), "gi"),
+				" "
+		  )
 		: text;
 };
 
-export const getAudioFormatType = (audioFormat: string) => audioFormat.replace(/.*\(\.(.*)\)/g, "$1").toLowerCase() === "mp3" ? "mp3" : "wav";
+export const getAudioFormatType = (audioFormat: string) =>
+	audioFormat.replace(/.*\(\.(.*)\)/g, "$1").toLowerCase() === "mp3"
+		? "mp3"
+		: "wav";
 
 export const getSelectedText = (
 	readBeforeOrAfter: Text2AudioSettings["readBeforeOrAfter"],

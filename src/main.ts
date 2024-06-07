@@ -19,10 +19,11 @@ import {
 	getSelectedText,
 } from "./utils";
 import { Popup } from "./Popup";
-import { LANGUAGES, LANGS } from "./constants";
+import { LANGUAGES, LANGS, VOICE_FORMAT_NAMES } from "./constants";
 import type { Text2AudioSettings } from "./type";
 import { actions } from "./store";
 
+const DEFAULT_LANGUAGE_TYPE = getLocalData("region") || LANGUAGES[0].region;
 const DEFAULT_SETTINGS: Text2AudioSettings = {
 	keyHide: true,
 	key: "",
@@ -40,6 +41,19 @@ const DEFAULT_SETTINGS: Text2AudioSettings = {
 	language: "zh",
 	volume: 50,
 	enableDeveloperMode: false,
+	languageType:
+		LANGUAGES.find((lang) => lang.region === DEFAULT_LANGUAGE_TYPE)?.[
+			"name-en"
+		] || "",
+	voiceType: (
+		getLocalData("voice") ||
+		(getVoices(DEFAULT_LANGUAGE_TYPE) || LANGUAGES[0].voices)[0]
+	)
+		.replace(/男[性]*/g, "Male")
+		.replace(/女[性]*/g, "Female")
+		.replace(/儿童/g, "Child")
+		.replace(/中性/g, "Neutral"),
+	audioFormat: getLocalData("audioFormat") || VOICE_FORMAT_NAMES[0],
 };
 
 let notice: Notice;
@@ -69,7 +83,8 @@ export default class Text2Audio extends Plugin {
 					const lastLine = editor.lastLine();
 					this.settings.interposition &&
 						editor.replaceSelection(
-							`${selectedText}<audio controls src="${Platform.resourcePathPrefix
+							`${selectedText}<audio controls src="${
+								Platform.resourcePathPrefix
 							}${encodeURIComponent(url)}" />`
 						);
 					editor.setCursor(lastLine + 1, 0);
@@ -80,8 +95,9 @@ export default class Text2Audio extends Plugin {
 					plugin: this,
 					selectedText,
 					onSave,
-					defaultFilename: `${this.app.workspace.getActiveFile()?.basename
-						}_${getDefaultFiletime()}`,
+					defaultFilename: `${
+						this.app.workspace.getActiveFile()?.basename
+					}_${getDefaultFiletime()}`,
 				}).open();
 			},
 		});
@@ -143,7 +159,7 @@ export default class Text2Audio extends Plugin {
 		this.addSettingTab(new Text2AudioSettingTab(this.app, this));
 	}
 
-	onunload() { }
+	onunload() {}
 
 	async loadSettings() {
 		this.settings = Object.assign(
@@ -167,7 +183,8 @@ export default class Text2Audio extends Plugin {
 		// 阅读文本
 		if (!this.convertting) {
 			this.convertting = true;
-			const { textFormatting, language, enableDeveloperMode } = this.settings;
+			const { textFormatting, language, enableDeveloperMode } =
+				this.settings;
 			const regionCode: string =
 				getLocalData("region") || LANGUAGES[0].region;
 			const voices: string[] =
@@ -179,7 +196,9 @@ export default class Text2Audio extends Plugin {
 			);
 			await generateVoice({
 				type: "play",
-				text: enableDeveloperMode ? handleTextFormat(text, textFormatting) : text,
+				text: enableDeveloperMode
+					? handleTextFormat(text, textFormatting)
+					: text,
 				regionCode,
 				voice: `${regionCode}-${getVoiceName(voice)}`,
 				settings: this.settings,
@@ -202,9 +221,6 @@ class Text2AudioSettingTab extends PluginSettingTab {
 	}
 
 	display(): void {
-		renderSettings(
-			this.containerEl,
-			this.plugin
-		);
+		renderSettings(this.containerEl, this.plugin);
 	}
 }

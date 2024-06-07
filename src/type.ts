@@ -17,7 +17,7 @@ export interface SettingInputConfig {
 export type SettingConfig = Record<SettingType, string> & {
 	inputConfig?: SettingInputConfig;
 	type: "text" | "select" | "toggle" | "textArea" | "slider";
-	options?: Record<string, string>;
+	options?: Record<string, string> | (() => Record<string, string>);
 	isPassword?: boolean;
 	range?: Array<number>;
 	step?: number;
@@ -39,4 +39,7 @@ export interface Text2AudioSettings {
 	intensity: number;
 	volume: number;
 	enableDeveloperMode: boolean;
+	languageType: string;
+	voiceType: string;
+	audioFormat: string;
 }
