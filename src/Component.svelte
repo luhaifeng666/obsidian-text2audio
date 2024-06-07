@@ -33,7 +33,6 @@
 	const isMobile: boolean = !Platform.isDesktopApp;
 	$: playBtnDisabled = loading || !convertedText.replace(/\s/g, "");
 	$: lang = LANGS[plugin.settings.language as "zh" | "en"];
-	console.log(plugin.settings);
 	const handleLangChange = (event: Event) => {
 		const selectElement = event.target as HTMLSelectElement;
 		regionCode = selectElement.value;
