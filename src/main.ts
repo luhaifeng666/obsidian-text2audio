@@ -17,6 +17,7 @@ import {
 	handleTextFormat,
 	getDefaultFiletime,
 	getSelectedText,
+	initVoiceName,
 } from "./utils";
 import { Popup } from "./Popup";
 import { LANGUAGES, LANGS, VOICE_FORMAT_NAMES } from "./constants";
@@ -46,14 +47,10 @@ const DEFAULT_SETTINGS: Text2AudioSettings = {
 		LANGUAGES.find((lang) => lang.region === DEFAULT_LANGUAGE_TYPE)?.[
 		"name-en"
 		] || "",
-	voiceType: (
+	voiceType: initVoiceName(
 		getLocalData("voice") ||
 		(getVoices(DEFAULT_LANGUAGE_TYPE) || LANGUAGES[0].voices)[0]
-	)
-		.replace(/男[性]*/g, "Male")
-		.replace(/女[性]*/g, "Female")
-		.replace(/儿童/g, "Child")
-		.replace(/中性/g, "Neutral"),
+	),
 	audioFormat: getLocalData("audioFormat") || VOICE_FORMAT_NAMES[0],
 };
 
