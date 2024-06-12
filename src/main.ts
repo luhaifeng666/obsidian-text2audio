@@ -18,9 +18,15 @@ import {
 	getDefaultFiletime,
 	getSelectedText,
 	initVoiceName,
+	getAudioFormatType,
 } from "./utils";
 import { Popup } from "./Popup";
-import { LANGUAGES, LANGS, VOICE_FORMAT_NAMES } from "./constants";
+import {
+	LANGUAGES,
+	LANGS,
+	VOICE_FORMAT_NAMES,
+	VOICE_FORMAT_MAP,
+} from "./constants";
 import type { Text2AudioSettings } from "./type";
 import { actions } from "./store";
 
@@ -45,11 +51,11 @@ const DEFAULT_SETTINGS: Text2AudioSettings = {
 	enableDeveloperMode: false,
 	languageType:
 		LANGUAGES.find((lang) => lang.region === DEFAULT_LANGUAGE_TYPE)?.[
-		"name-en"
+			"name-en"
 		] || "",
 	voiceType: initVoiceName(
 		getLocalData("voice") ||
-		(getVoices(DEFAULT_LANGUAGE_TYPE) || LANGUAGES[0].voices)[0]
+			(getVoices(DEFAULT_LANGUAGE_TYPE) || LANGUAGES[0].voices)[0]
 	),
 	audioFormat: getLocalData("audioFormat") || VOICE_FORMAT_NAMES[0],
 };
@@ -59,6 +65,7 @@ let notice: Notice;
 export default class Text2Audio extends Plugin {
 	settings: Text2AudioSettings = DEFAULT_SETTINGS;
 	convertting = false;
+	filename = "";
 
 	async onload() {
 		await this.loadSettings();
@@ -76,24 +83,15 @@ export default class Text2Audio extends Plugin {
 			editorCallback: (editor: Editor) => {
 				// 获取选中文本
 				const selectedText = editor.getSelection();
-				// 将保存的音频插入光标所在位置
-				const onSave = (url: string) => {
-					const lastLine = editor.lastLine();
-					this.settings.interposition &&
-						editor.replaceSelection(
-							`${selectedText}<audio controls src="${Platform.resourcePathPrefix
-							}${encodeURIComponent(url)}" />`
-						);
-					editor.setCursor(lastLine + 1, 0);
-				};
 				// 打开弹窗
 				new Popup({
 					app: this.app,
 					plugin: this,
 					selectedText,
-					onSave,
-					defaultFilename: `${this.app.workspace.getActiveFile()?.basename
-						}_${getDefaultFiletime()}`,
+					onSave: (url: string) => {
+						this.onSave(editor, selectedText, url);
+					},
+					defaultFilename: this.getDefaultFileName(),
 				}).open();
 			},
 		});
@@ -127,6 +125,30 @@ export default class Text2Audio extends Plugin {
 			},
 		});
 
+		this.addCommand({
+			id: "save-t2a",
+			name: "Convert text to speech and save it",
+			editorCallback: async (editor: Editor) => {
+				const { directory, audioFormat } = this.settings;
+				// 获取选中文本
+				const selectedText = getSelectedText(
+					this.settings.readBeforeOrAfter,
+					editor
+				);
+				if (selectedText) {
+					await this.play(selectedText, "save");
+					this.onSave(
+						editor,
+						selectedText,
+						`${directory}/${this.filename}.${getAudioFormatType(
+							audioFormat
+						)}`
+					);
+					this.filename = "";
+				}
+			},
+		});
+
 		this.registerEvent(
 			this.app.workspace.on("editor-menu", (menu, _, markdownView) => {
 				const selectedText = getSelectedText(
@@ -155,7 +177,27 @@ export default class Text2Audio extends Plugin {
 		this.addSettingTab(new Text2AudioSettingTab(this.app, this));
 	}
 
-	onunload() { }
+	onunload() {}
+
+	// 将保存的音频插入光标所在位置
+	onSave(editor: Editor, selectedText: string, url: string) {
+		const lastLine = editor.lastLine();
+		this.settings.interposition &&
+			editor.replaceSelection(
+				`${
+					editor.getSelection() ? selectedText : "" // 选中文本之后才做替换
+				}<audio controls src="${
+					Platform.resourcePathPrefix
+				}${encodeURIComponent(url)}" />`
+			);
+		editor.setCursor(lastLine + 1, 0);
+	}
+
+	getDefaultFileName() {
+		return `${
+			this.app.workspace.getActiveFile()?.basename
+		}_${getDefaultFiletime()}`;
+	}
 
 	async loadSettings() {
 		this.settings = Object.assign(
@@ -169,7 +211,7 @@ export default class Text2Audio extends Plugin {
 		this.settings = {
 			...this.settings,
 			...config,
-		}
+		};
 		this.saveSettings();
 	}
 
@@ -183,12 +225,19 @@ export default class Text2Audio extends Plugin {
 		this.convertting = false;
 	}
 
-	async play(text: string) {
+	async play(text: string, type: "play" | "save" = "play") {
 		// 阅读文本
 		if (!this.convertting) {
+			this.filename = this.getDefaultFileName();
 			this.convertting = true;
-			const { textFormatting, language, enableDeveloperMode, regionCode, voiceType } =
-				this.settings;
+			const {
+				textFormatting,
+				language,
+				enableDeveloperMode,
+				regionCode,
+				voiceType,
+				audioFormat,
+			} = this.settings;
 			const voices: string[] =
 				getVoices(regionCode) || LANGUAGES[0].voices;
 			const voice: string = voiceType || voices[0];
@@ -197,13 +246,19 @@ export default class Text2Audio extends Plugin {
 				0
 			);
 			await generateVoice({
-				type: "play",
+				type,
 				text: enableDeveloperMode
 					? handleTextFormat(text, textFormatting)
 					: text,
 				regionCode: regionCode || LANGUAGES[0].region,
 				voice: `${regionCode}-${getVoiceName(voice)}`,
 				settings: this.settings,
+				filename: this.filename,
+				audioFormatType: getAudioFormatType(audioFormat),
+				audioFormat:
+					VOICE_FORMAT_MAP[
+						audioFormat as keyof typeof VOICE_FORMAT_MAP
+					],
 				callback: () => {
 					notice.hide();
 					this.convertting = false;
