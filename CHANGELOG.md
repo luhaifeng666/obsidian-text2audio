@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/luhaifeng666/obsidian-text2audio/compare/4.0.2...4.1.0) (2024-06-12)
+
+
+### Features
+
+* Added "Convert text to speech and save it" command to generate speech files directly ([d114743](https://github.com/luhaifeng666/obsidian-text2audio/commit/d11474355678254fd26ed8e689c3bbc6b54f9b76))
+
 ### [4.0.2](https://github.com/luhaifeng666/obsidian-text2audio/compare/4.0.1...4.0.2) (2024-06-12)
 
 
