@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.2](https://github.com/luhaifeng666/obsidian-text2audio/compare/4.0.1...4.0.2) (2024-06-12)
+
+
+### Bug Fixes
+
+* Added cleanMarkup method to remove special symbols in markdown ([83861ad](https://github.com/luhaifeng666/obsidian-text2audio/commit/83861adc104bc3c2dbaf70bd4de4dc7724cb8e73))
+
 ### [4.0.1](https://github.com/luhaifeng666/obsidian-text2audio/compare/4.0.0...4.0.1) (2024-06-07)
 
 
