@@ -3,7 +3,7 @@
 <p align="center">Obsidian Text-to-Audio Plugin</p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-4.0.1-blue" alt="version_tag" />
+  <img src="https://img.shields.io/badge/version-4.0.2-blue" alt="version_tag" />
   <img src="https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=downloads&query=%24%5B%22text2audio%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json" />
 </p>
 
