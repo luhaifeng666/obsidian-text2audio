@@ -100,9 +100,11 @@ export const generateVoice = async (
 			const ssmlContent = text
 				? `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="${regionCode}">
 				<voice name="${voice}">
-					<mstts:express-as role="${role}" style="${style}" styledegree="${intensity / 100}">
+					<mstts:express-as role="${role}" style="${style}" styledegree="${
+						intensity / 100
+				  }">
 						<prosody rate="${speed}" volume="${volume}">
-							${text || ""}
+							${cleanMarkup(text) || ""}
 						</prosody>
 					</mstts:express-as>
 				</voice>
@@ -121,12 +123,14 @@ export const generateVoice = async (
 						) {
 							generateNotice().setMessage(
 								generateNoticeText(
-									`${langSettings.tipMessage.success
-										.synthesis
-									}. ${type === "save"
-										? `${langSettings.tipMessage.success.save} ` +
-										audioFile
-										: ""
+									`${
+										langSettings.tipMessage.success
+											.synthesis
+									}. ${
+										type === "save"
+											? `${langSettings.tipMessage.success.save} ` +
+											  audioFile
+											: ""
 									}`,
 									"success"
 								)
@@ -265,11 +269,19 @@ const generateSettings = async (
 						handleSettingSave(key, value);
 						// 当在配置中修改 Language type 时
 						if (key === "languageType") {
-							const regionData = LANGUAGES.find(lang => lang["name-en"] === value);
+							const regionData = LANGUAGES.find(
+								(lang) => lang["name-en"] === value
+							);
 							// 设置regionCode
-							await handleSettingSave("regionCode", regionData?.region || "");
+							await handleSettingSave(
+								"regionCode",
+								regionData?.region || ""
+							);
 							// 设置默认 Voice type
-							await handleSettingSave("voiceType", initVoiceName(regionData?.voices[0] || ""));
+							await handleSettingSave(
+								"voiceType",
+								initVoiceName(regionData?.voices[0] || "")
+							);
 							// 刷新配置页面
 							renderSettings(container, plugin);
 						}
@@ -327,11 +339,11 @@ export const renderSettings = async (container: HTMLElement, plugin: any) => {
 		const _settings =
 			title === "Developer Settings"
 				? settings.slice(
-					0,
-					plugin.settings.enableDeveloperMode
-						? settings.length
-						: 1
-				)
+						0,
+						plugin.settings.enableDeveloperMode
+							? settings.length
+							: 1
+				  )
 				: settings;
 
 		_settings
@@ -365,9 +377,9 @@ export const getVoices = (region: string) => {
 export const handleTextFormat = (text: string, rule: string) => {
 	return text && rule
 		? text.replace(
-			new RegExp(rule.replace(/^\/(.*)\/.*/g, "$1"), "gi"),
-			" "
-		)
+				new RegExp(rule.replace(/^\/(.*)\/.*/g, "$1"), "gi"),
+				" "
+		  )
 		: text;
 };
 
@@ -403,7 +415,60 @@ export const getSelectedText = (
 };
 
 export const initVoiceName = (voiceName: string) =>
-	voiceName.replace(/男[性]*/g, "Male")
+	voiceName
+		.replace(/男[性]*/g, "Male")
 		.replace(/女[性]*/g, "Female")
 		.replace(/儿童/g, "Child")
-		.replace(/中性/g, "Neutral")
+		.replace(/中性/g, "Neutral");
+
+export const cleanMarkup = (md: string) => {
+	let output = md || "";
+
+	// Remove horizontal rules (stripListHeaders conflict with this rule, which is why it has been moved to the top)
+	output = output.replace(/^(-\s*?|\*\s*?|_\s*?){3,}\s*/gm, "");
+
+	output = output
+		// Remove HTML tags
+		.replace(/<[^>]*>/g, "");
+
+	output = output
+		// Remove HTML tags
+		.replace(/<[^>]*>/g, "")
+		// Remove setext-style headers
+		.replace(/^[=-]{2,}\s*$/g, "")
+		// Remove footnotes?
+		.replace(/\[\^.+?\](: .*?$)?/g, "")
+		.replace(/\s{0,2}\[.*?\]: .*?$/g, "")
+		// Remove images
+		.replace(/!\[(.*?)\][[(].*?[\])]/g, "$1")
+		// Remove inline links
+		.replace(/\[([^\]]*?)\][[(].*?[\])]/g, "$1")
+		// Remove blockquotes
+		.replace(/^(\n)?\s{0,3}>\s?/gm, "$1")
+		// .replace(/(^|\n)\s{0,3}>\s?/g, '\n\n')
+		// Remove reference-style links?
+		.replace(/^\s{1,2}\[(.*?)\]: (\S+)( ".*?")?\s*$/g, "")
+		// Remove atx-style headers
+		.replace(
+			/^(\n)?\s{0,}#{1,6}\s*( (.+))? +#+$|^(\n)?\s{0,}#{1,6}\s*( (.+))?$/gm,
+			"$1$3$4$6"
+		)
+		// Remove * emphasis
+		.replace(/([*]+)(\S)(.*?\S)??\1/g, "$2$3")
+		// Remove _ emphasis. Unlike *, _ emphasis gets rendered only if
+		//   1. Either there is a whitespace character before opening _ and after closing _.
+		//   2. Or _ is at the start/end of the string.
+		.replace(/(^|\W)([_]+)(\S)(.*?\S)??\2($|\W)/g, "$1$3$4$5")
+		// Remove code blocks
+		.replace(/^```\w*$\n?/gm, "")
+		// Remove inline code
+		.replace(/`(.+?)`/g, "$1")
+		// Replace strike through
+		.replace(/~(.*?)~/g, "$1")
+		// remove better bibtex citekeys
+		.replace(/\[\s*@[\w,\s]+\s*\]/g, "")
+		// remove criticmarkup comments
+		.replace(/\{>>.*?<<\}/g, "");
+
+	return output;
+};

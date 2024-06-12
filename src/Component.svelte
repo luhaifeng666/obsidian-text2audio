@@ -14,11 +14,12 @@
 		VOICE_FORMAT_NAMES,
 	} from "./constants";
 	import { Platform } from "obsidian";
+	import Text2Audio from "./main";
 
 	export let text: string; // 需要转换的文本
 	export let onSave: (url: string) => void;
 	export let defaultFilename: string;
-	export let plugin;
+	export let plugin: Text2Audio;
 	let regionCode: string = plugin.settings.regionCode || LANGUAGES[0].region;
 	let voices: string[] = getVoices(regionCode) || LANGUAGES[0].voices;
 	let voice: string =
